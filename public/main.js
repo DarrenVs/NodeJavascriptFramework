@@ -1,6 +1,3 @@
-console.log(JSON.stringify({test:"Hello world!",objects:{a:{},b:{},c:{numbers:123}}}))
-
-
 var canvas, ctx;
 var RENDERSETTINGS = {
     lastTransformObject: null
@@ -27,6 +24,8 @@ function updateObject(obj) {
             obj.update[i]( obj, RENDERSETTINGS.deltaTime );
     }
     //if (RENDERSETTINGS.renderTime < 1 && obj.DrawObject)
+    
+    if (obj.Parent)
         obj.DrawObject.update();
 
     //if (RENDERSETTINGS.renderTime > 1)
@@ -256,8 +255,28 @@ function GameObject(Parent, properties, inheritances) {
         if (PhysicsLoop[this.ID])
             delete PhysicsLoop[this.ID];
         
-        delete this.Parent.childs[this.ID];
-        delete this.stage.allChilds[this.ID];
+        if (this.stage) {
+            
+            this.update["delete"] = function( Obj ) {
+                
+                if (Obj.stage) {
+
+                    delete Obj.stage.childs[Obj.ID];
+                    delete Obj.stage.allChilds[Obj.ID];
+                    Obj.stage = undefined;
+                    Obj.stageID = undefined;
+                }
+                Obj.Parent = undefined;
+            }
+        } else {
+            
+            delete self.Parent;
+        }
+        
+        
+        for (i in Parent.childs)
+            Parent.childs[i].destroy();
+        
     }
     Parent.addChild = function (obj, claimOwnership) {
         
@@ -355,12 +374,7 @@ socketio.on("IDrequest_to_client", function (data) {
     
     clientID = data;
     Stages[0] = new Stage();
-    LoadWorld( Stages[0], Enum.Worlds.BattleArena )
-    Stages[0].addChild(new Player({
-        position: new Vector2.new(Math.random()*1000, Math.random()*1000),
-        size: new Vector2.new(15, 30),
-        colour: "red",
-    }))
+    new LoadWorld( Stages[0], Enum.Worlds.BattleArena )
 });
 
 

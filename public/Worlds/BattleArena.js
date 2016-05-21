@@ -1,5 +1,6 @@
 Enum.Worlds.BattleArena = Worlds.length;
 Worlds[Enum.Worlds.BattleArena] = function( stage ) {
+    GameObject( this );
     
     
     var Tiles = {
@@ -60,6 +61,23 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
             newObject.anchored = true;
             
             stage.addChild( newObject );
+        }
+    }
+    
+    var player;
+    
+    
+    this.update["BattleArenaUpdate"] = function() {
+        
+        if (player == undefined || player.health <= 0) {
+            
+            player = new Player({
+                position: new Vector2.new(Math.random()*1000, Math.random()*1000),
+                size: new Vector2.new(15, 30),
+                colour: "red",
+            });
+            
+            stage.addChild( player );
         }
     }
 }

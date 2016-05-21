@@ -7,5 +7,5 @@ var Worlds = [
 
 function LoadWorld( stage, worldID ) {
     
-    Worlds[worldID]( stage, worldID );
+    stage.addChild( new Worlds[worldID]( stage, worldID ) );
 }
