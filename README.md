@@ -14,3 +14,4 @@ This is a Online-Multiplayer JavaScript Canvas Framework..(or something with a c
  - Express
  - Socket.io
 3. Start 'server.js' with Node.js
+4. Go to "http://localhost:1337/"
