@@ -104,7 +104,7 @@ function Player(properties) {
                 });
                 self.ignoreObjectIDs[bullet.ID] = true;
                 self.stage.addChild(bullet);
-                self.Move(Vector2.multiply(self.cannon.forward, -50));
+                self.Move(Vector2.multiply(self.cannon.forward, -25));
                 sendObject(self, false, true);
                 sendObject(bullet, false, true);
             }
@@ -113,6 +113,6 @@ function Player(properties) {
             sendObject(self);
             sendObject(self.cannon);
             
-        } else self.health--;
+        } else self.health -= Math.max(25, self.health/2) * RENDERSETTINGS.deltaTime;
     }
 }

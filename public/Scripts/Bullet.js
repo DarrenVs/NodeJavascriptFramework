@@ -44,7 +44,7 @@ function ExplosionObject(properties) {
     this.damage = 20;
     var damagedObjectIDs = {};
     this.ignoreObjectType = {
-        //[Enum.ClassType.Bullet]: true
+        [Enum.ClassType.Bullet]: true
     }
     
     var self = this;
@@ -68,7 +68,7 @@ function ExplosionObject(properties) {
 
 function explosion(position, radius, damage, stageID) {
     
-    Stages[stageID].addChild(new ExplosionObject({
+    Game[stageID].addChild(new ExplosionObject({
         position: new Vector2.new(position.x, position.y),
         physicalAppearanceSize:radius,
         damage:damage,
