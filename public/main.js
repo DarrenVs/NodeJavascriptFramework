@@ -12,7 +12,7 @@ var PHYSICSSETTINGS = {
 var objectCount = 0;
 var replicatedObjectCount = 0;
 var clientID = undefined;
-var Stages = {};
+var Game = {};
 
 var PhysicsLoop = {};
 
@@ -20,8 +20,10 @@ var PhysicsLoop = {};
 function updateObject(obj) {
 
     if (obj.update) {
-        for (i in obj.update)
-            obj.update[i]( obj, RENDERSETTINGS.deltaTime );
+        for (i in obj.update) {
+            if (obj.Parent)
+                obj.update[i]( obj, RENDERSETTINGS.deltaTime );
+        }
     }
     //if (RENDERSETTINGS.renderTime < 1 && obj.DrawObject)
     
@@ -74,20 +76,20 @@ window.addEventListener("load", function () {
         ctx.fillRect(0,0,canvas.width, canvas.height);
         //ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        for (var stageIndex in Stages) {
-            updateObject(Stages[stageIndex]);
+        for (var stageIndex in Game) {
+            updateObject(Game[stageIndex]);
             for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
                 
                 RENDERSETTINGS.deltaTime = Math.min(RENDERSETTINGS.renderTime - i, 1/60);
                 
                 for (var ObjID in PhysicsLoop) {
-                    updatePhysics( Stages[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
+                    updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
                 
                 for (var index in CollisionGrid.grid) {
                     
                     for (var ObjID in CollisionGrid.grid[index])
-                        updateCollision( Stages[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
+                        updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
             }
         }
@@ -177,7 +179,7 @@ function GameObject(Parent, properties, inheritances) {
         return Vector2.fromAngle(getObjectRotation(Parent)+270);
     })
     Parent.__defineGetter__('stage', function() {
-        return Stages[Parent.stageID];
+        return Game[Parent.stageID];
     })
     
     
@@ -373,8 +375,8 @@ var socketio = io.connect(window.location.host);
 socketio.on("IDrequest_to_client", function (data) {
     
     clientID = data;
-    Stages[0] = new Stage();
-    new LoadWorld( Stages[0], Enum.Worlds.BattleArena )
+    Game[0] = new Stage();
+    LoadWorld( Game[0], Enum.Worlds.BattleArena );
 });
 
 
@@ -390,15 +392,15 @@ socketio.on("object_from_broadcaster", function (data) {
             var ReplicatedObject = ReplicatedObjectPackage[ ObjID ];
 
             //Check if the client owns the stage or if the sender is the same person as the recever
-            if (ReplicatedObject.creatorID != clientID)// && Stages[ReplicatedObject.stageID])
+            if (ReplicatedObject.stageID != undefined && ReplicatedObject.creatorID != clientID)// && Game[ReplicatedObject.stageID])
             {
 
 
-                if (!Stages[ReplicatedObject.stageID])
-                    Stages[ReplicatedObject.stageID] = new Stage();
+                if (!Game[ReplicatedObject.stageID])
+                    Game[ReplicatedObject.stageID] = new Stage();
 
 
-                var stage = Stages[ReplicatedObject.stageID];
+                var stage = Game[ReplicatedObject.stageID];
 
 
                 /*if (stage.allChilds[ ReplicatedObject.ID ]) {

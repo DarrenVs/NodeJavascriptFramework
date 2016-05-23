@@ -29,7 +29,7 @@ function Physics(Parent) {
 
 function updatePhysics( Obj, deltaTime ) {
 
-    if (!Obj.anchored) {
+    if (Obj && !Obj.anchored) {
 
 
         Obj.position = Vector2.add(
