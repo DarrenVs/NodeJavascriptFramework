@@ -91,7 +91,7 @@ function Player(properties) {
 
             self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.stage.position)) - self.rotation;
 
-            self.stage.position = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
+            //self.stage.position = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
             
             updateRate++;
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
