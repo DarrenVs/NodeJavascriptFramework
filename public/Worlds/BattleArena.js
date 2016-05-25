@@ -29,7 +29,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         for (y = 0; y < yLength; y++) {
             chunk[y] = new Array();
             for (x = 0; x < xLength; x++) {
-                console.log("y : " + y + " x : " + x + " input : " + stringToParse[counter]);
                 chunk[y][x] = stringToParse[counter];
                 counter++;
             }
