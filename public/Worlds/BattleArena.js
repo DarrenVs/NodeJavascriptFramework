@@ -90,7 +90,22 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         return chunk;
     }
     
-    var objectToSpawnNames = [new Bullet, new Player, new EmptyObject];
+    //var objectToSpawnNames = new Array();
+    //objectToSpawnNames[0] = new EmptyObject();
+    //objectToSpawnNames[1] = new Player();
+    var objectToSpawn = [new Player({
+                position: new Vector2.new(Math.random()*1000, Math.random()*1000),
+                size: new Vector2.new(15, 30),
+                colour: "red",
+            }), new Player({
+                position: new Vector2.new(Math.random()*1000, Math.random()*1000),
+                size: new Vector2.new(15, 30),
+                colour: "red",
+            }), new Player({
+                position: new Vector2.new(Math.random()*1000, Math.random()*1000),
+                size: new Vector2.new(15, 30),
+                colour: "red",
+            })];
     
     //excpects an int[,]
     function spawnChunk( chunkToSpawn ) {
@@ -102,15 +117,12 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         {
             for (x = 0; x < xLength; x++)
             {
-                console.log(chunkToSpawn[x][y]);
-                
-                /*
-                if (objectToSpawnNames[chunkToSpawn[x][y]] != null)
-                {                
-                    var spawnedObject = new objectToSpawnNames[chunkToSpawn[x, y]];
+                if(chunkToSpawn[x][y] != 0) {
+                    console.log(objectToSpawn[1]);
+                    var spawnedObject = new objectToSpawn[chunkToSpawn[x][y] - 1];
                     spawnedObject.position.x;
                     spawnedObject.position.y;
-                }*/
+                }
             }
         }
     }
