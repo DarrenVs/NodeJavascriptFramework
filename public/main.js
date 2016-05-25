@@ -17,6 +17,11 @@ var Game = {};
 var PhysicsLoop = {};
 
 
+function print( arg ) {
+    console.log(arg);
+}
+
+
 function updateObject(obj) {
 
     if (obj.update) {
@@ -78,9 +83,9 @@ window.addEventListener("load", function () {
 
         for (var stageIndex in Game) {
             updateObject(Game[stageIndex]);
-            for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
+            //for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
                 
-                RENDERSETTINGS.deltaTime = Math.min(RENDERSETTINGS.renderTime - i, 1/60);
+                RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
                 
                 for (var ObjID in PhysicsLoop) {
                     updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
@@ -97,7 +102,7 @@ window.addEventListener("load", function () {
                         }
                     }
                 }
-            }
+            //}
         }
         
         

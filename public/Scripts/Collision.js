@@ -65,6 +65,8 @@ function Collision(Parent) {
             
             //for (var oldGrid in Pare)
             Parent.oldGrids = newGrids;
+            
+            //CollisionLoop[Parent.ID] = Parent;
         }
     })
     Parent.__defineGetter__('position', function(val) {
@@ -104,27 +106,49 @@ function updateCollision( Obj1, DeltaTime ) {
 
 
 function CheckCollision( Obj1, Obj2 ) {
-    var collision = false;
-    var hitDirection = Vector2.new();
     
+    //Check for ignore list
     if (Obj1.ignoreObjectIDs[Obj2.ID] || Obj2.ignoreObjectIDs[Obj1.ID]
        ||Obj1.ignoreObjectType[Obj2.ClassType] || Obj2.ignoreObjectType[Obj1.ClassType]) return false;
     
+    
+    
+    
+    
+    //Check for collision type
     if (Obj1.colliderType == Enum.colliderType.circle) {
         
-        var collisionRadius = (Obj1.hitbox.x*.5 + Obj2.hitbox.x*.5);
+        var collisionRadius = (Obj1.hitbox.x + Obj2.hitbox.x) * 0.5;
 
-        //console.log(Vector2.magnitude(Parent.position, Obj.position) + " < " + Parent.hitbox*.5 + Obj.hitbox*.5);
+        
+        //Check collision
         if (Vector2.magnitude(Obj1.position, Obj2.position) < collisionRadius) {
-            
             var direction = Vector2.unit(Vector2.subtract(Obj1.position, Obj2.position));
             
-            var Obj1Velocity = Vector2.magnitude(Obj1.velocity)
-            var Obj2Velocity = Vector2.magnitude(Obj2.velocity)
+            
+            
+            
+            for (i in Obj1.collisionEvents)
+                Obj1.collisionEvents[i](Obj2, edges[direction]);
+            for (i in Obj2.collisionEvents)
+                Obj2.collisionEvents[i](Obj1, edges[direction]);
+            
+            
+            
+            
+            var Obj1Velocity = Vector2.magnitude(Obj1.velocity);
+            var Obj2Velocity = Vector2.magnitude(Obj2.velocity);
             if (Obj1Velocity < 1) Obj1Velocity = 1;
             if (Obj2Velocity < 1) Obj2Velocity = 1;
+
+            var force;
+            if (Obj1.anchored)
+                force = 0;
+            else if (Obj2.anchored)
+                force = 1;
+            else
+                force = Math.min((Obj2.mass * Obj1Velocity) / (Obj1.mass * Vector2.magnitude(Obj1.velocity)), 1);
             
-            var force = Math.min((Obj2.mass * Obj1Velocity) / (Obj1.mass * Vector2.magnitude(Obj1.velocity)), 1);
             
             Obj1.position = Vector2.add(
                 Obj1.position,
@@ -137,37 +161,56 @@ function CheckCollision( Obj1, Obj2 ) {
             );
             
             
-            ///Obj1.velocity = Vector2.multiply(Obj2.velocity, force)
             
-            collision = true;
-            hitDirection = direction;
+            return true;
         }
     }
     else if (Obj1.colliderType == Enum.colliderType.box) {
         
         
+        //Check collision
         if ((Obj1.position.x + Obj1.hitbox.x*.5 > Obj2.position.x - Obj2.hitbox.x*.5 &&
              Obj1.position.x - Obj1.hitbox.x*.5 < Obj2.position.x + Obj2.hitbox.x*.5)
         &&  (Obj1.position.y + Obj1.hitbox.y*.5 > Obj2.position.y - Obj2.hitbox.y*.5 &&
              Obj1.position.y - Obj1.hitbox.y*.5 < Obj2.position.y + Obj2.hitbox.y*.5)) {
             
-        
-        
+            
+            
+            var Obj1CounterVelocity = (Obj1.velocity ? Vector2.multiply(Obj1.velocity, RENDERSETTINGS.deltaTime) : Vector2.new());
+            var Obj2CounterVelocity = (Obj2.velocity ? Vector2.multiply(Obj2.velocity, RENDERSETTINGS.deltaTime) : Vector2.new());
             var edges = {
-                [Math.abs((Obj1.position.y - Obj1.hitbox.y*.5) - (Obj2.position.y + Obj2.hitbox.y*.5))]: Vector2.directions.down,
-                [Math.abs((Obj1.position.y + Obj1.hitbox.y*.5) - (Obj2.position.y - Obj2.hitbox.y*.5))]: Vector2.directions.up,
-                [Math.abs((Obj1.position.x - Obj1.hitbox.x*.5) - (Obj2.position.x + Obj2.hitbox.x*.5))]: Vector2.directions.left,
-                [Math.abs((Obj1.position.x + Obj1.hitbox.x*.5) - (Obj2.position.x - Obj2.hitbox.x*.5))]: Vector2.directions.right,
+                [((Obj1.position.y - Obj1CounterVelocity.y - Obj1.hitbox.y*.5) - (Obj2.position.y - Obj2CounterVelocity.y + Obj2.hitbox.y*.5))]: "down",
+                             
+                [((Obj1.position.y - Obj1CounterVelocity.y + Obj1.hitbox.y*.5) - (Obj2.position.y - Obj2CounterVelocity.y - Obj2.hitbox.y*.5))]: "up",
+                             
+                [((Obj1.position.x - Obj1CounterVelocity.x - Obj1.hitbox.x*.5) - (Obj2.position.x - Obj2CounterVelocity.x + Obj2.hitbox.x*.5))]: "left",
+                
+                [((Obj1.position.x - Obj1CounterVelocity.x + Obj1.hitbox.x*.5) - (Obj2.position.x - Obj2CounterVelocity.x - Obj2.hitbox.x*.5))]: "right",
             }
+            
+            
             
             var direction = Infinity;
-            
             for (var i in edges) {
-                if (i < direction)
+                if (Math.abs(i) < Math.abs(direction))
                     direction = i;
             }
-
             
+            
+            
+            var distance = {
+                down: Math.abs((Obj1.position.y - Obj1.hitbox.y*.5) - (Obj2.position.y + Obj2.hitbox.y*.5)),
+                up: Math.abs((Obj1.position.y + Obj1.hitbox.y*.5) - (Obj2.position.y - Obj2.hitbox.y*.5)),
+                left: Math.abs((Obj1.position.x - Obj1.hitbox.x*.5) - (Obj2.position.x + Obj2.hitbox.x*.5)),
+                right: Math.abs((Obj1.position.x + Obj1.hitbox.x*.5) - (Obj2.position.x - Obj2.hitbox.x*.5))
+            }
+            
+            
+            
+            for (i in Obj1.collisionEvents)
+                Obj1.collisionEvents[i](Obj2, Vector2.directions[ edges[ direction ] ]);
+            for (i in Obj2.collisionEvents)
+                Obj2.collisionEvents[i](Obj1, Vector2.directions[ edges[ direction ] ]);
             
             
             
@@ -175,8 +218,14 @@ function CheckCollision( Obj1, Obj2 ) {
             var Obj2Velocity = Vector2.magnitude(Obj2.velocity);
             if (Obj1Velocity < 1) Obj1Velocity = 1;
             if (Obj2Velocity < 1) Obj2Velocity = 1;
-            
-            var force = Math.min((Obj2.mass * Obj1Velocity) / (Obj1.mass * Vector2.magnitude(Obj1.velocity)), 1);
+
+            var force;
+            if (Obj1.anchored)
+                force = 0;
+            else if (Obj2.anchored)
+                force = 1;
+            else
+                force = Math.min((Obj2.mass * Obj1Velocity) / (Obj1.mass * Vector2.magnitude(Obj1.velocity)), 1);
             
             
             
@@ -184,24 +233,17 @@ function CheckCollision( Obj1, Obj2 ) {
                 Obj1.position,
                 // +
                 Vector2.multiply(
-                    edges[direction],
+                    Vector2.directions[ edges[ direction ] ],
                     // *
-                    Number(direction) * force
+                    distance[ edges[ direction ]] * force
                 )
             );
             
             
-            collision = true;
-            hitDirection = edges[direction];
+            
+            return true;
         }
     }
     
-    if (collision) {
-        for (i in Obj1.collisionEvents)
-            Obj1.collisionEvents[i](Obj2, hitDirection);
-        for (i in Obj2.collisionEvents)
-            Obj2.collisionEvents[i](Obj1, hitDirection);
-    }
-    
-    return collision;
+    return false;
 }

@@ -97,7 +97,7 @@ function Player(properties) {
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
                 updateRate = 0;
                 var bullet = new Bullet({
-                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),
+                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 5)),
                     size: new Vector2.new(3, 10),
                     rotation: getObjectRotation(self.cannon),
                     //ignoreObjectIDs: {[self.ID]: true}
