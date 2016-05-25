@@ -14,9 +14,9 @@ function Player(properties) {
     var self = this;
     
     
-    this.physicalAppearanceSize = 30;
+    this.hitbox = Vector2.new(30, 30);
     self.ClassType = Enum.ClassType.Player;
-    self.mass = 10;
+    self.mass = 30;
     
     
     var Health = self.health;
@@ -97,7 +97,7 @@ function Player(properties) {
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
                 updateRate = 0;
                 var bullet = new Bullet({
-                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),//self.physicalAppearanceSize/2)),
+                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),
                     size: new Vector2.new(3, 10),
                     rotation: getObjectRotation(self.cannon),
                     //ignoreObjectIDs: {[self.ID]: true}

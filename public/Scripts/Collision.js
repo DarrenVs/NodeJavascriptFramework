@@ -5,15 +5,16 @@ var CollisionGrid = {
     },
     
     
-    new:function( pos, radius, Obj ) {
+    
+    new:function( pos, size, Obj ) {
         
         var Grids = {};
         
         for (var index in Vector2.directions) {
             
             var gridLocation = Vector2.new(
-                Math.floor((pos.x + Vector2.directions[index].x * Obj.physicalAppearanceSize) / CollisionGrid.gridSize.x) * CollisionGrid.gridSize.x,
-                Math.floor((pos.y + Vector2.directions[index].y * Obj.physicalAppearanceSize) / CollisionGrid.gridSize.y) * CollisionGrid.gridSize.y
+                Math.floor((pos.x + Vector2.directions[index].x * Obj.hitbox) / CollisionGrid.gridSize.x) * CollisionGrid.gridSize.x,
+                Math.floor((pos.y + Vector2.directions[index].y * Obj.hitbox) / CollisionGrid.gridSize.y) * CollisionGrid.gridSize.y
             );
 
             if (!CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y])
@@ -28,6 +29,10 @@ var CollisionGrid = {
         
         return Grids;
     },
+    
+    testedObjects: {
+        //to prevent objects from updating twice or more if they are child of more than one grid
+    }
 }
 
 
@@ -36,9 +41,8 @@ function Collision(Parent) {
     var Parent = Parent;
     var self = this;
     
-    Parent.colliderType = Parent.colliderType || Enum.colliderType.circle;
-    Parent.physicalAppearance = {}; //for the physics grid (NOT YET READY)
-    Parent.physicalAppearanceSize = Parent.physicalAppearanceSize || 50; //radius of the object
+    Parent.colliderType = Parent.colliderType || Enum.colliderType.box;
+    Parent.hitbox = Parent.hitbox || Vector2.new(50, 50);
     Parent.mass = Parent.mass || 1;
     Parent.ignoreObjectIDs = Parent.ignoreObjectIDs || {};
     Parent.ignoreObjectType = Parent.ignoreObjectType || {};
@@ -101,16 +105,19 @@ function updateCollision( Obj1, DeltaTime ) {
 
 function CheckCollision( Obj1, Obj2 ) {
     var collision = false;
+    var hitDirection = Vector2.new();
     
     if (Obj1.ignoreObjectIDs[Obj2.ID] || Obj2.ignoreObjectIDs[Obj1.ID]
        ||Obj1.ignoreObjectType[Obj2.ClassType] || Obj2.ignoreObjectType[Obj1.ClassType]) return false;
-    if (Obj1.colliderType = Enum.colliderType.circle) {
+    
+    if (Obj1.colliderType == Enum.colliderType.circle) {
         
-        var collisionRadius = (Obj1.physicalAppearanceSize*.5 + Obj2.physicalAppearanceSize*.5);
+        var collisionRadius = (Obj1.hitbox.x*.5 + Obj2.hitbox.x*.5);
 
-        //console.log(Vector2.magnitude(Parent.position, Obj.position) + " < " + Parent.physicalAppearanceSize*.5 + Obj.physicalAppearanceSize*.5);
+        //console.log(Vector2.magnitude(Parent.position, Obj.position) + " < " + Parent.hitbox*.5 + Obj.hitbox*.5);
         if (Vector2.magnitude(Obj1.position, Obj2.position) < collisionRadius) {
             
+            var direction = Vector2.unit(Vector2.subtract(Obj1.position, Obj2.position));
             
             var Obj1Velocity = Vector2.magnitude(Obj1.velocity)
             var Obj2Velocity = Vector2.magnitude(Obj2.velocity)
@@ -123,7 +130,7 @@ function CheckCollision( Obj1, Obj2 ) {
                 Obj1.position,
                 // +
                 Vector2.multiply(
-                    Vector2.unit(Vector2.subtract(Obj1.position, Obj2.position)),
+                    direction,
                     // *
                     ((Vector2.magnitude(Obj1.position, Obj2.position) / collisionRadius) * -force + force) * collisionRadius
                 )
@@ -133,14 +140,67 @@ function CheckCollision( Obj1, Obj2 ) {
             ///Obj1.velocity = Vector2.multiply(Obj2.velocity, force)
             
             collision = true;
+            hitDirection = direction;
+        }
+    }
+    else if (Obj1.colliderType == Enum.colliderType.box) {
+        
+        
+        if ((Obj1.position.x + Obj1.hitbox.x*.5 > Obj2.position.x - Obj2.hitbox.x*.5 &&
+             Obj1.position.x - Obj1.hitbox.x*.5 < Obj2.position.x + Obj2.hitbox.x*.5)
+        &&  (Obj1.position.y + Obj1.hitbox.y*.5 > Obj2.position.y - Obj2.hitbox.y*.5 &&
+             Obj1.position.y - Obj1.hitbox.y*.5 < Obj2.position.y + Obj2.hitbox.y*.5)) {
+            
+        
+        
+            var edges = {
+                [Math.abs((Obj1.position.y - Obj1.hitbox.y*.5) - (Obj2.position.y + Obj2.hitbox.y*.5))]: Vector2.directions.down,
+                [Math.abs((Obj1.position.y + Obj1.hitbox.y*.5) - (Obj2.position.y - Obj2.hitbox.y*.5))]: Vector2.directions.up,
+                [Math.abs((Obj1.position.x - Obj1.hitbox.x*.5) - (Obj2.position.x + Obj2.hitbox.x*.5))]: Vector2.directions.left,
+                [Math.abs((Obj1.position.x + Obj1.hitbox.x*.5) - (Obj2.position.x - Obj2.hitbox.x*.5))]: Vector2.directions.right,
+            }
+            
+            var direction = Infinity;
+            
+            for (var i in edges) {
+                if (i < direction)
+                    direction = i;
+            }
+
+            
+            
+            
+            
+            var Obj1Velocity = Vector2.magnitude(Obj1.velocity);
+            var Obj2Velocity = Vector2.magnitude(Obj2.velocity);
+            if (Obj1Velocity < 1) Obj1Velocity = 1;
+            if (Obj2Velocity < 1) Obj2Velocity = 1;
+            
+            var force = Math.min((Obj2.mass * Obj1Velocity) / (Obj1.mass * Vector2.magnitude(Obj1.velocity)), 1);
+            
+            
+            
+            Obj1.position = Vector2.add(
+                Obj1.position,
+                // +
+                Vector2.multiply(
+                    edges[direction],
+                    // *
+                    Number(direction) * force
+                )
+            );
+            
+            
+            collision = true;
+            hitDirection = edges[direction];
         }
     }
     
     if (collision) {
         for (i in Obj1.collisionEvents)
-            Obj1.collisionEvents[i](Obj2);
+            Obj1.collisionEvents[i](Obj2, hitDirection);
         for (i in Obj2.collisionEvents)
-            Obj2.collisionEvents[i](Obj1);
+            Obj2.collisionEvents[i](Obj1, hitDirection);
     }
     
     return collision;

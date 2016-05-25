@@ -86,10 +86,16 @@ window.addEventListener("load", function () {
                     updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
                 
+                CollisionGrid.testedObjects = {};
                 for (var index in CollisionGrid.grid) {
                     
-                    for (var ObjID in CollisionGrid.grid[index])
-                        updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
+                    for (var ObjID in CollisionGrid.grid[index]) {
+                        
+                        if (CollisionGrid.testedObjects[ObjID] == undefined) {
+                            CollisionGrid.testedObjects[ObjID] = true;
+                            updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
+                        }
+                    }
                 }
             }
         }
@@ -326,11 +332,13 @@ function DrawObject(Parent) {
         ctx.fillStyle = self.Parent.colour;
         ctx.fillRect(-self.Parent.size.x * 0.5, -self.Parent.size.y * 0.5, self.Parent.size.x, self.Parent.size.y);
         
-        if (self.Parent.physicalAppearance) {
+        if (self.Parent.colliderType == Enum.colliderType.circle) {
             ctx.beginPath();
-            ctx.arc(0,0,self.Parent.physicalAppearanceSize/2,0,2*Math.PI);
+            ctx.arc(0,0,self.Parent.hitbox.x/2,0,2*Math.PI);
             ctx.closePath();
             ctx.stroke();
+        } else if (self.Parent.colliderType == Enum.colliderType.box) {
+            ctx.strokeRect(-self.Parent.hitbox.x*.5, -self.Parent.hitbox.y*.5, self.Parent.hitbox.x, self.Parent.hitbox.y);
         }
     }
 }

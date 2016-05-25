@@ -59,6 +59,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
             
             newObject.extends["collision"] = Collision(newObject);
             newObject.anchored = true;
+            newObject.mass = Infinity;
             
             stage.addChild( newObject );
         }
