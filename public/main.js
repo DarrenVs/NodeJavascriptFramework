@@ -17,11 +17,6 @@ var Game = {};
 var PhysicsLoop = {};
 
 
-function print( arg ) {
-    console.log(arg);
-}
-
-
 function updateObject(obj) {
 
     if (obj.update) {
@@ -83,26 +78,20 @@ window.addEventListener("load", function () {
 
         for (var stageIndex in Game) {
             updateObject(Game[stageIndex]);
-            //for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
+            for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
                 
-                RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
+                RENDERSETTINGS.deltaTime = Math.min(RENDERSETTINGS.renderTime - i, 1/60);
                 
                 for (var ObjID in PhysicsLoop) {
                     updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
                 
-                CollisionGrid.testedObjects = {};
                 for (var index in CollisionGrid.grid) {
                     
-                    for (var ObjID in CollisionGrid.grid[index]) {
-                        
-                        if (CollisionGrid.testedObjects[ObjID] == undefined) {
-                            CollisionGrid.testedObjects[ObjID] = true;
-                            updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
-                        }
-                    }
+                    for (var ObjID in CollisionGrid.grid[index])
+                        updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
-            //}
+            }
         }
         
         
@@ -337,13 +326,11 @@ function DrawObject(Parent) {
         ctx.fillStyle = self.Parent.colour;
         ctx.fillRect(-self.Parent.size.x * 0.5, -self.Parent.size.y * 0.5, self.Parent.size.x, self.Parent.size.y);
         
-        if (self.Parent.colliderType == Enum.colliderType.circle) {
+        if (self.Parent.physicalAppearance) {
             ctx.beginPath();
-            ctx.arc(0,0,self.Parent.hitbox.x/2,0,2*Math.PI);
+            ctx.arc(0,0,self.Parent.physicalAppearanceSize/2,0,2*Math.PI);
             ctx.closePath();
             ctx.stroke();
-        } else if (self.Parent.colliderType == Enum.colliderType.box) {
-            ctx.strokeRect(-self.Parent.hitbox.x*.5, -self.Parent.hitbox.y*.5, self.Parent.hitbox.x, self.Parent.hitbox.y);
         }
     }
 }

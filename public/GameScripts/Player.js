@@ -9,14 +9,15 @@ function Player(properties) {
         physics:Physics(this),
         collision:Collision(this),
         tank:Tank(this),
+        navigation:AutomaticWalk(this)
     };
     
     var self = this;
     
     
-    this.hitbox = Vector2.new(30, 30);
+    this.physicalAppearanceSize = 30;
     self.ClassType = Enum.ClassType.Player;
-    self.mass = 30;
+    self.mass = 10;
     
     
     var Health = self.health;
@@ -97,14 +98,14 @@ function Player(properties) {
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
                 updateRate = 0;
                 var bullet = new Bullet({
-                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 5)),
+                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),//self.physicalAppearanceSize/2)),
                     size: new Vector2.new(3, 10),
                     rotation: getObjectRotation(self.cannon),
                     //ignoreObjectIDs: {[self.ID]: true}
                 });
                 self.ignoreObjectIDs[bullet.ID] = true;
                 self.stage.addChild(bullet);
-                self.Move(Vector2.multiply(self.cannon.forward, -25));
+                self.Move(Vector2.multiply(self.cannon.forward, -50));
                 sendObject(self, false, true);
                 sendObject(bullet, false, true);
             }
@@ -113,6 +114,6 @@ function Player(properties) {
             sendObject(self);
             sendObject(self.cannon);
             
-        } else self.health -= Math.max(25, self.health/2) * RENDERSETTINGS.deltaTime;
+        } else self.health--;
     }
 }
