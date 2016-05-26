@@ -33,12 +33,13 @@ this.StatesEnum = {
 //STATE INTERFACE
 this.State = {
     parent: undefined,
-    returnState: parent.defaultStateKey,
+    returnState: undefined,
     //Just to be able to check if it is a state
     isState: true,
 
-    Enter: function (_parent) { /* gives the start information and resets the variables */
-        parent = _parent
+    Enter: function (_parent) { /* gives the start information */
+        parent = _parent;
+        returnState = parent.defaultStateKey;
     },
     Reason: function () { /* returns true if it can act and false if it should go to an 
                                 other state and what state is should go in*/ 
@@ -53,7 +54,7 @@ this.State = {
         
     },
     Leave: function () { /* returns new state key */ 
-        //return returnState;
+        //Rest the variables that you want to be "clean"for the next use
         return returnState;
     }
 }
