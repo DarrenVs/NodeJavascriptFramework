@@ -9,12 +9,27 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         1:Enum.ClassType.Unknown, //Wall
     }
     
-    mapSize = new Vector2.new(1250, 1250);
+    mapSize = new Vector2.new(canvas.width, canvas.height);
     
     var player;
-        
-    var xLength = 10;
+    
+    var gameSpeed = 1; 
+    
+    //spawn level boundary
+    var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
+        size: new Vector2.new(canvas.width, 10),
+        position: new Vector2.new(canvas.width / 2, canvas.height + 20)
+    })
 
+    boundary.extends["collision"] = Collision(boundary);
+    boundary.anchored = true;
+                
+    stage.addChild( boundary );
+    
+    
+    //chunk spawning
+    var xLength = 10;
+    
     spawnChunk(UncompressChunk("01010101010101010101"));
     
     //uncompress the chunk to a 2d array
@@ -73,12 +88,12 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     this.update["BattleArenaUpdate"] = function() {
         
-        stage.position.y ++;
+        stage.position.y += gameSpeed;
         
         if (player == undefined || player.health <= 0) {
             
             player = new Player({
-                position: new Vector2.new(Math.random()*1000, Math.random()*1000),
+                position: new Vector2.new(Math.random()*canvas.width, Math.random()*canvas.height),
                 size: new Vector2.new(15, 30),
                 colour: "red",
             });

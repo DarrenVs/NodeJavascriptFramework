@@ -58,8 +58,11 @@ window.addEventListener("load", function () {
     (window.onresize = function() {
         
         console.log("resize");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        //canvas.width = window.innerWidth;
+        //canvas.height = window.innerHeight;
+        
+        canvas.width = 960;
+        canvas.height = 600;
     })();
     
     

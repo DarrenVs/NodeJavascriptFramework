@@ -18,7 +18,9 @@ var Enum = {
         Player: 1,
         Enemy: 2,
         Terrain: 3,
-        Bullet: 4,
+        DamagingObject: 4,
+        Boundary: 5,
+        
     },
     
     ClassName: {
