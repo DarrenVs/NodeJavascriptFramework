@@ -39,7 +39,6 @@ this.State = {
 
     Enter: function (_parent) { /* gives the start information */
         parent = _parent;
-        returnState = parent.defaultStateKey;
     },
     Reason: function () { /* returns true if it can act and false if it should go to an 
                                 other state and what state is should go in*/ 
@@ -53,7 +52,7 @@ this.State = {
     Act: function () { /* do the things this state does */ 
         
     },
-    Leave: function () { /* returns new state key */ 
+    Leave: function () { /* returns new state key if you return nothing it will go to default */ 
         //Rest the variables that you want to be "clean"for the next use
         return returnState;
     }
@@ -101,3 +100,5 @@ this.StateMachine = function (_parent, _defaultStateKey) {
     }
 }
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
+
+AI = new StateMachine()
