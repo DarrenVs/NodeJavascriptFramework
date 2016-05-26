@@ -17,6 +17,10 @@ var Game = {};
 var PhysicsLoop = {};
 
 
+function print(arg) {
+    console.log(arg);
+}
+
 function updateObject(obj) {
 
     if (obj.update) {
