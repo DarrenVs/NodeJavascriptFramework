@@ -9,11 +9,11 @@ function Player(properties) {
         physics:Physics(this),
         collision:Collision(this),
         tank:Tank(this),
-        navigation:AutomaticWalk(this)
+        navigation:AutomaticWalk(this),
+        outOfBounds:OutOfBounds(this),
     };
     
     var self = this;
-    
     
     this.physicalAppearanceSize = 30;
     self.ClassType = Enum.ClassType.Player;

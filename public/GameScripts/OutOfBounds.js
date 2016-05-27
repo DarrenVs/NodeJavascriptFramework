@@ -2,13 +2,14 @@
 function OutOfBounds(Parent) {
     var Parent = Parent;
     
-    this.collisionEvents["outOfBounds"] = function(Obj) {
+    Parent.collisionEvents["outOfBounds"] = function(Obj) {
+        print(Obj.ClassType);
         if (Obj.ClassType == Enum.ClassType.Boundary) {
             OutOfBounds();
         }
     }
     
-    this.OutOfBounds = function() {
+    Parent.OutOfBounds = function() {
         print("IM DEAD");
         Parent.destroy();
     }

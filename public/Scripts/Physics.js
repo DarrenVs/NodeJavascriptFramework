@@ -2,8 +2,6 @@
 function Physics(Parent) {
     var Parent = Parent;
     
-    
-    
     Parent.velocity = new Vector2.new(0, 0);
     Parent.rotateVelocity = 0;
 

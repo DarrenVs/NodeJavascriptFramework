@@ -10,7 +10,7 @@ function AutomaticWalk(Parent) {
             walkSpeed = -walkSpeed;    
         }
         
-        Parent.position.x += walkSpeed;
+        //Parent.position.x += walkSpeed;
         
     }
         
