@@ -3,7 +3,8 @@ function Physics(Parent) {
     var Parent = Parent;
     
     
-    
+    //Parent.bouncyness = 0;
+    //Parent.friction = 0;
     Parent.velocity = new Vector2.new(0, 0);
     Parent.rotateVelocity = 0;
 
@@ -22,6 +23,25 @@ function Physics(Parent) {
     
     
     Parent.anchored = false;
+    
+    
+    if (!Parent.collisionEvents) Parent.collisionEvents = {};
+    Parent.collisionEvents["physics"] = function( Obj, direction, force ) {
+        
+        Parent.velocity = Vector2.add(
+            Parent.velocity,
+            // +
+            //Vector2.multiply(
+                Vector2.multiply(
+                    direction,
+                    // *
+                    Vector2.new( Math.abs(Parent.velocity.x), Math.abs(Parent.velocity.y) )
+                )//,
+                // *
+                //force
+            //)
+        )
+    }
     
     return true;
 }
