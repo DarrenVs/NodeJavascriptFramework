@@ -24,23 +24,32 @@ this.StatesEnum = {
     Inhereting from state {
     
         (in the function you created) 
-        this.__proto__ = State;
+        this.__proto__ = new State();
+        
+        (optional is) 
+        var base = this.__proto__;
+        (this way you can call base.aFunction to call function in the parrent class)
     }
     Makig a state class is just overwriting the state interface and filling in what should be there
+    
+    The parameters and return values do need to rewritten otherwise the class wont do anything
+    and the machine will just go the the default state.
 */
+
+
 
 //----------------------------\\
 //STATE INTERFACE
-this.State = {
-    parent: undefined,
-    returnState: undefined,
+this.State = function () {
+    this.parent = undefined;
+    this.returnState = undefined;
     //Just to be able to check if it is a state
-    isState: true,
+    this.isState = true;
 
-    Enter: function (_parent) { /* gives the start information */
-        parent = _parent;
-    },
-    Reason: function () { /* returns true if it can act and false if it should go to an 
+    this.Enter = function (_parent) { /* gives the start information */
+        this.parent = _parent;
+    };
+    this.Reason = function () { /* returns true if it can act and false if it should go to an 
                                 other state and what state is should go in*/ 
        /* if (enemyInSight) {
             returnState = StatesEnum.alert;
@@ -48,11 +57,11 @@ this.State = {
         } else return true; */
         
         return false;
-    },
-    Act: function () { /* do the things this state does */ 
+    }
+    this.Act = function () { /* do the things this state does */ 
         
-    },
-    Leave: function () { /* returns new state key if you return nothing it will go to default */ 
+    }
+    this.Leave = function () { /* returns new state key if you return nothing it will go to default */ 
         //Rest the variables that you want to be "clean"for the next use
         return returnState;
     }
@@ -85,20 +94,22 @@ this.StateMachine = function (_parent, _defaultStateKey) {
     
     //The core logic (should speak for itself)
     this.UpdateMachine = function () {
-        if (currentState.Reason()) {
-            currentState.Act();
-        } else {
-            var newStateKey = currentState.Leave();
+        if (states[defaultStateKey]) {
             
-            if (typeof(states[newStateKey]) != 'undefined') {
+            if (currentState.Reason()) {
+                currentState.Act();
+            } else {
+                var newStateKey = currentState.Leave();
                 
-                currentState = states[newStateKey];
-            } else currentState = states[defaultStateKey];
-            
-            currentState.Enter(_parent);
+                if (typeof(states[newStateKey]) != 'undefined') {
+                    
+                    currentState = states[newStateKey];
+                } else currentState = states[defaultStateKey];
+                
+                currentState.Enter(_parent);
+            }
+        
         }
     }
 }
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
-
-AI = new StateMachine()
