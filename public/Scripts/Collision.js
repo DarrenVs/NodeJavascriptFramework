@@ -116,7 +116,7 @@ function CheckCollision( Obj1, Obj2 ) {
     
     
     //Check for collision type
-    if (Obj1.colliderType == Enum.colliderType.circle) {
+    if (Obj1.colliderType == Enum.colliderType.circle && Obj2.colliderType == Enum.colliderType.circle) {
         
         var collisionRadius = (Obj1.hitbox.x + Obj2.hitbox.x) * 0.5;
 
@@ -128,19 +128,11 @@ function CheckCollision( Obj1, Obj2 ) {
             
             
             
-            for (i in Obj1.collisionEvents)
-                Obj1.collisionEvents[i](Obj2, edges[direction]);
-            for (i in Obj2.collisionEvents)
-                Obj2.collisionEvents[i](Obj1, edges[direction]);
-            
-            
-            
-            
             var Obj1Velocity = Vector2.magnitude(Obj1.velocity);
             var Obj2Velocity = Vector2.magnitude(Obj2.velocity);
             if (Obj1Velocity < 1) Obj1Velocity = 1;
             if (Obj2Velocity < 1) Obj2Velocity = 1;
-
+            
             var force;
             if (Obj1.anchored)
                 force = 0;
@@ -148,6 +140,8 @@ function CheckCollision( Obj1, Obj2 ) {
                 force = 1;
             else
                 force = Math.min((Obj2.mass * Obj1Velocity) / (Obj1.mass * Vector2.magnitude(Obj1.velocity)), 1);
+            
+            
             
             
             Obj1.position = Vector2.add(
@@ -162,10 +156,18 @@ function CheckCollision( Obj1, Obj2 ) {
             
             
             
+            
+            for (i in Obj1.collisionEvents)
+                Obj1.collisionEvents[i](Obj2, direction, force);
+            for (i in Obj2.collisionEvents)
+                Obj2.collisionEvents[i](Obj1, direction, Math.abs(force-1));
+            
+            
+            
             return true;
         }
     }
-    else if (Obj1.colliderType == Enum.colliderType.box) {
+    else if (Obj1.colliderType == Enum.colliderType.box || Obj2.colliderType == Enum.colliderType.box) {
         
         
         //Check collision
@@ -207,13 +209,6 @@ function CheckCollision( Obj1, Obj2 ) {
             
             
             
-            for (i in Obj1.collisionEvents)
-                Obj1.collisionEvents[i](Obj2, Vector2.directions[ edges[ direction ] ]);
-            for (i in Obj2.collisionEvents)
-                Obj2.collisionEvents[i](Obj1, Vector2.directions[ edges[ direction ] ]);
-            
-            
-            
             var Obj1Velocity = Vector2.magnitude(Obj1.velocity);
             var Obj2Velocity = Vector2.magnitude(Obj2.velocity);
             if (Obj1Velocity < 1) Obj1Velocity = 1;
@@ -238,6 +233,13 @@ function CheckCollision( Obj1, Obj2 ) {
                     distance[ edges[ direction ]] * force
                 )
             );
+            
+            
+            
+            for (i in Obj1.collisionEvents)
+                Obj1.collisionEvents[i](Obj2, Vector2.directions[ edges[ direction ] ], force);
+            for (i in Obj2.collisionEvents)
+                Obj2.collisionEvents[i](Obj1, Vector2.directions[ edges[ direction ] ], Math.abs(force-1));
             
             
             
