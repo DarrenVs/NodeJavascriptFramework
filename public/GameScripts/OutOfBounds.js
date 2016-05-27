@@ -5,7 +5,7 @@ function OutOfBounds(Parent) {
     Parent.collisionEvents["outOfBounds"] = function(Obj) {
         print(Obj.ClassType);
         if (Obj.ClassType == Enum.ClassType.Boundary) {
-            OutOfBounds();
+            Parent.OutOfBounds();
         }
     }
     
