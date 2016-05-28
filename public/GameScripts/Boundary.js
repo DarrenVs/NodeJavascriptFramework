@@ -11,7 +11,9 @@ function Boundary(properties) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
+    var yOffSet = 10;
+    
     this.update["boundaryUpdate"] = function() {
-        self.position.y = canvas.height + self.size.y / 2 + 10;
+        self.position.y = -self.stage.position.y + canvas.height + yOffSet;
     }
 }

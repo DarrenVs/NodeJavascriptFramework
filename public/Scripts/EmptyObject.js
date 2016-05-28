@@ -4,6 +4,4 @@ Enum.ClassName[Enum.ClassType.Unknown] = EmptyObject;
 function EmptyObject(properties) {
     var self = this;
     GameObject(this, properties);
-    
-    
 }

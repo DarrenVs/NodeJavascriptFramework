@@ -77,10 +77,13 @@ function Player(properties) {
     
     //alert("forward: "+this.forward);
     
+    console.log("Player pos x = " + self.position.x + " Y = " + self.position.y);
+    
+    var canvasPosition = -self.position.y + canvas.height / 2;
+    
     var updateRate = 0;
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {
-        
         if (self.creatorID == clientID) {
             if (INPUT["87"]) self.Move(new Vector2.new(0,-3));
             if (INPUT["83"]) self.Move(new Vector2.new(0,3));
@@ -93,6 +96,8 @@ function Player(properties) {
             self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.stage.position)) - self.rotation;
 
             //self.stage.position = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
+            
+            self.stage.position.y = -self.position.y + canvas.height / 2;
             
             updateRate++;
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
