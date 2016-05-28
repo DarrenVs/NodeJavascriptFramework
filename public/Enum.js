@@ -20,6 +20,7 @@ var Enum = {
         Terrain: 3,
         DamagingObject: 4,
         Boundary: 5,
+        IntermediatePlatform: 6,
         
     },
     

@@ -3,17 +3,7 @@ Enum.Worlds.BattleArena = Worlds.length;
 Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     GameObject( this );
     
-    
-    var Tiles = {
-        0:false, //Air
-        1:Enum.ClassType.Unknown, //Wall
-    }
-    
-    mapSize = new Vector2.new(canvas.width, canvas.height);
-    
-    var player;
-    
-    //spawn level boundary
+    //Level Boundary
     var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
         size: new Vector2.new(canvas.width, 10),
         position: new Vector2.new(canvas.width / 2, canvas.height + 20)
@@ -24,7 +14,18 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
                 
     stage.addChild( boundary );
     
-    //store here all chunks
+    
+    
+    //Level Generating
+    var Tiles = {
+        0:false, //Air
+        1:Enum.ClassType.Boundary, //Wall
+    }
+    
+    //the x length of all chunks
+    var xLength = 15;
+    
+    //store all uncompressed chunk here:
     var allUncompressedChunks = [
         "100110000000001100000010000011100000011100001111000001110001100000000000001100000000000001",
         "100000000000001100000000000001110001010100011111001010100111100000000000001100000000000001",
@@ -32,13 +33,13 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     ];
     
+    //the chunk we will spawn between regular chunks, to ensure we always have a smooth transition to the next chunk
+    var intermediateChunk = UncompressChunk("100000000000001100000000000001100000000000001");
+    
     //all chunks will be stored here after uncompressing
     var allChunks = [];
     
-    //chunk spawning
-    var xLength = 15;
-    
-    var tileSize = mapSize.x / xLength;
+    var tileSize = canvas.width / xLength;
     
     var totalLevelHeight = canvas.height;
     
@@ -48,6 +49,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     }
     
     while(stage.position.y <= totalLevelHeight) {
+        spawnIntermediateChunk();
         spawnChunk(allChunks[Math.floor(Math.random()*allChunks.length)]);
     }
      
@@ -87,11 +89,10 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
                 
                 var newObject = new Enum.ClassName[Tiles[chunkToSpawn[y][x]]]({
                     size:tileSize,
-                    position:new Vector2.new(x * tileSize, ((-y * tileSize) + totalLevelHeight))
+                    position:new Vector2.new(x * tileSize, ((-y * tileSize) + totalLevelHeight)),
+                    colour: "red",
                 })
                 
-                console.log("Node X = " + newObject.position.x + ", Y = " + newObject.position.y);
-
                 newObject.extends["collision"] = Collision(newObject);
                 newObject.anchored = true;
                 
@@ -102,6 +103,35 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
             }
         }
     }
+    
+    function spawnIntermediateChunk() {
+        
+        var intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
+            size: new Vector2.new(canvas.width, 10),
+            position: new Vector2.new(canvas.width / 2, totalLevelHeight)
+        })
+
+        intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
+        intermediatePlatform.anchored = true;
+
+        stage.addChild( intermediatePlatform );
+        
+        spawnChunk(intermediateChunk);
+        
+        intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
+            size: new Vector2.new(canvas.width, 10),
+            position: new Vector2.new(canvas.width / 2, totalLevelHeight)
+        })
+
+        intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
+        intermediatePlatform.anchored = true;
+
+        stage.addChild( intermediatePlatform );
+    }
+    
+    
+    
+    var player;
     
     this.update["BattleArenaUpdate"] = function() {
         
@@ -117,8 +147,9 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         }
         
         
-        
+        //when we spawn a new chunk
         if(stage.position.y <= totalLevelHeight) {
+            spawnIntermediateChunk();
             spawnChunk(allChunks[Math.floor(Math.random()*allChunks.length)]);
         }
         //Game[0].childs

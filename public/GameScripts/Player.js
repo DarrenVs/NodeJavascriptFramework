@@ -96,7 +96,11 @@ function Player(properties) {
     
     //alert("forward: "+this.forward);
     
-    console.log("Player pos x = " + self.position.x + " Y = " + self.position.y);
+    this.collisionEvents["IntermediatePlatformCollision"] = function(Obj) {
+        if (Obj.ClassType == Enum.ClassType.IntermediatePlatform) {
+            console.log("IntermediatePlatformCollision");
+        }
+    }
     
     var canvasPosition = -self.position.y + canvas.height / 2;
     
@@ -114,8 +118,6 @@ function Player(properties) {
 
             self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.stage.position)) - self.rotation;
 
-            //self.stage.position = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
-            
             self.stage.position.y = -self.position.y + canvas.height / 2;
             
             updateRate++;
