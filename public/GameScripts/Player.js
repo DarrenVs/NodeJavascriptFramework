@@ -15,10 +15,8 @@ function Player(properties) {
     
     var self = this;
     
-<<<<<<< HEAD:public/GameScripts/Player.js
     this.physicalAppearanceSize = 30;
-=======
-    
+
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.SampleSprite1,   //Image
@@ -37,7 +35,6 @@ function Player(properties) {
     
     this.colliderType = Enum.colliderType.circle;
     this.hitbox = Vector2.new(30, 30);
->>>>>>> refs/remotes/origin/master:public/Scripts/Player.js
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
     

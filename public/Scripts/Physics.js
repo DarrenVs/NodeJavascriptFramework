@@ -2,12 +2,9 @@
 function Physics(Parent) {
     var Parent = Parent;
     
-<<<<<<< HEAD
-=======
     
     //Parent.bouncyness = 0;
     //Parent.friction = 0;
->>>>>>> refs/remotes/origin/master
     Parent.velocity = new Vector2.new(0, 0);
     Parent.rotateVelocity = 0;
 

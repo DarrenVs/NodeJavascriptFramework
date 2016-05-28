@@ -13,7 +13,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     var player;
     
-<<<<<<< HEAD
     //spawn level boundary
     var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
         size: new Vector2.new(canvas.width, 10),
@@ -46,28 +45,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     //uncompress allUncompressedChunks, and store them in the allChunks
     for(i = 0; i < allUncompressedChunks.length; i++) {
         allChunks.push(UncompressChunk(allUncompressedChunks[i]));
-=======
-    for (var y = 0; y < map.length; y++) {
-        for (var x = 0; x < map[y].length; x++) {
-            
-            if (!Enum.ClassName[Tiles[map[y][x]]]) continue;
-            
-            var newObject = new Enum.ClassName[Tiles[map[y][x]]]({
-                size:tileSize,
-                position:Vector2.multiply(
-                    tileSize,
-                    new Vector2.new(x, y)
-                ),
-            })
-            
-            newObject.extends["collision"] = Collision(newObject);
-            newObject.anchored = true;
-            newObject.mass = 1;
-            newObject.hitbox = tileSize;
-            
-            stage.addChild( newObject );
-        }
->>>>>>> refs/remotes/origin/master
     }
     
     while(stage.position.y <= totalLevelHeight) {
