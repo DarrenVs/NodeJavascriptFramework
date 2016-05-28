@@ -15,7 +15,29 @@ function Player(properties) {
     
     var self = this;
     
+<<<<<<< HEAD:public/GameScripts/Player.js
     this.physicalAppearanceSize = 30;
+=======
+    
+    this.DrawObject = new Sprite(
+        this,   //Parent
+        Enum.Images.Sprites.SampleSprite1,   //Image
+        2,  //Columns
+        2,  //Rows
+        {   //Animations
+            walk: {
+                speed: .05, //Per frame
+                keyFrames: [0,1,2,3], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+        }
+    );
+    
+    
+    this.colliderType = Enum.colliderType.circle;
+    this.hitbox = Vector2.new(30, 30);
+>>>>>>> refs/remotes/origin/master:public/Scripts/Player.js
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
     

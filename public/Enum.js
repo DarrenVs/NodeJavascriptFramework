@@ -29,5 +29,13 @@ var Enum = {
     
     Worlds: {
     
+    },
+    
+    Images: {
+        
+        Sprites: {
+            
+            SampleSprite1: newImage("Images/SpriteTest.png"),
+        }
     }
 }

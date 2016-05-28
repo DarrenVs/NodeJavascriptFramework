@@ -38,6 +38,7 @@ function ExplosionObject(properties) {
     this.extends = {
         "collision": Collision(this),
     }
+    this.colliderType = Enum.colliderType.circle;
     this.anchored = true;
     this.mass = 100;
     this.size = new Vector2.new(300,300);
