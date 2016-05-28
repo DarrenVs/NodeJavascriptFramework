@@ -14,6 +14,23 @@ function Player(properties) {
     var self = this;
     
     
+    this.DrawObject = new Sprite(
+        this,   //Parent
+        Enum.Images.Sprites.SampleSprite1,   //Image
+        2,  //Columns
+        2,  //Rows
+        {   //Animations
+            walk: {
+                speed: .05, //Per frame
+                keyFrames: [0,1,2,3], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+        }
+    );
+    
+    
+    this.colliderType = Enum.colliderType.circle;
     this.hitbox = Vector2.new(30, 30);
     self.ClassType = Enum.ClassType.Player;
     self.mass = 30;

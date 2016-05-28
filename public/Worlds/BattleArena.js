@@ -60,7 +60,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
             newObject.extends["collision"] = Collision(newObject);
             newObject.anchored = true;
             newObject.mass = 1;
-            newObject.hitbox = Vector2.multiply(tileSize, .9);
+            newObject.hitbox = tileSize;
             
             stage.addChild( newObject );
         }
