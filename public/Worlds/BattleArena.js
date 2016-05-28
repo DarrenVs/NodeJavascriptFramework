@@ -19,7 +19,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     //Level Generating
     var Tiles = {
         0:false, //Air
-        1:Enum.ClassType.Boundary, //Wall
+        1:Enum.ClassType.Unknown, //Wall
     }
     
     //the x length of all chunks
@@ -34,7 +34,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     ];
     
     //the chunk we will spawn between regular chunks, to ensure we always have a smooth transition to the next chunk
-    var intermediateChunk = UncompressChunk("100000000000001100000000000001100000000000001");
+    var intermediateChunk = uncompressChunk("100000000000001100000000000001100000000000001");
     
     //all chunks will be stored here after uncompressing
     var allChunks = [];
@@ -45,7 +45,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     //uncompress allUncompressedChunks, and store them in the allChunks
     for(i = 0; i < allUncompressedChunks.length; i++) {
-        allChunks.push(UncompressChunk(allUncompressedChunks[i]));
+        allChunks.push(uncompressChunk(allUncompressedChunks[i]));
     }
     
     while(stage.position.y <= totalLevelHeight) {
@@ -54,7 +54,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     }
      
     //uncompress the chunk to a 2d array
-    function UncompressChunk(stringToParse) {
+    function uncompressChunk(stringToParse) {
         var yLength = stringToParse.length / xLength;
         
         var counter = 0;
@@ -88,9 +88,8 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
                 if (!Enum.ClassName[Tiles[chunkToSpawn[y][x]]]) continue;
                 
                 var newObject = new Enum.ClassName[Tiles[chunkToSpawn[y][x]]]({
-                    size:tileSize,
-                    position:new Vector2.new(x * tileSize, ((-y * tileSize) + totalLevelHeight)),
-                    colour: "red",
+                    size: new Vector2.new(tileSize, tileSize),
+                    position: new Vector2.new(x * tileSize, ((-y * tileSize) + totalLevelHeight)),
                 })
                 
                 newObject.extends["collision"] = Collision(newObject);
