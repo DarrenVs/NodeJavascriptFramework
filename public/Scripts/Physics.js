@@ -26,21 +26,23 @@ function Physics(Parent) {
     
     
     if (!Parent.collisionEvents) Parent.collisionEvents = {};
-    Parent.collisionEvents["physics"] = function( Obj, direction, force ) {
+    Parent.collisionEvents["physics"] = function( Obj, direction, force, distance, canCollide ) {
         
-        Parent.velocity = Vector2.add(
-            Parent.velocity,
-            // +
-            //Vector2.multiply(
-                Vector2.multiply(
-                    direction,
+        if (canCollide) {
+            Parent.velocity = Vector2.add(
+                Parent.velocity,
+                // +
+                //Vector2.multiply(
+                    Vector2.multiply(
+                        direction,
+                        // *
+                        Vector2.new( Math.abs(Parent.velocity.x), Math.abs(Parent.velocity.y) )
+                    )//,
                     // *
-                    Vector2.new( Math.abs(Parent.velocity.x), Math.abs(Parent.velocity.y) )
-                )//,
-                // *
-                //force
-            //)
-        )
+                    //force
+                //)
+            )
+        }
     }
     
     return true;

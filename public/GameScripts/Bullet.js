@@ -17,8 +17,13 @@ function Bullet(properties) {
     this.ClassType = Enum.ClassType.Bullet;
     //this.ignoreObjectType[Enum.ClassType.Bullet] = true;
     
+<<<<<<< HEAD:public/GameScripts/Bullet.js
     this.physicalAppearanceSize = 5;
     this.mass = .1;
+=======
+    this.hitbox = Vector2.new(5, 5);
+    this.mass = 100;
+>>>>>>> refs/remotes/origin/master:public/Scripts/Bullet.js
     this.velocity = Vector2.multiply(Vector2.fromAngle(self.rotation), -1000);
     this.colour = "#714b4b"
     this.update["bullet"] = function() {
@@ -26,10 +31,13 @@ function Bullet(properties) {
         if (self.lifeTime <= 0)
             self.destroy();
     }
-    this.collisionEvents["explode"] = function() {
+    this.collisionEvents["explode"] = function( Obj, direction, force, distance, canCollide) {
         
-        explosion(self.position, self.explodeRadius, self.damage, self.stageID, self.ignoreObjectIDs, self.ID);
-        self.destroy();
+        if (canCollide) {
+            explosion(self.position, self.explodeRadius, self.damage, self.stageID, self.ignoreObjectIDs, self.ID);
+            self.destroy();
+            delete self.collisionEvents["explode"]; // To prevent the bullet from making multible explosions in one frame
+        }
     }
 }
 
