@@ -17,15 +17,31 @@ function Player(properties) {
     
     this.physicalAppearanceSize = 30;
 
+    /*
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.PlayerSpriteSheet,   //Image
+        Enum.Images.Sprites.PlayerJumpSpriteSheet,   //Image
+        4,  //Columns
+        2,  //Rows
+        {   //Animations
+            walk: {
+                speed: .01, //Per frame
+                keyFrames: [0,1,2,3,4,5], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+        }
+    );*/
+    
+    this.DrawObject = new Sprite(
+        this,   //Parent
+        Enum.Images.Sprites.PlayerRunSpriteSheet,   //Image
         7,  //Columns
         2,  //Rows
         {   //Animations
             walk: {
-                speed: .1, //Per frame
-                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12], //AnimationFrame
+                speed: .2, //Per frame
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
@@ -34,7 +50,7 @@ function Player(properties) {
     
     
     this.colliderType = Enum.colliderType.circle;
-    this.hitbox = Vector2.new(30, 30);
+    this.hitbox = Vector2.new(15, 30);
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
     
