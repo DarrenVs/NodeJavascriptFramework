@@ -74,6 +74,24 @@ function Collision(Parent) {
     })
     Parent.position = Parent.position;
     
+    
+    
+    Parent.collisionEvents["collision"] = function( Obj, direction, force, distance, canCollide ) {
+        
+        if (canCollide) {
+            Parent.position = Vector2.add(
+                Parent.position,
+                // +
+                Vector2.multiply(
+                    direction,
+                    // *
+                    distance * force
+                )
+            );
+        }
+    }
+    
+    
     return true;
 }
 
@@ -107,12 +125,6 @@ function updateCollision( Obj1, DeltaTime ) {
 
 function CheckCollision( Obj1, Obj2 ) {
     
-    //Check for ignore list
-    if (Obj1.ignoreObjectIDs[Obj2.ID] || Obj2.ignoreObjectIDs[Obj1.ID]
-       ||Obj1.ignoreObjectType[Obj2.ClassType] || Obj2.ignoreObjectType[Obj1.ClassType]) return false;
-    
-    
-    
     
     
     //Check for collision type
@@ -143,24 +155,35 @@ function CheckCollision( Obj1, Obj2 ) {
             
             
             
-            
-            Obj1.position = Vector2.add(
-                Obj1.position,
-                // +
-                Vector2.multiply(
-                    direction,
-                    // *
-                    ((Vector2.magnitude(Obj1.position, Obj2.position) / collisionRadius) * -force + force) * collisionRadius
-                )
-            );
-            
+            var canCollide = ( !Obj1.ignoreObjectIDs[Obj2.ID]             
+                     && !Obj2.ignoreObjectIDs[Obj1.ID]           
+                     && !Obj1.ignoreObjectType[Obj2.ClassType]   
+                     && !Obj2.ignoreObjectType[Obj1.ClassType] );
             
             
             
             for (i in Obj1.collisionEvents)
-                Obj1.collisionEvents[i](Obj2, direction, force);
+                Obj1.collisionEvents[i](
+                    Obj2,           // The object with collision
+                    direction,      // Direction away from the object
+                    force,          // Force on the ojbect
+                    
+                                    // Distance inside the object \\
+                    ((Vector2.magnitude(Obj1.position, Obj2.position) / collisionRadius) * -1 + 1) * collisionRadius,
+                    
+                    canCollide      // Can Collide?
+                );
             for (i in Obj2.collisionEvents)
-                Obj2.collisionEvents[i](Obj1, direction, Math.abs(force-1));
+                Obj2.collisionEvents[i](
+                    Obj2,           // The object with collision
+                    direction,      // Direction away from the object
+                    -force + 1,     // Force on the ojbect
+                    
+                                    // Distance inside the object \\
+                    ((Vector2.magnitude(Obj2.position, Obj1.position) / collisionRadius) * -1 + 1) * collisionRadius,
+                    
+                    canCollide      // Can Collide?
+                );
             
             
             
@@ -182,11 +205,8 @@ function CheckCollision( Obj1, Obj2 ) {
             var Obj2CounterVelocity = (Obj2.velocity ? Vector2.multiply(Obj2.velocity, RENDERSETTINGS.deltaTime) : Vector2.new());
             var edges = {
                 [((Obj1.position.y - Obj1CounterVelocity.y - Obj1.hitbox.y*.5) - (Obj2.position.y - Obj2CounterVelocity.y + Obj2.hitbox.y*.5))]: "down",
-                             
                 [((Obj1.position.y - Obj1CounterVelocity.y + Obj1.hitbox.y*.5) - (Obj2.position.y - Obj2CounterVelocity.y - Obj2.hitbox.y*.5))]: "up",
-                             
                 [((Obj1.position.x - Obj1CounterVelocity.x - Obj1.hitbox.x*.5) - (Obj2.position.x - Obj2CounterVelocity.x + Obj2.hitbox.x*.5))]: "left",
-                
                 [((Obj1.position.x - Obj1CounterVelocity.x + Obj1.hitbox.x*.5) - (Obj2.position.x - Obj2CounterVelocity.x - Obj2.hitbox.x*.5))]: "right",
             }
             
@@ -224,22 +244,29 @@ function CheckCollision( Obj1, Obj2 ) {
             
             
             
-            Obj1.position = Vector2.add(
-                Obj1.position,
-                // +
-                Vector2.multiply(
-                    Vector2.directions[ edges[ direction ] ],
-                    // *
-                    distance[ edges[ direction ]] * force
-                )
-            );
+            var canCollide = ( !Obj1.ignoreObjectIDs[Obj2.ID]             
+                     && !Obj2.ignoreObjectIDs[Obj1.ID]           
+                     && !Obj1.ignoreObjectType[Obj2.ClassType]   
+                     && !Obj2.ignoreObjectType[Obj1.ClassType] );
             
             
             
             for (i in Obj1.collisionEvents)
-                Obj1.collisionEvents[i](Obj2, Vector2.directions[ edges[ direction ] ], force);
+                Obj1.collisionEvents[i](
+                    Obj2,                                       // The object with collision
+                    Vector2.directions[ edges[ direction ] ],   // Direction away from the object
+                    force,                                      // Force on the ojbect
+                    distance[ edges[ direction ]],              // Distance inside the object
+                    canCollide                                  // Can Collide?
+                );
             for (i in Obj2.collisionEvents)
-                Obj2.collisionEvents[i](Obj1, Vector2.directions[ edges[ direction ] ], Math.abs(force-1));
+                Obj2.collisionEvents[i](
+                    Obj1,                                                   // The object with collision
+                    Vector2.multiply( Vector2.directions[ edges[ direction ] ], -1 ),   // Direction away from the object
+                    -force + 1,                                      // Force on the ojbect
+                    distance[ edges[ direction ]],              // Distance inside the object
+                    canCollide                                            // Can Collide?
+                );
             
             
             
