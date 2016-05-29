@@ -36,7 +36,7 @@ var Enum = {
         
         Sprites: {
             
-            SampleSprite1: newImage("Images/SpriteTest.png"),
+            PlayerSpriteSheet: newImage("Images/Player-SpriteSheet.png"),
         }
-    }
+    },
 }

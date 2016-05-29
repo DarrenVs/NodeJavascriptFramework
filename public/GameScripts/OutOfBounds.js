@@ -9,7 +9,7 @@ function OutOfBounds(Parent) {
     }
     
     Parent.OutOfBounds = function() {
-        console.log("IM DEAD");
+        console.log("Player died, Out of Bounds");
         Parent.destroy();
     }
     

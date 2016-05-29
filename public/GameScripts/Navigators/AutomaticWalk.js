@@ -2,16 +2,24 @@
 function AutomaticWalk(Parent) {
     var Parent = Parent;
     
-    var walkSpeed = 5;
+    //to know if we should walk
+    this.autoWalk = true;
+    
+    //the speed, and also used for the direction of the animation
+    this.walkSpeed = 3;
     
     Parent.update["NavigationUpdate"] = function() {
         
-        if (INPUT_CLICK[32]) {
-            walkSpeed = -walkSpeed;    
+        if (autoWalk) {
+            Parent.position.x += walkSpeed    
+        }     
+    }
+    
+    Parent.collisionEvents["TurnAround"] = function(Obj, Dir) { 
+        if(Dir.x != 0) {
+            walkSpeed *= -1;
+            Parent.size.x *= -1;
         }
-        
-        //Parent.position.x += walkSpeed;
-        
     }
         
 }

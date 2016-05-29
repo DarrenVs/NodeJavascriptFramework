@@ -19,13 +19,13 @@ function Player(properties) {
 
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.SampleSprite1,   //Image
-        2,  //Columns
+        Enum.Images.Sprites.PlayerSpriteSheet,   //Image
+        7,  //Columns
         2,  //Rows
         {   //Animations
             walk: {
-                speed: .05, //Per frame
-                keyFrames: [0,1,2,3], //AnimationFrame
+                speed: .1, //Per frame
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
@@ -49,97 +49,81 @@ function Player(properties) {
             self.destroy();
     })
     
+    this.grounded = true;
     
-
-    var frontWheelRight = this.addChild(new EmptyObject({
-        position: new Vector2.new(7.5, 15),
-        size: new Vector2.new(5, 7),
-        ID: "frontWheelRight",
-    }))
-
-    var frontWheelLeft = this.addChild(new EmptyObject({
-        position: new Vector2.new(-7.5, 15),
-        size: new Vector2.new(5, 7),
-        ID: "frontWheelLeft",
-    }))
+    var canDoubleJump = false;
     
+    var wallJumpDirection = 0;
     
-    
-
-    this.addChild(new EmptyObject({
-        position: new Vector2.new(-7.5, -15),
-        size: new Vector2.new(5, 7),
-        ID: "BackWheelLeft",
-    }))
-
-    this.addChild(new EmptyObject({
-        position: new Vector2.new(7.5, -15),
-        size: new Vector2.new(5, 7),
-        ID: "BackWheelRight",
-    }))
-
-    self.cannon = this.addChild(new EmptyObject({
-        position: new Vector2.new(0, 0),
-        size: new Vector2.new(10, 10),
-        ID: "CannonBase",
-    }))
-    self.cannon.addChild(new EmptyObject({
-        position: new Vector2.new(0, 15),
-        size: new Vector2.new(5, 20),
-        ID: "CannonBarrle",
-    }))
-    
-    
-    //Send build player
-    //sendObject(self, true);
-    
-    
-    //alert("forward: "+this.forward);
-    
-    this.collisionEvents["IntermediatePlatformCollision"] = function(Obj) {
-        if (Obj.ClassType == Enum.ClassType.IntermediatePlatform) {
-            console.log("IntermediatePlatformCollision");
+    this.collisionEvents["PlayerCollision"] = function(Obj, Dir) {
+        if (Obj.ClassType == Enum.ClassType.IntermediatePlatform && Obj.position.y < self.position.y) {
+            self.position.y -= 40;
         }
+        
+        if(Dir.x != 0) {
+            wallJumpDirection = Dir.x;
+            grounded = false;
+            autoWalk = false;
+            currentGravity = slidingGravtiy;
+        } else {
+            wallJumpDirection = 0;
+            grounded = true;
+            autoWalk = true;
+        }
+        
+        canDoubleJump = true;
     }
     
-    var canvasPosition = -self.position.y + canvas.height / 2;
+    //the speeds for different kind of jumps
+    var jumpSpeed = 400;
+    
+    var doubleJumpSpeed = 300;
+    
+    //the direction and speed we walljump
+    var wallJumpSpeed = 350;
+    
+    var fallingGravity = 9.3;
+    
+    var slidingGravtiy = 8;
     
     var updateRate = 0;
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {
         if (self.creatorID == clientID) {
-            if (INPUT["87"]) self.Move(new Vector2.new(0,-3));
-            if (INPUT["83"]) self.Move(new Vector2.new(0,3));
-            if (INPUT["65"]) self.Move(new Vector2.new(-3,0));
-            if (INPUT["68"]) self.Move(new Vector2.new(3,0));
-
-            //if (Vector2.magnitude(self.velocity) > 0.)
-            self.rotation = Vector2.toAngle(self.velocity);
-
-            self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.stage.position)) - self.rotation;
-
-            self.stage.position.y = -self.position.y + canvas.height / 2;
             
-            updateRate++;
-            if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
-                updateRate = 0;
-                var bullet = new Bullet({
-                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),//self.physicalAppearanceSize/2)),
-                    size: new Vector2.new(3, 10),
-                    rotation: getObjectRotation(self.cannon),
-                    //ignoreObjectIDs: {[self.ID]: true}
-                });
-                self.ignoreObjectIDs[bullet.ID] = true;
-                self.stage.addChild(bullet);
-                self.Move(Vector2.multiply(self.cannon.forward, -50));
-                sendObject(self, false, true);
-                sendObject(bullet, false, true);
+            //jumping
+            if (INPUT_CLICK["32"]) {
+                if(grounded) { //normal jump
+                    
+                    self.velocity.y -= jumpSpeed;
+                    
+                } else if(wallJumpDirection != 0) { //walk jump
+                    
+                    self.velocity.y -= wallJumpSpeed;
+                    autoWalk = true;
+                    console.log("yo");
+                    
+                } else if(canDoubleJump) { //double jump
+                    
+                    self.velocity.y -= doubleJumpSpeed;
+                    canDoubleJump = false;
+                    
+                }
             }
-
-
-            sendObject(self);
-            sendObject(self.cannon);
             
-        } else self.health--;
+            grounded = false;
+            
+            if(wallJumpDirection != 0)
+                self.velocity.y += slidingGravtiy;
+            else
+                self.velocity.y += fallingGravity;
+            
+            
+            //wallJumpDirection = 0;
+            
+            updateRate++;  
+        } else {
+            self.health--;
+        }
     }
 }
