@@ -101,7 +101,6 @@ function Player(properties) {
                     
                     self.velocity.y -= wallJumpSpeed;
                     autoWalk = true;
-                    console.log("yo");
                     
                 } else if(canDoubleJump) { //double jump
                     

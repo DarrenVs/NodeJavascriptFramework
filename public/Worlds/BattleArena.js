@@ -34,6 +34,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         "100000000000001100000100010001100000100010001111000100010001111000100010001100000000000001100000000000001100011100010001100011100011001100111000001001100000000000001",
         "100000000000001111000011000111100000000000001100000000000001100011100110001100000000000001100000000000001100100011000101100100011000101100100011000101100000000000001",
         "110000010000011110000010000011100000010000001100000010000001100100000001001100000000000001100000000000001111000111000111111000111000111100000000000001100000000000001",
+        "100000000000001111111000111111100000000000001100000000000001100111111111001100000000000001100000000000001111111000111111100000000000001",
     ];
     
     //the chunk we will spawn between regular chunks, to ensure we always have a smooth transition to the next chunk
@@ -52,7 +53,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     }
     
     while(-stage.position.y <= totalLevelHeight) {
-        //spawnIntermediateChunk();
+        spawnIntermediateChunk();
         spawnChunk(allChunks[Math.floor(Math.random()*allChunks.length)]);
     }
      
@@ -162,9 +163,8 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         
         //when we spawn a new chunk
         if(-stage.position.y <= totalLevelHeight) {
-            //spawnIntermediateChunk();
+            spawnIntermediateChunk();
             spawnChunk(allChunks[Math.floor(Math.random()*allChunks.length)]);
         }
-        //Game[0].childs
     }
 }
