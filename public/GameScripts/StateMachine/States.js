@@ -67,6 +67,7 @@ States = {
                 return false;
             }
             if (Vector2.magnitude(this.parent.position, MOUSE.Position) > range){
+                base.returnState = StatesEnum.Wander;
                 return false;
             }
             
@@ -103,6 +104,7 @@ States = {
         this.Reason = function () {
             var magnitude = Vector2.magnitude(this.parent.position, MOUSE.Position);
             if (magnitude > range){
+                base.returnState = StatesEnum.Wander;
                 return false;
             }
             
