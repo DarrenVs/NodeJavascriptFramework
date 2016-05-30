@@ -98,12 +98,12 @@ function Player(properties) {
     }))
 
     self.cannon = this.addChild(new EmptyObject({
-        position: new Vector2.new(0, 10000),
+        position: new Vector2.new(0, 0),
         size: new Vector2.new(10, 10),
         ID: "CannonBase",
     }))
     self.cannon.addChild(new EmptyObject({
-        position: new Vector2.new(0, 10005),
+        position: new Vector2.new(0, 15),
         size: new Vector2.new(5, 20),
         ID: "CannonBarrle",
     }))
