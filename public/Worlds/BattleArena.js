@@ -38,7 +38,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     ];
     
     //the chunk we will spawn between regular chunks, to ensure we always have a smooth transition to the next chunk
-    var intermediateChunk = uncompressChunk("100000000000001100000000000001100000000000001100000000000001100000000000001");
+    var intermediateChunk = uncompressChunk("100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001");
     
     //all chunks will be stored here after uncompressing on start
     var allChunks = [];
