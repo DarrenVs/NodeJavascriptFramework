@@ -47,6 +47,7 @@ function Collision(Parent) {
     Parent.ignoreObjectIDs = Parent.ignoreObjectIDs || {};
     Parent.ignoreObjectType = Parent.ignoreObjectType || {};
     Parent.collisionEvents = Parent.collisionEvents || {};
+    Parent.collisionActive = Parent.collisionActive ||true;
     Parent.Position = Parent.position;
     
     Parent.oldGrids = {};
@@ -78,7 +79,7 @@ function Collision(Parent) {
     
     Parent.collisionEvents["collision"] = function( Obj, direction, force, distance, canCollide ) {
         
-        if (canCollide) {
+        if (Parent.collisionActive && canCollide) {
             Parent.position = Vector2.add(
                 Parent.position,
                 // +
