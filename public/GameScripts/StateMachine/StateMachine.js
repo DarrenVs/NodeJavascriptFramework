@@ -2,9 +2,10 @@
 
 //((((((((((((()))))))))))))\\
 //STATE MACHINE ENUM
-this.StatesEnum = {
+StatesEnum = {
     wander: 'wander',
     alert: 'alert',
+    charge: 'charge',
     interact: 'interact',
     retreat: 'retreat',
     idle: 'idle'
@@ -40,7 +41,7 @@ this.StatesEnum = {
 
 //----------------------------\\
 //STATE INTERFACE
-this.State = function () {
+State = function () {
     this.parent = undefined;
     this.returnState = undefined;
     //Just to be able to check if it is a state
@@ -57,14 +58,14 @@ this.State = function () {
         } else return true; */
         
         return false;
-    }
+    };
     this.Act = function () { /* do the things this state does */ 
         
-    }
+    };
     this.Leave = function () { /* returns new state key if you return nothing it will go to default */ 
         //Rest the variables that you want to be "clean"for the next use
-        return returnState;
-    }
+        return this.returnState;
+    };
 }
 //----------------------------\\
 
@@ -72,13 +73,15 @@ this.State = function () {
 
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
 //STATE MACHINE
-this.StateMachine = function (_parent, _defaultStateKey) {
+StateMachine = function (_parent, _defaultStateKey) {
     //This will hold the states with their value
     var states = {};
     //Set default state
     var defaultStateKey = _defaultStateKey;
+    var defaultKeyActive = false;
     
-    var currentState = states[defaultStateKey];
+    var parent = _parent;
+    var currentState;
     
     //Copies the states from StatesEnum
     for (key in StatesEnum)
@@ -88,28 +91,41 @@ this.StateMachine = function (_parent, _defaultStateKey) {
     //Add the state if on a spot if it is extended from State (id is a StatesEnum state)
     this.AddState = function (id, state) {
         if (state.__proto__.isState) {
-            states[id] = state;
+            if (id == defaultStateKey) {
+                currentState = state;
+                currentState.Enter(parent);
+                defaultKeyActive = true;
+                states[id] = state;
+                
+            } else states[id] = state;
         } else throw "State " + state + " is not extended from the type State";
     }
     
     //The core logic (should speak for itself)
-    this.UpdateMachine = function () {
-        if (states[defaultStateKey]) {
-            
+    _parent.update["statemachine"] = function () {
+
+        if (defaultKeyActive) {
+
             if (currentState.Reason()) {
                 currentState.Act();
             } else {
                 var newStateKey = currentState.Leave();
                 
                 if (typeof(states[newStateKey]) != 'undefined') {
-                    
+                    console.log("changing to state: " + newStateKey);
                     currentState = states[newStateKey];
-                } else currentState = states[defaultStateKey];
-                
-                currentState.Enter(_parent);
+                } else {
+                    console.log("changing to state: " + defaultStateKey);
+                    currentState = states[defaultStateKey];
+                }
+                currentState.Enter(parent);
             }
         
         }
     }
+    this.__defineSetter__('defaultStateKey', function (val) {
+        defaultStateKey = val;
+        defaultKeyActive = true;
+    });
 }
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\

@@ -21,6 +21,7 @@ var Enum = {
         DamagingObject: 4,
         Boundary: 5,
         IntermediatePlatform: 6,
+        MousePointer: 7
         
     },
     
