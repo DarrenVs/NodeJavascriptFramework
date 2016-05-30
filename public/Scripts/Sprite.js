@@ -1,37 +1,35 @@
 //SubClass
-function Sprite( Parent, Img, sprites, animations ) {
+function Sprite( Parent, Img, columns, rows, animations ) {
     var self = this;
     self.Parent = Parent;
     
     var spriteImg = Img;
-    var sprites = sprites;
+    var rows = rows || 1;
+    var columns = columns || 1;
     var animations = animations || {};
-    
-    for (var i in sprites)
-        sprites[i].cellSize = Vector2.new( sprites[i].size.x / sprites[i].columns, sprites[i].size.y / sprites[i].rows );
+    var cellSize = Vector2.new( spriteImg.width / columns, spriteImg.height / rows );
     
     
-    //this.currentAnimation = "";
+    this.CurrentAnimation = "";
     this.__defineGetter__('currentAnimation', function() {
-        return currentAnimation;
-    });
+        return self.CurrentAnimation;
+    })
     this.__defineSetter__('currentAnimation', function(val) {
         if (animations[val] != undefined)
-            currentAnimation = val;
+            self.CurrentAnimation = val;
         else console.log(val + " animation does not exist");
-    });
+    })
     
     
     
     //Set the currentAnimation to the first animation in the animations list
-    for (var i in animations) {self.currentAnimation = i; break;}
+    for (var i in animations) {currentAnimation = i; break;}
     
     
 
     
     this.update = function() {
         var currentFrame = animations[ currentAnimation ].keyFrames[ Math.floor(animations[ currentAnimation ].currentKeyFrame) ];
-        var currentSprite = sprites[ animations[ currentAnimation ].sprite ];
         
         if (animations[ currentAnimation ].loop)
             animations[ currentAnimation ].currentKeyFrame = (animations[ currentAnimation ].currentKeyFrame + animations[ currentAnimation ].speed ) % (animations[ currentAnimation ].keyFrames.length);
@@ -43,10 +41,10 @@ function Sprite( Parent, Img, sprites, animations ) {
         ctx.drawImage(
             
             spriteImg,
-            currentSprite.position.x + (currentFrame % currentSprite.columns) * (currentSprite.size.x / currentSprite.columns) + 1, // Crop position.x
-            currentSprite.position.y + Math.floor(currentFrame / currentSprite.columns) * (currentSprite.size.y / currentSprite.rows) + 1, // Crop position.y
+            (currentFrame % columns) * (spriteImg.width / columns) + 1, // Crop position.x
+            Math.floor(currentFrame / columns) * (spriteImg.height / rows) + 1, // Crop position.y
             
-            currentSprite.cellSize.x - 2, currentSprite.cellSize.y - 2, // Crop size
+            cellSize.x - 2, cellSize.y - 2, // Crop size
             
             -Parent.size.x*.5, -Parent.size.y*.5, // Image Position
             
