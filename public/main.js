@@ -512,7 +512,7 @@ setInterval(function() {
     if (RENDERSETTINGS.renderDate > nextSlowSend) {
         //console.log("Slow send..")
         for (var index in SlowSendQue)
-            stringifyedObjects += (stringifyedObjects ? ',' : '{' ) + '"F' + index + '":' + PackageObject( SlowSendQue[ index ] );
+            stringifyedObjects += (stringifyedObjects ? ',' : '{' ) + '"S' + index + '":' + PackageObject( SlowSendQue[ index ] );
         SlowSendQue = {};
         nextSlowSend = RENDERSETTINGS.renderDate + slowSendSpeed;
     }

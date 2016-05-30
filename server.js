@@ -47,6 +47,5 @@ setInterval(function(){
 		io.sockets.emit("object_from_broadcaster", objectPackages + "}");
 		objectPackages = "";
 	}
-	//objectPackages = '{"a":{}'
-}, 0)
+}, 10)
 
