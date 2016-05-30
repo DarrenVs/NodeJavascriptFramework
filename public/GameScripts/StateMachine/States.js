@@ -21,11 +21,18 @@ this.Wander = function () {
    this.Enter = function (_parent) {
        base.Enter(_parent);
        
-       
    }
    
    this.Reason = function () {
-       return false;
+       
+       ithis.collisionEvents["CollisionWithPlayer"] = function(Obj) {
+            if (Obj.ClassType == Enum.ClassType.Player) 
+                returnState = states.interact;
+                return false;
+            }
+        }
+       
+       return true;
    }
    
    
@@ -50,3 +57,15 @@ this.EnemyAI = function () {
     }
 }
 */
+
+
+var inputs = [59 ,29, 10, 66];
+var endInputs = [];
+
+for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i] > endInputs[0]) endInputs.insert(0, inputs[i]);
+    else {
+        
+        
+    }
+}

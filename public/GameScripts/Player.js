@@ -73,7 +73,7 @@ function Player(properties) {
     
     this.collisionEvents["PlayerCollision"] = function(Obj, Dir) {
         if (Obj.ClassType == Enum.ClassType.IntermediatePlatform && Obj.position.y < self.position.y) {
-            self.position.y -= 40;
+            self.position.y -= 40; 
         }
         
         if(Dir.x != 0) {
