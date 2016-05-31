@@ -145,13 +145,13 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     var intermediatePlatformHeight = 10;
     
     //the offset of the platforms from mid
-    var intermediatePlatformPositionOffset = 2.35;
+    var intermediatePlatformPosition = 2.35;
     
     function spawnIntermediateChunk() {
         
         var intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
             size: new Vector2.new(canvas.width, intermediatePlatformHeight),
-            position: new Vector2.new(canvas.width / 2, totalLevelHeight - tileSize * intermediatePlatformPositionOffset)
+            position: new Vector2.new(canvas.width / 2, totalLevelHeight - tileSize * intermediatePlatformPosition)
         })
 
         intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
@@ -163,7 +163,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         
         intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
             size: new Vector2.new(canvas.width, intermediatePlatformHeight),
-            position: new Vector2.new(canvas.width / 2, totalLevelHeight + tileSize * intermediatePlatformPositionOffset)
+            position: new Vector2.new(canvas.width / 2, totalLevelHeight + tileSize * intermediatePlatformPosition)
         })
         
         intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
