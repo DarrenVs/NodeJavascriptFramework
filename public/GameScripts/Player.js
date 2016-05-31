@@ -103,7 +103,7 @@ function Player(properties) {
             self.autoWalk = false;
             currentGravity = slidingGravtiy;
             canDoubleJump = true;
-            console.log("sliding");
+            
         }
     }
     
@@ -127,21 +127,18 @@ function Player(properties) {
             //jumping
             if (INPUT_CLICK["32"]) {
                 
-                
-                
-                
                 if(grounded) { //normal jump
-                    console.log("we are jumping");
+                    
                     self.velocity.y -= jumpSpeed;
                     
                 } else if(wallJumpDirection != 0) { //wall jump
-                    console.log("we are wall jumping");
+                    
                     self.velocity.y -= wallJumpSpeed;
                     self.autoWalk = true;
                     wallJumpDirection = 0;
                     
                 } else if(canDoubleJump) { //double jump
-                    console.log("we are double jumping");
+                    
                     self.velocity.y -= doubleJumpSpeed;
                     canDoubleJump = false;
                     
@@ -158,8 +155,6 @@ function Player(properties) {
             }
             
             collisions = {};
-            
-            //wallJumpDirection = 0;
             
             updateRate++;  
         } else {
