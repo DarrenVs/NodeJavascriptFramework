@@ -107,12 +107,12 @@ function Player(properties) {
     }
     
     //the speeds for different kind of jumps
-    var jumpSpeed = 400;
+    var jumpSpeed = 450;
     
     var doubleJumpSpeed = 300;
     
     //the direction and speed we walljump
-    var wallJumpSpeed = 400;
+    var wallJumpSpeed = 450;
     
     var fallingGravity = 9.3;
     
