@@ -4,6 +4,11 @@ Enum.ClassName[Enum.ClassType.Boundary] = Boundary;
 function Boundary(properties) {
     var self = this;
     GameObject(this, properties);
+    this.extends = {
+        collision:Collision(this),
+    };
+    
+    
     
     self.ClassType = Enum.ClassType.Boundary;
     self.position.x = canvas.width / 2;
@@ -15,5 +20,10 @@ function Boundary(properties) {
     
     this.update["boundaryUpdate"] = function() {
         self.position.y = -self.stage.position.y + canvas.height + yOffSet;
+    }
+    
+    this.collisionEvents["outOfBounds"] = function(Obj) {
+        console.log(Obj.ID + " died, Out of Bounds");
+        Obj.destroy();
     }
 }

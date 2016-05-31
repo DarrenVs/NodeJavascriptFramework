@@ -133,7 +133,10 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         stage.addChild( intermediatePlatform );
     }
     
+    
     var player;
+    
+    var player2;
     
     var players = [];
     
@@ -151,6 +154,17 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
             
             stage.addChild( player );
             players.push( player );
+            
+            
+            
+            player2 = new Player({
+                position: new Vector2.new(canvas.width / 2, canvas.height / 2),
+                size: new Vector2.new(15, 45),
+                colour: "red",
+            });
+            
+            stage.addChild( player2 );
+            players.push( player2 );
         }
         
         for(i = 0; i < players.length; i++) {
