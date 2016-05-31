@@ -3,24 +3,26 @@ Enum.Worlds.TestWorld = Worlds.length;
 Worlds[Enum.Worlds.TestWorld] = function( stage ) {
     GameObject( this );
     
-    stage.gravity = Vector2.new(0, 9.8);
-    stage.gravityType = Enum.gravity.global;
+    stage.gravity = Vector2.new(0, 5);
     
     //---------------------------\\
     var testObject = new EmptyObject({
         
         position: Vector2.new( 100, 100 ),
         size: Vector2.new( 20, 20 ),
+        
     });
-    
-    testObject.extends["AI"] = new StateMachine(testObject, StatesEnum.wander);
     testObject.extends["collision"] = Collision(testObject);
     testObject.hitbox = testObject.size;
+    testObject.extends["physics"] = Physics(testObject);
     
-    testObject.extends["AI"].AddState(StatesEnum.wander, new States.Wander(80));
-    testObject.extends["AI"].AddState(StatesEnum.alert, new States.Angry(20, 200));
-    testObject.extends["AI"].AddState(StatesEnum.charge, new States.Charge(250, 20, 5));
-    testObject.extends["AI"].AddState(StatesEnum.interact, new States.Attack());
+    testObject.extends["AI"] = new StateMachine(testObject, StatesEnum.wander, true);
+    
+    testObject.extends["AI"].AddState(StatesEnum.wander, new EnemyStates.NormalWander(80));
+    testObject.extends["AI"].AddState(StatesEnum.specialwander, new EnemyStates.AngryWander(120));    
+    testObject.extends["AI"].AddState(StatesEnum.alert, new EnemyStates.Enrage(3, 200));
+    testObject.extends["AI"].AddState(StatesEnum.charge, new EnemyStates.Charge(250, 20, 5));
+    testObject.extends["AI"].AddState(StatesEnum.interact, new EnemyStates.Attack());
         
     stage.addChild(testObject);
     //---------------------------\\    

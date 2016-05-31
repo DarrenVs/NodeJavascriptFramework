@@ -11,7 +11,6 @@ function Player(properties) {
         tank:Tank(this),
         navigation:AutomaticWalk(this),
         outOfBounds:OutOfBounds(this),
-        AI:StateMachine(this, StatesEnum.wander),
     };
     
     var self = this;

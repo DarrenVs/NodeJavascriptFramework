@@ -14,24 +14,26 @@ this.State = {
 */
 //----------------------------\\
 
-States = {
-    Wander: function (_alertRange) {
+EnemyStates = {
+    NormalWander: function (_alertRange) {
         this.__proto__ = new State();
         var base = this.__proto__;
         var alertRange = _alertRange || 80;
         
+        var enemies = [];
         this.Enter = function (_parent) {
             base.Enter(_parent);
             _parent.colour = "blue";
-            
+                        
             _parent.extends["Navigation"] = AutomaticWalk(_parent);
         }
         
         this.Reason = function () {
-            if (Vector2.magnitude(this.parent.position, MOUSE.Position) < alertRange) {
+            if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) < alertRange) {
                 base.returnState = StatesEnum.alert;
                 return false;
             }
+            
                     
             return true;
         }
@@ -42,22 +44,64 @@ States = {
         
             
         this.Leave = function() {
-            delete base.parent.update["NavigationUpdate"];
+            delete base.parent.update["NavigationUpdate"];  
+            return base.Leave();
+        }
+    },
+    
+    AngryWander: function (_alertRange) {
+        this.__proto__ = new State();
+        var base = this.__proto__;
+        var alertRange = _alertRange || 80;
+        
+        var enemies = [];
+        this.Enter = function (_parent) {
+            base.Enter(_parent);
+            _parent.colour = "red";
+            
+            for (var i in Stage.childs) 
+                if (Stage.childs[i].ClassType == 1) {
+                    console.log("founc a player!");
+                    enemies.push(Stage.childs[i]);
+                }
+            
+            //console.log(CollisionGrid);
+            
+            _parent.extends["Navigation"] = AutomaticWalk(_parent);
+        }
+        
+        this.Reason = function () {
+            if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) < alertRange) {
+                base.returnState = StatesEnum.alert;
+                return false;
+            }
+            
+                    
+            return true;
+        }
+        
+            this.Act = function () {
+                base.Act();
+            } 
+        
+            
+        this.Leave = function() {
+            delete base.parent.update["NavigationUpdate"];  
             return base.Leave();
         }
     },
 
     //__alert__
-    Angry: function (_responseTime, _range) {
+    Enrage: function (_responseTime, _range) {
         this.__proto__ = new State();
         var base = this.__proto__;
-        var responseTime = responseTime || 20;
+        var responseTime = _responseTime || 20;
         var range = _range || 100;
         var timeLeft = responseTime;    
                 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            _parent.colour = "red";
+            _parent.colour = "orange";
             timeLeft = responseTime;            
         }
         
@@ -66,7 +110,8 @@ States = {
                 base.returnState = StatesEnum.charge;
                 return false;
             }
-            if (Vector2.magnitude(this.parent.position, MOUSE.Position) > range){
+            if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) > range){
+                base.returnState = StatesEnum.specialWander;
                 return false;
             }
             
@@ -97,12 +142,13 @@ States = {
         
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            parent.colour = "red";
+            parent.colour = "yellow";
         }
         
         this.Reason = function () {
-            var magnitude = Vector2.magnitude(this.parent.position, MOUSE.Position);
+            var magnitude = Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition);
             if (magnitude > range){
+                base.returnState = StatesEnum.specialWander;
                 return false;
             }
             
@@ -118,7 +164,7 @@ States = {
             base.parent.position = Vector2.subtract(
                 base.parent.position,
                 Vector2.multiply(
-                    Vector2.unit (Vector2.subtract(base.parent.position, MOUSE.Position)), 
+                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.stage.mousePosition)), 
                 attackSpeed)
             );
             

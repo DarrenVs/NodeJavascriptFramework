@@ -4,11 +4,10 @@
 //STATE MACHINE ENUM
 StatesEnum = {
     wander: 'wander',
+    specialWander: 'specialWander',
     alert: 'alert',
     charge: 'charge',
-    interact: 'interact',
-    retreat: 'retreat',
-    idle: 'idle'
+    interact: 'interact'
 }
 //((((((((((((()))))))))))))\\
 
@@ -73,7 +72,7 @@ State = function () {
 
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
 //STATE MACHINE
-StateMachine = function (_parent, _defaultStateKey) {
+StateMachine = function (_parent, _defaultStateKey, debug) {
     //This will hold the states with their value
     var states = {};
     //Set default state
@@ -85,20 +84,22 @@ StateMachine = function (_parent, _defaultStateKey) {
     
     //Copies the states from StatesEnum
     for (key in StatesEnum)
-        states[key] = undefined;
+        states[key] = 1;
         
         
     //Add the state if on a spot if it is extended from State (id is a StatesEnum state)
     this.AddState = function (id, state) {
-        if (state.__proto__.isState) {
-            if (id == defaultStateKey) {
-                currentState = state;
-                currentState.Enter(parent);
-                defaultKeyActive = true;
-                states[id] = state;
-                
-            } else states[id] = state;
-        } else throw "State " + state + " is not extended from the type State";
+        if (typeof(states[id]) != 'undefined') {        
+            if (state.__proto__.isState) {
+                if (id == defaultStateKey) {
+                    currentState = state;
+                    currentState.Enter(parent);
+                    defaultKeyActive = true;
+                    states[id] = state;
+                    
+                } else states[id] = state;
+            } else throw "State " + state + " is not extended from the type State";
+        } else throw "Trying to add state " + state + " but the key is not a valid key";
     }
     
     //The core logic (should speak for itself)
@@ -112,10 +113,11 @@ StateMachine = function (_parent, _defaultStateKey) {
                 var newStateKey = currentState.Leave();
                 
                 if (typeof(states[newStateKey]) != 'undefined') {
-                    console.log("changing to state: " + newStateKey);
+                    //console.log("changing to state: " + newStateKey);
                     currentState = states[newStateKey];
                 } else {
-                    console.log("changing to state: " + defaultStateKey);
+                    console.log("state " + newStateKey + " was not found");
+                    //console.log("changing to state: " + defaultStateKey);
                     currentState = states[defaultStateKey];
                 }
                 currentState.Enter(parent);
@@ -123,9 +125,5 @@ StateMachine = function (_parent, _defaultStateKey) {
         
         }
     }
-    this.__defineSetter__('defaultStateKey', function (val) {
-        defaultStateKey = val;
-        defaultKeyActive = true;
-    });
 }
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
