@@ -11,11 +11,6 @@ function Player(properties) {
         //extraCollision:ExtraCollision(this),
         tank:Tank(this),
         navigation:AutomaticWalk(this),
-<<<<<<< HEAD
-        outOfBounds:OutOfBounds(this),
-=======
-        AI:StateMachine(this, StatesEnum.wander),
->>>>>>> 4dbdc403a9ec8c87cc40658dc0a6d6d132f18c96
     };
     
     var self = this;

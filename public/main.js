@@ -383,7 +383,6 @@ socketio.on("IDrequest_to_client", function (data) {
     
     clientID = data;
     Game[0] = new Stage();
-    //LoadWorld( Game[0], Enum.Worlds.TestWorld );
     LoadWorld( Game[0], Enum.Worlds.BattleArena );
     //LoadWorld( Game[0], Enum.Worlds.TestWorld );
     

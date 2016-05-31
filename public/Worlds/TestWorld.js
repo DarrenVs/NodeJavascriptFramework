@@ -19,7 +19,7 @@ Worlds[Enum.Worlds.TestWorld] = function( stage ) {
     testObject.extends["AI"] = new StateMachine(testObject, StatesEnum.wander, true);
     
     testObject.extends["AI"].AddState(StatesEnum.wander, new EnemyStates.NormalWander(80));
-    testObject.extends["AI"].AddState(StatesEnum.specialwander, new EnemyStates.AngryWander(120));    
+    testObject.extends["AI"].AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(120));    
     testObject.extends["AI"].AddState(StatesEnum.alert, new EnemyStates.Enrage(3, 200));
     testObject.extends["AI"].AddState(StatesEnum.charge, new EnemyStates.Charge(250, 20, 5));
     testObject.extends["AI"].AddState(StatesEnum.interact, new EnemyStates.Attack());
