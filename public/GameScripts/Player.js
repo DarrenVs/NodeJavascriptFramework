@@ -11,6 +11,7 @@ function Player(properties) {
         //extraCollision:ExtraCollision(this),
         tank:Tank(this),
         navigation:AutomaticWalk(this),
+        AI:StateMachine(this, StatesEnum.wander),
     };
     
     var self = this;
@@ -87,31 +88,32 @@ function Player(properties) {
             self.position.y -= 40; 
         }
         
-        //if the collision comes from left or right (wall jumping)
-        if(Dir.x != 0) {
-            
-            wallJumpDirection = Dir.x;
-            grounded = false;
-            autoWalk = false;
-            currentGravity = slidingGravtiy;
-            canDoubleJump = true;
-            
-        } else if(Dir.y != 1) {
+        //if we are standing on the ground 
+        if(Dir.y == -1) {
             
             wallJumpDirection = 0;
             grounded = true;
-            autoWalk = true;
+            self.autoWalk = true;
             canDoubleJump = true;
+            
+        } else if(Dir.x != 0) {//else if the collision comes from left or right (wall jumping)
+            
+            wallJumpDirection = Dir.x;
+            grounded = false;
+            self.autoWalk = false;
+            currentGravity = slidingGravtiy;
+            canDoubleJump = true;
+            console.log("sliding");
         }
     }
     
     //the speeds for different kind of jumps
-    var jumpSpeed = 450;
+    var jumpSpeed = 400;
     
     var doubleJumpSpeed = 300;
     
     //the direction and speed we walljump
-    var wallJumpSpeed = 450;
+    var wallJumpSpeed = 400;
     
     var fallingGravity = 9.3;
     
@@ -124,20 +126,25 @@ function Player(properties) {
             
             //jumping
             if (INPUT_CLICK["32"]) {
+                
+                
+                
+                
                 if(grounded) { //normal jump
-                    
+                    console.log("we are jumping");
                     self.velocity.y -= jumpSpeed;
                     
-                } else if(wallJumpDirection != 0) { //walk jump
-                    
+                } else if(wallJumpDirection != 0) { //wall jump
+                    console.log("we are wall jumping");
                     self.velocity.y -= wallJumpSpeed;
-                    autoWalk = true;
+                    self.autoWalk = true;
                     wallJumpDirection = 0;
                     
                 } else if(canDoubleJump) { //double jump
-                    
+                    console.log("we are double jumping");
                     self.velocity.y -= doubleJumpSpeed;
                     canDoubleJump = false;
+                    
                 }
             }
             
