@@ -15,7 +15,50 @@ function Player(properties) {
     var self = this;
     
     
+<<<<<<< HEAD:public/GameScripts/Examples/Player.js
     this.physicalAppearanceSize = 30;
+=======
+    this.DrawObject = new Sprite(
+        this,   //Parent
+        Enum.Images.Sprites.SampleSprite1,   //Image
+        
+        {   //Sprites
+            playerMovement: {
+                position: Vector2.new(0, 0),
+                size: Vector2.new(20, 20),
+                columns: 2,
+                rows: 2,
+            },
+            jump: {
+                position: Vector2.new(0, 20),
+                size: Vector2.new(40, 40),
+                columns: 2,
+                rows: 2,
+            }
+        },
+        
+        {   //Animations
+            walk: {
+                sprite: "playerMovement",
+                speed: .05, //Per frame
+                keyFrames: [0,1,2,3], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+            jump: {
+                sprite: "jump",
+                speed: .05, //Per frame
+                keyFrames: [0,1,2,3], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+        }
+    );
+    
+    
+    this.colliderType = Enum.colliderType.circle;
+    this.hitbox = Vector2.new(30, 30);
+>>>>>>> refs/remotes/origin/master:public/Scripts/Player.js
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
     
@@ -86,6 +129,9 @@ function Player(properties) {
             if (INPUT["83"]) self.Move(new Vector2.new(0,3));
             if (INPUT["65"]) self.Move(new Vector2.new(-3,0));
             if (INPUT["68"]) self.Move(new Vector2.new(3,0));
+            
+            if (INPUT_CLICK["32"])
+                self.DrawObject.currentAnimation = self.DrawObject.currentAnimation == "jump" ? "walk" : "jump";
 
             //if (Vector2.magnitude(self.velocity) > 0.)
             self.rotation = Vector2.toAngle(self.velocity);

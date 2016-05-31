@@ -8,43 +8,58 @@ function Player(properties) {
     this.extends = {
         physics:Physics(this),
         collision:Collision(this),
+        //extraCollision:ExtraCollision(this),
         tank:Tank(this),
         navigation:AutomaticWalk(this),
+<<<<<<< HEAD
         outOfBounds:OutOfBounds(this),
+=======
+        AI:StateMachine(this, StatesEnum.wander),
+>>>>>>> 4dbdc403a9ec8c87cc40658dc0a6d6d132f18c96
     };
     
     var self = this;
     
-    /*
-    this.DrawObject = new Sprite(
-        this,   //Parent
-        Enum.Images.Sprites.PlayerJumpSpriteSheet,   //Image
-        4,  //Columns
-        2,  //Rows
-        {   //Animations
-            walk: {
-                speed: .05, //Per frame
-                keyFrames: [0,1,2,3,4,5], //AnimationFrame
-                currentKeyFrame: 0, //Where to start
-                loop: true, //Should it loop? (WIP!)
-            },
-        }
-    );*/
-    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.PlayerRunSpriteSheet,   //Image
-        7,  //Columns
-        2,  //Rows
+        
+        {   //Sprites
+            
+            playerMovement: {
+                position: Vector2.new(0, 0),
+                size: Vector2.new(589, 201),
+                columns: 7,
+                rows: 2,
+            },
+            jump: {
+                position: Vector2.new(0, 0),
+                size: Vector2.new(393, 100),
+                columns: 7,
+                rows: 1,
+            }
+        },
+        
         {   //Animations
-            walk: {
-                speed: .3, //Per frame
+            run: {
+                sprite: "playerMovement",
+                speed: .15, //Per frame
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+            jump: {
+                sprite: "jump",
+                speed: .15, //Per frame
+                keyFrames: [0,1,2,3,4,5,6], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
         }
     );
+    
+    
+    this.DrawObject.currentAnimation = "run";
     
     this.size = Vector2.new(60, 60);
     
@@ -72,8 +87,6 @@ function Player(properties) {
     
     var wallJumpDirection = 0;
     
-    var collisions = {};
-    
     this.collisionEvents["PlayerCollision"] = function(Obj, Dir) {
         if (Obj.ClassType == Enum.ClassType.IntermediatePlatform && Obj.position.y < self.position.y) {
             self.position.y -= 40; 
@@ -95,21 +108,19 @@ function Player(properties) {
             autoWalk = true;
             canDoubleJump = true;
         }
-        
-        collisions[Obj.ID] = true;
     }
     
     //the speeds for different kind of jumps
-    var jumpSpeed = 400;
+    var jumpSpeed = 450;
     
     var doubleJumpSpeed = 300;
     
     //the direction and speed we walljump
-    var wallJumpSpeed = 400;
+    var wallJumpSpeed = 450;
     
     var fallingGravity = 9.3;
     
-    var slidingGravtiy = 4;
+    var slidingGravtiy = 9.3;
     
     var updateRate = 0;
     //The .update is a update that fires every frame, we use this for AI or playermovement
@@ -137,12 +148,12 @@ function Player(properties) {
             
             grounded = false;
             
-            if(wallJumpDirection != 0)
+            if(wallJumpDirection != 0) {
                 self.velocity.y += slidingGravtiy;
-            else
+            }
+            else {
                 self.velocity.y += fallingGravity;
-            
-            
+            }
             
             collisions = {};
             

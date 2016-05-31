@@ -110,8 +110,13 @@ EnemyStates = {
                 base.returnState = StatesEnum.charge;
                 return false;
             }
+<<<<<<< HEAD
             if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) > range){
                 base.returnState = StatesEnum.specialWander;
+=======
+            if (Vector2.magnitude(this.parent.position, MOUSE.Position) > range){
+                base.returnState = StatesEnum.Wander;
+>>>>>>> 4dbdc403a9ec8c87cc40658dc0a6d6d132f18c96
                 return false;
             }
             
@@ -148,7 +153,11 @@ EnemyStates = {
         this.Reason = function () {
             var magnitude = Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition);
             if (magnitude > range){
+<<<<<<< HEAD
                 base.returnState = StatesEnum.specialWander;
+=======
+                base.returnState = StatesEnum.Wander;
+>>>>>>> 4dbdc403a9ec8c87cc40658dc0a6d6d132f18c96
                 return false;
             }
             

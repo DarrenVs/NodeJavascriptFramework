@@ -383,6 +383,7 @@ socketio.on("IDrequest_to_client", function (data) {
     
     clientID = data;
     Game[0] = new Stage();
+    //LoadWorld( Game[0], Enum.Worlds.TestWorld );
     LoadWorld( Game[0], Enum.Worlds.BattleArena );
     //LoadWorld( Game[0], Enum.Worlds.TestWorld );
     
@@ -508,7 +509,7 @@ setInterval(function() {
     if (RENDERSETTINGS.renderDate > nextSlowSend) {
         //console.log("Slow send..")
         for (var index in SlowSendQue)
-            stringifyedObjects += (stringifyedObjects ? ',' : '{' ) + '"F' + index + '":' + PackageObject( SlowSendQue[ index ] );
+            stringifyedObjects += (stringifyedObjects ? ',' : '{' ) + '"S' + index + '":' + PackageObject( SlowSendQue[ index ] );
         SlowSendQue = {};
         nextSlowSend = RENDERSETTINGS.renderDate + slowSendSpeed;
     }
