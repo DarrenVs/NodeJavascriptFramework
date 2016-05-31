@@ -2,6 +2,10 @@
 function ExtraCollision(Parent) {
     var Parent = Parent;
     
+    if (!Parent.extends) Parent.extends = {};
+    Parent.extends["collision"] = Collision(Parent);
+    
+    
     Parent.extends = {
         collision:Collision(Parent)
     };
