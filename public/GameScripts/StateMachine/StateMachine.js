@@ -82,7 +82,7 @@ StateMachine = function (_parent, _defaultStateKey, debug) {
     var parent = _parent;
     var currentState;
     
-    //Copies the states from StatesEnum
+    //Copies the states from StatesEnum 
     for (key in StatesEnum)
         states[key] = 1;
         

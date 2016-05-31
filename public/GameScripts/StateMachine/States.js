@@ -15,7 +15,7 @@ this.State = {
 //----------------------------\\
 
 EnemyStates = {
-    NormalWander: function (_alertRange) {
+    NormalWander: function (_alertRange, _walkSpeed) {
         this.__proto__ = new State();
         var base = this.__proto__;
         var alertRange = _alertRange || 80;
@@ -25,7 +25,7 @@ EnemyStates = {
             base.Enter(_parent);
             _parent.colour = "blue";
                         
-            _parent.extends["Navigation"] = AutomaticWalk(_parent);
+            _parent.extends["Navigation"] = AutomaticWalk(_parent, _walkSpeed);
         }
         
         this.Reason = function () {
@@ -49,7 +49,7 @@ EnemyStates = {
         }
     },
     
-    AngryWander: function (_alertRange) {
+    AngryWander: function (_alertRange, _walkSpeed) {
         this.__proto__ = new State();
         var base = this.__proto__;
         var alertRange = _alertRange || 80;
@@ -59,15 +59,7 @@ EnemyStates = {
             base.Enter(_parent);
             _parent.colour = "red";
             
-            for (var i in Stage.childs) 
-                if (Stage.childs[i].ClassType == 1) {
-                    console.log("founc a player!");
-                    enemies.push(Stage.childs[i]);
-                }
-            
-            //console.log(CollisionGrid);
-            
-            _parent.extends["Navigation"] = AutomaticWalk(_parent);
+            _parent.extends["Navigation"] = AutomaticWalk(_parent, _walkSpeed);
         }
         
         this.Reason = function () {
@@ -192,8 +184,9 @@ EnemyStates = {
         }
         
         this.Reason = function () {
-            if (deltDamage) return false;
-            return true;
+            if (deltDamage) {                        
+                return false;
+            } return true;
         }
         
         this.Act = function () {

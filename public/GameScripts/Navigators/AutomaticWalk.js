@@ -1,12 +1,12 @@
 // Sub Class Navigator
-function AutomaticWalk(Parent) {
+function AutomaticWalk(Parent, walkSpeed) {
     var Parent = Parent;
     
     //to know if we should walk
     Parent.autoWalk = true;
     
     //the speed, and also used for the direction of the animation
-    Parent.walkSpeed = 3;
+    Parent.walkSpeed = walkSpeed || 3;
     
     Parent.update["NavigationUpdate"] = function() {
         
