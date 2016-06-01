@@ -24,18 +24,74 @@ var objectCounter = 0;
 var objectPackages = "";
 
 
+var rooms = {}
+
+
+
+function CreateRoom( roomName ) {
+	
+	currentRoom = Object.keys(rooms).length;
+	rooms[Object.keys(rooms).length] = {
+		objectPackages: "",
+		Players: {
+			socketID: true,
+		},
+	}
+}
+function JoinRoom( roomName ) {
+	
+	
+	
+}
 
 io.sockets.on('connection', function(socket) {
 	
 	//Set the client's ID
 	var socketID = connectionCounter++;
-	socket.emit("IDrequest_to_client", socketID);
+	
+	//Set the client's room
+	var currentRoom = undefined;
+	for (var i in rooms) {
+		if (Object.keys(rooms[i].Players).length < 2) {
+			
+			rooms[i].Players[socketID] = true;
+			currentRoom = i;
+		}
+	}
+	
+	if (currentRoom == undefined) {
+		
+		currentRoom = Object.keys(rooms).length;
+		rooms[Object.keys(rooms).length] = {
+			objectPackages: "",
+			Players: {
+				[socketID]: true,
+			},
+		}
+	}
+	
+	//Join the current room
+	socket.join(currentRoom);
+	for (var i in rooms) {
+		console.log(i + " has a playercount of: " + Object.keys(rooms[i].Players).length);
+	}
+	
+	//Give the client's information
+	socket.emit("IDrequest_to_client", {socketID:socketID, socketRoom:currentRoom});
+	
+	
+	socket.on('disconnect', function() {
+		delete rooms[currentRoom].Players[socketID];
+	});
+	
+	//On client request playerlist
+	io.sockets.in(currentRoom).emit("UpdatePlayerlist", rooms[currentRoom].Players);
 	
 	
 	//Give the socket a broadcaster
 	socket.on('object_to_broadcaster', function(data) {
 		
-		objectPackages += (objectPackages ? ',' : '{' ) + '"' + objectCounter++ + '":' + data["stringifyedObject"];
+		rooms[currentRoom].objectPackages += (rooms[currentRoom].objectPackages ? ',' : '{' ) + '"' + objectCounter++ + '":' + data["stringifyedObject"];
 	});
 });
 
@@ -43,9 +99,11 @@ io.sockets.on('connection', function(socket) {
 
 setInterval(function(){
 	
-	if (objectPackages) {
-		io.sockets.emit("object_from_broadcaster", objectPackages + "}");
-		objectPackages = "";
+	for (var i in rooms) {
+		if (rooms[i].objectPackages) {
+			io.sockets.in(i).emit("object_from_broadcaster", rooms[i].objectPackages + "}");
+			rooms[i].objectPackages = "";
+		}
 	}
 }, 10)
 
