@@ -21,9 +21,6 @@ function ExtraCollision(Parent) {
         
         currentCollisions[Obj.ID] = { Obj:Obj, direction:direction, force:force, distance:distance};
         
-        //console.log("Current Collision: ")
-        //console.log(Obj);
-        
         //if the collision didnt exist yet
         if (!oldCollisions[Obj.ID]) {
             
@@ -38,20 +35,12 @@ function ExtraCollision(Parent) {
     }
     
     Parent.update["collisionListUpdate"] = function() {
-        //console.log("Enter Frame");
-        //console.log(currentCollisions);
-        //console.log(oldCollisions);
+        
         for(var oldColl in oldCollisions) {
             var isDuplicate = false;
-            //console.log("check: ")
-            //console.log(oldCollisions[oldColl]["Obj"]);
             for(var newColl in currentCollisions) {
-                //console.log("compare : ")
-                //console.log(currentCollisions[newColl]["Obj"]);
-
                 //if the object still exists, we return here
                 if(currentCollisions[newColl]["Obj"] == oldCollisions[oldColl]["Obj"]) { 
-                    //console.log("isDuplicate true");
                     isDuplicate = true;
                 }
             }
@@ -67,20 +56,17 @@ function ExtraCollision(Parent) {
         
         oldCollisions = currentCollisions
         currentCollisions = {};
-        //console.log("exit frame");
     }
        
     Parent.extraCollisionEvents["onCollisionEnter"] = function( Obj, direction, force, distance ) {
-        //console.log("Enter Obj : ");
-        //console.log(Obj);
+        
     }
     
     Parent.extraCollisionEvents["onCollisionStay"] = function( Obj, direction, force, distance ) {
-        //console.log("Stay");
+        
     }
         
     Parent.extraCollisionEvents["onCollisionExit"] = function( Obj, direction, force, distance ) {
-        //console.log("Exit Obj : ");
-        //console.log(Obj);
+        
     }
 }
