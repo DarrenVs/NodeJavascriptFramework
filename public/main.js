@@ -128,6 +128,15 @@ function Stage(properties) {
         return Vector2.subtract( MOUSE.Position, self.position );
     });
     
+    
+    this.getGlobalPos = function( Obj ) {
+        var position = Vector2.new(Obj.position.x, Obj.position.y);
+        
+        if (Obj.Parent != undefined)
+            position = Vector2.add( position, getPos(Obj.Parent))
+            
+        return position;
+    }
 
     this.allChilds = {};
     this.stageID = 0;

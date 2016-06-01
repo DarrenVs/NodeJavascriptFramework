@@ -44,7 +44,7 @@ function ExtraCollision(Parent) {
                     break;
                 }
             }
-            console.log(o);
+            
             //if we reach this code, the collision no longer exists, and we need to remove it.
             Parent.onCollisionExit(o);
         }
@@ -54,15 +54,15 @@ function ExtraCollision(Parent) {
     }
        
     Parent.onCollisionEnter = function( Obj, direction, force, distance ) {
-        console.log("Enter");
+        //console.log("Enter");
     }
     
     Parent.onCollisionStay = function( Obj, direction, force, distance ) {
-        console.log("Stay");
+        //console.log("Stay");
     }
         
     Parent.onCollisionExit = function( Obj, direction, force, distance ) {
-        console.log("Exit");
+        //console.log("Exit");
     }
     
     

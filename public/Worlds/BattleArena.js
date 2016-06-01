@@ -83,8 +83,11 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     var totalLevelHeight = canvas.height;
     
+    
+    
     //this is where all chunks are added to all chunks:
     pushUncompressedChunks(chunkLib.easyChunks);
+    
     
     function pushUncompressedChunks(arrayOfChunks) {
         for(i = 0; i < arrayOfChunks.length; i++) {
