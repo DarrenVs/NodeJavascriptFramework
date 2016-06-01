@@ -12,6 +12,8 @@ var PHYSICSSETTINGS = {
 var objectCount = 0;
 var replicatedObjectCount = 0;
 var clientID = undefined;
+var clientRoom = undefined;
+var playerList = {};
 var Game = {};
 
 var PhysicsLoop = {};
@@ -388,9 +390,16 @@ function PackageObject( Obj ) {
 
 var socketio = io.connect(window.location.host);
 
+socketio.on("UpdatePlayerlist", function (data) {
+    
+    playerList = data;
+    console.log('updated playerlist: ' + data);
+});
+
 socketio.on("IDrequest_to_client", function (data) {
     
-    clientID = data;
+    clientID = data.socketID;
+    clientRoom = data.socketRoom;
     Game[0] = new Stage();
     LoadWorld( Game[0], Enum.Worlds.BattleArena );
     //LoadWorld( Game[0], Enum.Worlds.TestWorld );
