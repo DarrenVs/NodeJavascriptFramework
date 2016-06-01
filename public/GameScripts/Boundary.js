@@ -20,12 +20,12 @@ function Boundary(properties) {
     
     this.update["boundaryUpdate"] = function() {
         //self.position.y = self.stage.getGlobalPos(self.stage).y - canvas.height + yOffSet;
-        console.log(self.position.y);
+        //console.log(self.position.y);
         //self.position.y = -self.stage.position.y + canvas.height + yOffSet;
     }
     
     this.collisionEvents["outOfBounds"] = function(Obj) {
-        console.log(Obj.ID + " died, Out of Bounds");
+        //console.log(Obj.ID + " died, Out of Bounds");
         Obj.destroy();
     }
 }
