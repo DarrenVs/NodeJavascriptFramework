@@ -41,7 +41,7 @@ function Player(properties) {
         {   //Animations
             run: {
                 sprite: "playerMovement",
-                speed: .15, //Per frame
+                speed: .2, //Per frame
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
@@ -169,6 +169,8 @@ function Player(properties) {
     
     
     this.Die = function() {
+        console.log("delete player");
+        
         delete playerList[self.creatorID];
         self.Health = 0;
         sendObject(self);

@@ -13,7 +13,7 @@ var objectCount = 0;
 var replicatedObjectCount = 0;
 var clientID = undefined;
 var clientRoom = undefined;
-var playerList = {};
+var connectionList = {};
 var Game = {};
 
 var PhysicsLoop = {};
@@ -392,8 +392,8 @@ var socketio = io.connect(window.location.host);
 
 socketio.on("UpdatePlayerlist", function (data) {
     
-    playerList = data;
-    console.log('updated playerlist: ' + data);
+    connectionList = data;
+    console.log('updated connectionList: ' + data);
 });
 
 socketio.on("IDrequest_to_client", function (data) {
