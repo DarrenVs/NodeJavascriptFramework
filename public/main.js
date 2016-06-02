@@ -16,6 +16,22 @@ var clientRoom = undefined;
 var playerList = {};
 var Game = {};
 
+
+var events = {
+    
+    
+    test: function(arguments) {
+        
+        console.log(arguments);
+    }  
+};
+
+
+
+
+
+
+
 var PhysicsLoop = {};
 
 
@@ -403,6 +419,18 @@ socketio.on("IDrequest_to_client", function (data) {
 
 
 
+socketio.on("event", function (data) {
+    
+    var event = JSON.parse(data);
+    if (data) {
+        for (var i in event) {
+                events[i](event[i]);
+        }
+    }
+})
+
+
+
 socketio.on("object_from_broadcaster", function (data) {
     
     var ReplicatedObjects = JSON.parse(data);
@@ -485,6 +513,8 @@ var FastSendQue = {
 FastSendSpeed = 30
 nextFastSend = 0;
 
+var EventQue = {};
+
 
 function sendObject(Obj, replicateChildren, FastSend) {
     
@@ -533,6 +563,14 @@ setInterval(function() {
         socketio.emit("object_to_broadcaster", {
             stringifyedObject: stringifyedObjects + "}"
         });
+    }
+    
+    
+	if (stringifyedObjects) {
+       // console.log("Sending..");
+        // emit the object to the server for broadcasting
+        socketio.emit("event", JSON.stringify(EventQue));
+        EventQue = {};
     }
 }, 0)
 
