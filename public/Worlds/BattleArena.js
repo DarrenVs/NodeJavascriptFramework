@@ -10,9 +10,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     //Player:
     var player;
     
-    //change later to online player list
-    var players = [];
-    
     var highestPlayerPos = canvas.height / 2;
     
     this.update["BattleArenaUpdate"] = function() {
@@ -26,12 +23,13 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
             });
             
             stage.addChild( player );
-            players.push( player );
         }
         
-        for(i = 0; i < players.length; i++) {
-            if(players[i].position.y < highestPlayerPos) {
-               highestPlayerPos =  players[i].position.y
+        
+        //keep the camera at the position of the highest player
+        for (var index in playerList) {
+            if(playerList[index].position.y < highestPlayerPos) {
+               highestPlayerPos =  playerList[index].position.y
             } 
         }
         
@@ -40,7 +38,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         //when we spawn a new chunk
         if(-stage.position.y <= totalLevelHeight) {
             spawnIntermediateChunk();
-            spawnChunk(allChunks[Math.floor(Math.random()*allChunks.length)]);
+            spawnChunk(spawnAbleChunks[Math.floor(Math.random()*spawnAbleChunks.length)]);
         }
     }
     
@@ -62,6 +60,8 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     //---LEVEL GENERATING---///
     //////////////////////////
     
+    var uncompressedChunkLib = new uncompressedChunkLibary();
+    
     var chunkLib = new chunkLibary();
     
     //the tiles we will spawn
@@ -76,25 +76,30 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     var tileSize = canvas.width / tilesXCount;
     
     //all chunks will be stored here after uncompressing on start
-    var allChunks = [];
+    var spawnAbleChunks = [];
     
     //the chunk we will spawn between regular chunks, to ensure we always have a smooth transition to the next chunk
-    var intermediateChunk = uncompressChunk(chunkLib.intermediateChunk);
+    var intermediateChunk = uncompressChunk(uncompressedChunkLib.intermediateChunk);
     
     var totalLevelHeight = canvas.height;
     
     
     
     //this is where all chunks are added to all chunks:
-    pushUncompressedChunks(chunkLib.easyChunks);
+    pushUncompressedChunks("easyChunks", uncompressedChunkLib.easyChunks);
     
+    pushNewChunks(chunkLib["easyChunks"]);
     
-    function pushUncompressedChunks(arrayOfChunks) {
-        for(i = 0; i < arrayOfChunks.length; i++) {
-            allChunks.push(uncompressChunk(arrayOfChunks[i]));
-        }
+    function pushUncompressedChunks(key, arrayOfUncompressedChunks) {      
+        chunkLib[key] = arrayOfUncompressedChunks;
     }
      
+    function pushNewChunks(arrayOfChunks) {
+        for(i = 0; i < arrayOfChunks.length; i++) {
+            spawnAbleChunks.push(uncompressChunk(arrayOfChunks[i]));
+        }
+    }
+    
     //uncompress the chunk to a 2d array (int[][])
     function uncompressChunk(stringToParse) {
         var yLength = stringToParse.length / tilesXCount;
@@ -177,11 +182,11 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     }
 }
 
-this.chunkLibary = function () {
+this.uncompressedChunkLibary = function () {
     
 }
 
-chunkLibary.prototype = {
+uncompressedChunkLibary.prototype = {
     
     intermediateChunk : "100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001",
 
@@ -218,3 +223,9 @@ chunkLibary.prototype = {
         "100000000000001111111000111111100000000000001100000000000001100111111111001100000000000001100000000000001111111000111111100000000000001",
     ],
 }
+
+this.chunkLibary = function () {
+    
+}
+
+chunkLibary.prototype = {};

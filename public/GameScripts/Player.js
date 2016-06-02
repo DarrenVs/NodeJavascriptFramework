@@ -1,5 +1,8 @@
 Enum.ClassName[Enum.ClassType.Player] = Player;
 
+
+var playerList = {}
+
 // BaseClass
 function Player(properties) {
     this.health = 100;
@@ -53,6 +56,7 @@ function Player(properties) {
         }
     );
     
+    playerList[self.creatorID] = self;
     
     this.DrawObject.currentAnimation = "run";
     
@@ -73,7 +77,7 @@ function Player(properties) {
     this.__defineSetter__('health', function(val) {
         Health = val;
         if (Health <= 0)
-            self.destroy();
+            self.Die();
     })
     
     var grounded = true;
@@ -156,8 +160,18 @@ function Player(properties) {
             collisions = {};
             
             updateRate++;  
+    
+            sendObject(self);
         } else {
             self.health--;
         }
+    }
+    
+    
+    this.Die = function() {
+        delete playerList[self.creatorID];
+        self.Health = 0;
+        sendObject(self);
+        self.destroy();
     }
 }

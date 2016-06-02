@@ -1,5 +1,5 @@
 var CollisionGrid = {
-    gridSize: Vector2.new(100, 100),
+    gridSize: Vector2.new(14000, 10040),
     grid:{
         
     },
