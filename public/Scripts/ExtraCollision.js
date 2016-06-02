@@ -10,8 +10,9 @@ function ExtraCollision(Parent) {
         collision:Collision(Parent)
     };
     
-    Parent.extraCollisionEvents = Parent.extraCollisionEvents || {};
-    
+    Parent.onCollisionEnter = Parent.onCollisionEnter || {};
+    Parent.onCollisionStay = Parent.onCollisionStay || {};
+    Parent.onCollisionExit = Parent.onCollisionExit || {};
     
     var currentCollisions = {};
     
@@ -24,11 +25,13 @@ function ExtraCollision(Parent) {
         //if the collision didnt exist yet
         if (!oldCollisions[Obj.ID]) {
             
-            Parent.extraCollisionEvents["onCollisionEnter"](Obj, direction, force, distance);
+            for (i in Parent.onCollisionEnter)
+                Parent.onCollisionEnter[i](Obj, direction, force, distance);
             
         } else {//else the collision still exists
             
-            Parent.extraCollisionEvents["onCollisionStay"](Obj, direction, force, distance);
+            for (i in Parent.onCollisionStay)
+                Parent.onCollisionStay[i](Obj, direction, force, distance);
             
         }
         
@@ -47,8 +50,11 @@ function ExtraCollision(Parent) {
             
             
             if(!isDuplicate) {
-                //if we reach this code, the collision no longer exists, and we need to remove it.        
-                Parent.extraCollisionEvents["onCollisionExit"](oldCollisions[oldColl]["Obj"], oldCollisions[oldColl]["direction"], oldCollisions[oldColl]["force"], oldCollisions[oldColl]["distance"]);
+                
+                //if we reach this code, the collision no longer exists, and we need to remove it.   
+                
+                for (i in Parent.onCollisionExit)
+                    Parent.onCollisionExit[i](oldCollisions[oldColl]["Obj"], oldCollisions[oldColl]["direction"], oldCollisions[oldColl]["force"], oldCollisions[oldColl]["distance"]);
             }
             
             
@@ -58,15 +64,15 @@ function ExtraCollision(Parent) {
         currentCollisions = {};
     }
        
-    Parent.extraCollisionEvents["onCollisionEnter"] = function( Obj, direction, force, distance ) {
-        
+    Parent.onCollisionEnter["onCollisionEnter"] = function( Obj, direction, force, distance ) {
+
     }
     
-    Parent.extraCollisionEvents["onCollisionStay"] = function( Obj, direction, force, distance ) {
-        
+    Parent.onCollisionStay["onCollisionStay"] = function( Obj, direction, force, distance ) {
+
     }
         
-    Parent.extraCollisionEvents["onCollisionExit"] = function( Obj, direction, force, distance ) {
-        
+    Parent.onCollisionExit["onCollisionExit"] = function( Obj, direction, force, distance ) {
+
     }
 }
