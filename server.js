@@ -93,6 +93,10 @@ io.sockets.on('connection', function(socket) {
 		
 		rooms[currentRoom].objectPackages += (rooms[currentRoom].objectPackages ? ',' : '{' ) + '"' + objectCounter++ + '":' + data["stringifyedObject"];
 	});
+	
+	socket.on('event', function( data ) {
+		io.sockets.in(currentRoom).emit("event", data);
+	});
 });
 
 
