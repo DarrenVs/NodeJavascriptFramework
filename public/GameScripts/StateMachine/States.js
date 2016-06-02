@@ -93,7 +93,8 @@ EnemyStates = {
                 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            _parent.colour = "orange";
+            _parent.colour = "red";
+            _parent.velocity = Vector2.new();
             timeLeft = responseTime;            
         }
         
@@ -104,10 +105,6 @@ EnemyStates = {
             }
             if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) > range){
                 base.returnState = StatesEnum.specialWander;
-                return false;
-            }
-            if (Vector2.magnitude(this.parent.position, MOUSE.Position) > range){
-                base.returnState = StatesEnum.Wander;
                 return false;
             }
             

@@ -42,6 +42,16 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         }
     }
     
+    //Enemy
+    var enemy = new Enemy({
+        position: Vector2.new(80, 80),
+        size: Vector2.new(20, 20),
+        ID: 'enemy',
+        colour: "blue"
+    });
+    
+    stage.addChild(enemy);
+    
     
     //Level Boundary
     var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
@@ -180,6 +190,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
 
         stage.addChild( intermediatePlatform );
     }
+    
 }
 
 this.uncompressedChunkLibary = function () {

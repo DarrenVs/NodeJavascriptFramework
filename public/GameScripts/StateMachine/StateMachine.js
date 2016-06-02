@@ -113,11 +113,12 @@ StateMachine = function (_parent, _defaultStateKey, debug) {
                 var newStateKey = currentState.Leave();
                 
                 if (typeof(states[newStateKey]) != 'undefined') {
-                    //console.log("changing to state: " + newStateKey);
+                    if (debug)
+                        console.log("changing to state: " + newStateKey);
                     currentState = states[newStateKey];
                 } else {
-                    console.log("state " + newStateKey + " was not found");
-                    //console.log("changing to state: " + defaultStateKey);
+                    if (debug)
+                        console.log("switching to defualt");
                     currentState = states[defaultStateKey];
                 }
                 currentState.Enter(parent);
