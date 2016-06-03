@@ -1,11 +1,60 @@
 Enum.Worlds.BattleArena = Worlds.length;
 
+var ChunkProperties = {
+    
+    Tiles: {
+        0:false, //Air
+        1:Enum.ClassType.Unknown, //Wall
+    },
+    
+    tilesXCount: 15,
+
+    tileSize: 40,
+    
+    //the height of the level we will spawn new chunks at
+    totalLevelHeight: 955,
+    
+    spawnChunk: function(chunkToSpawn, stageID) {
+        
+        //calculate the y Length of this chunk, take its total length and divide it by its width.
+        var yLength = (chunkToSpawn.length * chunkToSpawn[0].length) / this.tilesXCount;
+        
+        for (y = 0; y < yLength; y++)
+        {
+            for (x = 0; x < this.tilesXCount; x++)
+            {
+                if (!Enum.ClassName[this.Tiles[chunkToSpawn[y][x]]]) continue;
+                
+                var newObject = new Enum.ClassName[this.Tiles[chunkToSpawn[y][x]]]({
+                    size: new Vector2.new(this.tileSize, this.tileSize),
+                    position: new Vector2.new(x * this.tileSize + this.tileSize / 2, -y * this.tileSize + this.totalLevelHeight),
+                })
+                
+                newObject.extends["collision"] = Collision(newObject);
+                newObject.anchored = true;
+                
+                newObject.colliderType = Enum.colliderType.box;
+                newObject.hitbox = Vector2.new(newObject.size.x, newObject.size.y);
+                
+                Game[stageID].addChild( newObject );
+            }
+        }
+        
+        //increase the total level height by the height of this chunk, so we know when to spawn another chunk
+        this.totalLevelHeight -= yLength * this.tileSize;
+    },
+}
+
 Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     GameObject( this );
     
     /////////////////////
     //---LEVEL SETUP---///
     /////////////////////
+    
+    ChunkProperties.tilesXCount = 15;//canvas.width / ChunkProperties.tilesXCount;
+    
+    ChunkProperties.totalLevelHeight = canvas.height;
     
     //Player:
     var player;
@@ -36,13 +85,11 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         stage.position.y = -highestPlayerPos + canvas.height / 2;
         
         //when we spawn a new chunk
-        if(-stage.position.y <= totalLevelHeight) {
-            checkIfRightPlayer();
+        if(-stage.position.y <= ChunkProperties.totalLevelHeight) {
             spawnIntermediateChunk();
-            spawnChunk(spawnAbleChunks[Math.floor(Math.random()*spawnAbleChunks.length)]);
+            checkIfRightPlayer();
         }
     }
-    
     
     function checkIfRightPlayer() {
         var lowestIndex = player.creatorID;
@@ -53,10 +100,16 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         }
         
         if(lowestIndex == player.creatorID) {
-            //console.log("player to choose chunk: " + player.creatorID);
-            //console.log("we will spawn: " + spawnAbleChunks[Math.floor(Math.random()*spawnAbleChunks.length)]);
+            var parameters = {
+                chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
+                stageID: Game[0].ID.substr(Game[0].ID.indexOf(":")+1),
+            };
+            
+            events.sendChunk(parameters);
         }
     }
+    
+    
     
     //Level Boundary
     var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
@@ -69,8 +122,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
                 
     stage.addChild( boundary );
     
-    
-    
     //////////////////////////
     //---LEVEL GENERATING---///
     //////////////////////////
@@ -79,43 +130,35 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     var chunkLib = new chunkLibary();
     
-    //the tiles we will spawn
-    var Tiles = {
-        0:false, //Air
-        1:Enum.ClassType.Unknown, //Wall
-    }
-    
-    //the x length of all chunks
-    var tilesXCount = 15;
-    
-    var tileSize = canvas.width / tilesXCount;
-    
-    //all chunks will be stored here after uncompressing on start
-    var spawnAbleChunks = [];
-    
     //the chunk we will spawn between regular chunks, to ensure we always have a smooth transition to the next chunk
     var intermediateChunk = uncompressChunk(uncompressedChunkLib.intermediateChunk);
     
-    var totalLevelHeight = canvas.height;
+    //this is where all uncompressed chunks are added the chunk libary (compressed chunks)
+    //in the libary they are stored until we add them to spawnable
     
-    //this is where all chunks are added the chunk libary (compressed chunks)
-    pushUncompressedChunks("easyChunks", uncompressedChunkLib.easyChunks);
+    pushToChunkLibary("easyChunks", uncompressedChunkLib.easyChunks);
     
-    pushNewChunks(chunkLib["easyChunks"]);
+    pushToSpawnAble(chunkLib["easyChunks"]);
     
-    function pushUncompressedChunks(key, arrayOfUncompressedChunks) {      
-        chunkLib[key] = arrayOfUncompressedChunks;
+    function pushToChunkLibary(key, arrayOfUncompressedChunks) { 
+        var arrayOfCompressedChunks = [];
+        
+        for(i = 0; i < arrayOfUncompressedChunks.length; i++) {
+            arrayOfCompressedChunks.push(uncompressChunk(arrayOfUncompressedChunks[i]));
+        }
+        
+        chunkLib[key] = arrayOfCompressedChunks;
     }
      
-    function pushNewChunks(arrayOfChunks) {
+    function pushToSpawnAble(arrayOfChunks) {
         for(i = 0; i < arrayOfChunks.length; i++) {
-            spawnAbleChunks.push(uncompressChunk(arrayOfChunks[i]));
+            Enum.SpawnAbleChunks.push(arrayOfChunks[i]);
         }
     }
     
     //uncompress the chunk to a 2d array (int[][])
     function uncompressChunk(stringToParse) {
-        var yLength = stringToParse.length / tilesXCount;
+        var yLength = stringToParse.length / ChunkProperties.tilesXCount;
         
         var counter = 0;
         
@@ -124,43 +167,13 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         //assign every int in a 2 dimensional array
         for (y = 0; y < yLength; y++) {
             chunk[y] = new Array();
-            for (x = 0; x < tilesXCount; x++) {
+            for (x = 0; x < ChunkProperties.tilesXCount; x++) {
                 chunk[y][x] = stringToParse[counter];
                 counter++;
             }
         }
         
         return chunk;
-    }
-    
-    //excpects a 2d array (int[][])
-    function spawnChunk( chunkToSpawn ) {
-        //calculate the y Length of this chunk, take its total length and divide it by its width.
-        var yLength = (chunkToSpawn.length * chunkToSpawn[0].length) / tilesXCount;
-        
-        for (y = 0; y < yLength; y++)
-        {
-            for (x = 0; x < tilesXCount; x++)
-            {
-                if (!Enum.ClassName[Tiles[chunkToSpawn[y][x]]]) continue;
-                
-                var newObject = new Enum.ClassName[Tiles[chunkToSpawn[y][x]]]({
-                    size: new Vector2.new(tileSize, tileSize),
-                    position: new Vector2.new(x * tileSize + tileSize / 2, -y * tileSize + totalLevelHeight),
-                })
-                
-                newObject.extends["collision"] = Collision(newObject);
-                newObject.anchored = true;
-                
-                newObject.colliderType = Enum.colliderType.box;
-                newObject.hitbox = Vector2.new(newObject.size.x, newObject.size.y);
-                
-                stage.addChild( newObject );
-            }
-        }
-        
-        //increase the total level height by the height of this chunk, so we know when to spawn another chunk
-        totalLevelHeight -= yLength * tileSize;
     }
     
     var intermediatePlatformHeight = 10;
@@ -172,19 +185,19 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         
         var intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
             size: new Vector2.new(canvas.width, intermediatePlatformHeight),
-            position: new Vector2.new(canvas.width / 2, totalLevelHeight - tileSize * intermediatePlatformPosition)
+            position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight - ChunkProperties.tileSize * intermediatePlatformPosition)
         })
 
         intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
         intermediatePlatform.anchored = true;
-
+        
         stage.addChild( intermediatePlatform );
         
-        spawnChunk(intermediateChunk);
+        ChunkProperties.spawnChunk(intermediateChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
         
         intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
             size: new Vector2.new(canvas.width, intermediatePlatformHeight),
-            position: new Vector2.new(canvas.width / 2, totalLevelHeight + tileSize * intermediatePlatformPosition)
+            position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight + ChunkProperties.tileSize * intermediatePlatformPosition)
         })
         
         intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
@@ -194,6 +207,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         stage.addChild( intermediatePlatform );
     }
 }
+
 
 this.uncompressedChunkLibary = function () {
     

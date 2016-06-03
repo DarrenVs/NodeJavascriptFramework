@@ -162,7 +162,7 @@ function Player(properties) {
             
             updateRate++;  
     
-            sendObject(self);
+            sendObject(self, false, true);
         } else {
             self.health--;
         }
