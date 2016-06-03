@@ -33,7 +33,6 @@ var events = {
 var PhysicsLoop = {};
 
 function updateObject(obj) {
-
     if (obj.update) {
         for (i in obj.update) {
             if (obj.Parent)

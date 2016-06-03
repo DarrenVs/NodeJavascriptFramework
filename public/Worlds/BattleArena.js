@@ -91,6 +91,20 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         }
     }
     
+<<<<<<< HEAD
+=======
+    //Enemy
+    var enemy = new Enemy({
+        position: Vector2.new(80, 80),
+        size: Vector2.new(20, 20),
+        ID: 'enemy',
+        colour: "blue"
+    });
+    
+    stage.addChild(enemy);
+    
+    
+>>>>>>> origin/Game
     function checkIfRightPlayer() {
         var lowestIndex = player.creatorID;
         
