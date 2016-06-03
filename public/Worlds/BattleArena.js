@@ -203,7 +203,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
 
         stage.addChild( intermediatePlatform );
     }
-    
 }
 
 this.uncompressedChunkLibary = function () {
