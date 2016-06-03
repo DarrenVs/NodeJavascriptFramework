@@ -1,5 +1,5 @@
 var CollisionGrid = {
-    gridSize: Vector2.new(100, 100),
+    gridSize: Vector2.new(14000, 10040),
     grid:{
         
     },
@@ -13,8 +13,8 @@ var CollisionGrid = {
         for (var index in Vector2.directions) {
             
             var gridLocation = Vector2.new(
-                Math.floor((pos.x + Vector2.directions[index].x * Obj.hitbox) / CollisionGrid.gridSize.x) * CollisionGrid.gridSize.x,
-                Math.floor((pos.y + Vector2.directions[index].y * Obj.hitbox) / CollisionGrid.gridSize.y) * CollisionGrid.gridSize.y
+                Math.floor((pos.x + Vector2.directions[index].x * Obj.hitbox.x) / CollisionGrid.gridSize.x) * CollisionGrid.gridSize.x,
+                Math.floor((pos.y + Vector2.directions[index].y * Obj.hitbox.y) / CollisionGrid.gridSize.y) * CollisionGrid.gridSize.y
             );
 
             if (!CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y])

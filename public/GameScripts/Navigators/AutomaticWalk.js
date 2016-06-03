@@ -6,12 +6,12 @@ function AutomaticWalk(Parent, walkSpeed) {
     Parent.autoWalk = true;
     
     //the speed, and also used for the direction of the animation
-    Parent.walkSpeed = walkSpeed || 3;
+    Parent.walkSpeed = walkSpeed || 150;
     
     Parent.update["NavigationUpdate"] = function() {
         
         if (Parent.autoWalk) {
-            Parent.position.x += Parent.walkSpeed    
+            Parent.velocity.x = Parent.walkSpeed    
         } 
     }
     

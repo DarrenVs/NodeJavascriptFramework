@@ -1,5 +1,8 @@
 Enum.ClassName[Enum.ClassType.Player] = Player;
 
+
+var playerList = {}
+
 // BaseClass
 function Player(properties) {
     this.health = 100;
@@ -38,7 +41,7 @@ function Player(properties) {
         {   //Animations
             run: {
                 sprite: "playerMovement",
-                speed: .15, //Per frame
+                speed: .2, //Per frame
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
@@ -53,6 +56,7 @@ function Player(properties) {
         }
     );
     
+    playerList[self.creatorID] = self;
     
     this.DrawObject.currentAnimation = "run";
     
@@ -73,7 +77,7 @@ function Player(properties) {
     this.__defineSetter__('health', function(val) {
         Health = val;
         if (Health <= 0)
-            self.destroy();
+            self.Die();
     })
     
     var grounded = true;
@@ -105,6 +109,7 @@ function Player(properties) {
             
         }
     }
+    
     
     //the speeds for different kind of jumps
     var jumpSpeed = 400;
@@ -156,8 +161,19 @@ function Player(properties) {
             collisions = {};
             
             updateRate++;  
+    
+            sendObject(self);
         } else {
             self.health--;
         }
+    }
+    
+    this.Die = function() {
+        console.log("delete player");
+        
+        delete playerList[self.creatorID];
+        self.Health = 0;
+        sendObject(self);
+        self.destroy();
     }
 }

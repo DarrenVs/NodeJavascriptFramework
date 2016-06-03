@@ -19,11 +19,17 @@ function Boundary(properties) {
     var yOffSet = 10;
     
     this.update["boundaryUpdate"] = function() {
-        self.position.y = -self.stage.position.y + canvas.height + yOffSet;
+        //self.position.y = self.stage.getGlobalPos(self.stage).y - canvas.height + yOffSet;
+        //console.log(self.position.y);
+        //self.position.y = -self.stage.position.y + canvas.height + yOffSet;
     }
     
     this.collisionEvents["outOfBounds"] = function(Obj) {
-        console.log(Obj.ID + " died, Out of Bounds");
-        Obj.destroy();
+        //console.log(Obj.ID + " died, Out of Bounds");
+        if(Obj.health != undefined) {
+            Obj.health = 0;
+        } else {
+            Obj.destroy();
+        }
     }
 }

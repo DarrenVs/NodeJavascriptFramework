@@ -1,53 +1,54 @@
+/*
 Enum.Worlds.TestWorld = Worlds.length;
 
 Worlds[Enum.Worlds.TestWorld] = function( stage ) {
+
     GameObject( this );
     
     stage.gravity = Vector2.new(0, 5);
     
     //---------------------------\\
-    var testObject = new EmptyObject({
+    var enemy = new EmptyObject({
         
         position: Vector2.new( 100, 100 ),
         size: Vector2.new( 20, 20 ),
         
     });
-    testObject.extends["collision"] = Collision(testObject);
-    testObject.hitbox = testObject.size;
-    testObject.extends["physics"] = Physics(testObject);
+    enemy.extends["collision"] = Collision(enemy);
+    enemy.hitbox = enemy.size;
+    enemy.extends["physics"] = Physics(enemy);
     
-    testObject.extends["AI"] = new StateMachine(testObject, StatesEnum.wander, true);
+    enemy.extends["AI"] = new StateMachine(enemy, StatesEnum.wander, true);
     
-    testObject.extends["AI"].AddState(StatesEnum.wander, new EnemyStates.NormalWander(80, 3));
-    testObject.extends["AI"].AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(120, 8));    
-    testObject.extends["AI"].AddState(StatesEnum.alert, new EnemyStates.Enrage(3, 200));
-    testObject.extends["AI"].AddState(StatesEnum.charge, new EnemyStates.Charge(250, 20, 5));
-    testObject.extends["AI"].AddState(StatesEnum.interact, new EnemyStates.Attack());
+    enemy.extends["AI"].AddState(StatesEnum.wander, new EnemyStates.NormalWander(80, 400));
+    enemy.extends["AI"].AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(120, 800));
+    enemy.extends["AI"].AddState(StatesEnum.alert, new EnemyStates.Enrage(3, 200));
+    enemy.extends["AI"].AddState(StatesEnum.charge, new EnemyStates.Charge(250, 20, 5));
+    enemy.extends["AI"].AddState(StatesEnum.interact, new EnemyStates.Attack());
         
-    stage.addChild(testObject);
     //---------------------------\\    
     
-    //--------------------------\\
-    var wallRight = new EmptyObject({
+    enemy.addChild(new EmptyObject({
         position: Vector2.new(0, 0),
-        size: Vector2.new(10, canvas.height)
-    });
+        size: Vector2.new(300, 10),
+        ID: 'AngryColl'
+    }));
     
-    wallRight.extends["collision"] = Collision(wallRight);
-    wallRight.hitbox = wallRight.size;
+    var angryColl = enemy.childs[clientID + ":AngryColl"];
+    angryColl.extends["collision"] = Collision(angryColl);
+    angryColl.colour = "rgba(225,164,0,0.3)"
     
-    stage.addChild(wallRight);
-    //--------------------------\\
+    angryColl.collisionEvents["AngryCollColl"] = function (Obj, dir) {
+        
+        if (Obj.ClassType == Enum.ClassType.Player) {
+             console.log("player sseen");
+        }
+    }
     
-    //--------------------------\\
-    var wallLeft = new EmptyObject({
-        position: Vector2.new(canvas.width-10, 0),
-        size: Vector2.new(10, canvas.height)
-    });
-
-    wallLeft.extends["collision"] = Collision(wallLeft);
-    wallLeft.hitbox = wallLeft.size;
+    angryColl.hitbox = angryColl.size;
+    angryColl.collisionActive = false;
     
-    stage.addChild(wallLeft);
-    //---------------------------\\
+    stage.addChild(enemy);    
+           
 }
+*/

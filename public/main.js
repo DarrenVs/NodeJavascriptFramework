@@ -12,12 +12,29 @@ var PHYSICSSETTINGS = {
 var objectCount = 0;
 var replicatedObjectCount = 0;
 var clientID = undefined;
+var clientRoom = undefined;
+var connectionList = {};
 var Game = {};
+
+
+var events = {
+    
+    
+    test: function(arguments) {
+        
+        console.log(arguments);
+    }  
+};
+
+
+
+
+
+
 
 var PhysicsLoop = {};
 
 function updateObject(obj) {
-
     if (obj.update) {
         for (i in obj.update) {
             if (obj.Parent)
@@ -128,6 +145,15 @@ function Stage(properties) {
         return Vector2.subtract( MOUSE.Position, self.position );
     });
     
+    
+    this.getGlobalPos = function( Obj ) {
+        var position = Vector2.new(Obj.position.x, Obj.position.y);
+        
+        if (Obj.Parent != undefined)
+            position = Vector2.add( position, getPos(Obj.Parent))
+            
+        return position;
+    }
 
     this.allChilds = {};
     this.stageID = 0;
@@ -379,14 +405,33 @@ function PackageObject( Obj ) {
 
 var socketio = io.connect(window.location.host);
 
+socketio.on("UpdatePlayerlist", function (data) {
+    
+    connectionList = data;
+    console.log('updated connectionList: ' + data);
+});
+
 socketio.on("IDrequest_to_client", function (data) {
     
-    clientID = data;
+    clientID = data.socketID;
+    clientRoom = data.socketRoom;
     Game[0] = new Stage();
     LoadWorld( Game[0], Enum.Worlds.BattleArena );
     //LoadWorld( Game[0], Enum.Worlds.TestWorld );
     
 });
+
+
+
+socketio.on("event", function (data) {
+    
+    var event = JSON.parse(data);
+    if (data) {
+        for (var i in event) {
+                events[i](event[i]);
+        }
+    }
+})
 
 
 
@@ -472,6 +517,8 @@ var FastSendQue = {
 FastSendSpeed = 30
 nextFastSend = 0;
 
+var EventQue = {};
+
 
 function sendObject(Obj, replicateChildren, FastSend) {
     
@@ -520,6 +567,14 @@ setInterval(function() {
         socketio.emit("object_to_broadcaster", {
             stringifyedObject: stringifyedObjects + "}"
         });
+    }
+    
+    
+	if (stringifyedObjects) {
+       // console.log("Sending..");
+        // emit the object to the server for broadcasting
+        socketio.emit("event", JSON.stringify(EventQue));
+        EventQue = {};
     }
 }, 0)
 
