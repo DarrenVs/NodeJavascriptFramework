@@ -37,6 +37,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         
         //when we spawn a new chunk
         if(-stage.position.y <= totalLevelHeight) {
+            checkIfRightPlayer();
             spawnIntermediateChunk();
             spawnChunk(spawnAbleChunks[Math.floor(Math.random()*spawnAbleChunks.length)]);
         }
@@ -52,6 +53,20 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     stage.addChild(enemy);
     
+    
+    function checkIfRightPlayer() {
+        var lowestIndex = player.creatorID;
+        
+        for (var index in playerList) {
+            if(playerList[index].creatorID < lowestIndex)
+                lowestIndex = playerList[index].creatorID;
+        }
+        
+        if(lowestIndex == player.creatorID) {
+            //console.log("player to choose chunk: " + player.creatorID);
+            //console.log("we will spawn: " + spawnAbleChunks[Math.floor(Math.random()*spawnAbleChunks.length)]);
+        }
+    }
     
     //Level Boundary
     var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
@@ -93,9 +108,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     var totalLevelHeight = canvas.height;
     
-    
-    
-    //this is where all chunks are added to all chunks:
+    //this is where all chunks are added the chunk libary (compressed chunks)
     pushUncompressedChunks("easyChunks", uncompressedChunkLib.easyChunks);
     
     pushNewChunks(chunkLib["easyChunks"]);
@@ -233,6 +246,10 @@ uncompressedChunkLibary.prototype = {
         "110000010000011110000010000011100000010000001100000010000001100100000001001100000000000001100000000000001111000111000111111000111000111100000000000001100000000000001",
         "100000000000001111111000111111100000000000001100000000000001100111111111001100000000000001100000000000001111111000111111100000000000001",
     ],
+    
+    testEnemyChunks : [
+        "100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001",
+    ]
 }
 
 this.chunkLibary = function () {

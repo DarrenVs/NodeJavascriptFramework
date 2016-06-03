@@ -110,6 +110,7 @@ function Player(properties) {
         }
     }
     
+    
     //the speeds for different kind of jumps
     var jumpSpeed = 400;
     
@@ -166,7 +167,6 @@ function Player(properties) {
             self.health--;
         }
     }
-    
     
     this.Die = function() {
         console.log("delete player");
