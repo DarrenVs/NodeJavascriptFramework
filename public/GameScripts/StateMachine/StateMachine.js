@@ -104,7 +104,6 @@ StateMachine = function (_parent, _defaultStateKey, debug) {
     
     //The core logic (should speak for itself)
     _parent.update["statemachine"] = function () {
-console.log(parent.triggered);
         if (defaultKeyActive) {
 
             if (currentState.Reason()) {

@@ -91,8 +91,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
         }
     }
     
-<<<<<<< HEAD
-=======
     //Enemy
     var enemy = new Enemy({
         position: Vector2.new(80, 80),
@@ -103,8 +101,6 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     stage.addChild(enemy);
     
-    
->>>>>>> origin/Game
     function checkIfRightPlayer() {
         var lowestIndex = player.creatorID;
         
