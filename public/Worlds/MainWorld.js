@@ -1,6 +1,6 @@
-Enum.Worlds.BattleArena = Worlds.length;
+Enum.Worlds.MainWorld = Worlds.length;
 
-Worlds[Enum.Worlds.BattleArena] = function( stage ) {
+Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     GameObject( this );
     
     /////////////////////
@@ -16,7 +16,7 @@ Worlds[Enum.Worlds.BattleArena] = function( stage ) {
     
     var highestPlayerPos = canvas.height / 2;
     
-    this.update["BattleArenaUpdate"] = function() {
+    this.update["MainWorldUpdate"] = function() {
         
         if (player == undefined || player.health <= 0) {
             

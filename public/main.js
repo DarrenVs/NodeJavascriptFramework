@@ -414,7 +414,7 @@ socketio.on("IDrequest_to_client", function (data) {
     clientID = data.socketID;
     clientRoom = data.socketRoom;
     Game[0] = new Stage();
-    LoadWorld( Game[0], Enum.Worlds.BattleArena );
+    LoadWorld( Game[0], Enum.Worlds.MainWorld );
     //LoadWorld( Game[0], Enum.Worlds.TestWorld );
     
 });

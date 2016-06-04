@@ -11,7 +11,7 @@ function AutomaticWalk(Parent, walkSpeed) {
     Parent.update["NavigationUpdate"] = function() {
         
         if (Parent.autoWalk) {
-            Parent.velocity.x = Parent.walkSpeed    
+            Parent.velocity.x = Parent.walkSpeed;
         } 
     }
     

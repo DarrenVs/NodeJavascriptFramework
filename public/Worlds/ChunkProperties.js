@@ -50,6 +50,11 @@ var ChunkProperties = {
     
     //loads every chunk in the uncompressedChunkLibary
     startLoadingChunks: function() {
+        
+        //this.tilesXCount = canvas.width / this.tilesXCount;
+        
+        //this.totalLevelHeight = canvas.height;
+        
         for(var i in this.uncompressedChunkLibary) {
             if(typeof this.uncompressedChunkLibary[i] === 'string') {
                 this.chunkLibary[i] = this.uncompressChunk(this.uncompressedChunkLibary[i]);
