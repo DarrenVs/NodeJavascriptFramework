@@ -110,7 +110,6 @@ function Player(properties) {
         }
     }
     
-    
     //the speeds for different kind of jumps
     var jumpSpeed = 400;
     
