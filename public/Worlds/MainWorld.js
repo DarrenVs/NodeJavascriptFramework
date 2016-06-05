@@ -7,6 +7,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---LEVEL SETUP---///
     /////////////////////
     
+    stage.gravity = Vector2.new(0, 5);
+    
     ChunkProperties.tilesXCount = 15;//canvas.width / ChunkProperties.tilesXCount;
     
     ChunkProperties.totalLevelHeight = canvas.height;
@@ -57,8 +59,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     
     //Enemy
-    var enemy = new Enemy({
-        position: Vector2.new(80, 80),
+    var enemy = new EnemyShoot({
+        position: Vector2.new(80, 220),
         size: Vector2.new(20, 20),
         ID: 'enemy',
         colour: "blue"
