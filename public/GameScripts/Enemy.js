@@ -84,7 +84,15 @@ function Enemy(properties) {
     ERight.collisionActive = false;
     ELeft.collisionActive = false; 
     
-    ERight.onCollisionExit["outOfPlaftormRight"] = function () {
-        
-    }
+    ERight.onCollisionExit["outOfPlaftormRight"] = function (Obj) {
+        if (Obj.ClassType == Enum.ClassType.Terrain) {
+            //console.log('leaving platform');
+        }
+    };
+    
+    ELeft.onCollisionExit["outOfPlaftormLeft"] = function (Obj) {
+        if (Obj.ClassType == Enum.ClassType.Terrain) {
+            //console.log('leaving platform');
+        }
+    };
 }
