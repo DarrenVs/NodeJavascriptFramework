@@ -1,0 +1,4 @@
+- Enemy trigger collider
+- Enemy off platform checkers
+- Enemy shoot towards player
+- Animations?
