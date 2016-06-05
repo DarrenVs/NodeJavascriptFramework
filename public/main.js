@@ -19,17 +19,15 @@ var Game = {};
 
 var events = {
     
-    
     test: function(arguments) {
         
         console.log(arguments);
-    }  
+    },
+    
+    sendChunk: function(parameters) {
+        ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
+    },
 };
-
-
-
-
-
 
 
 var PhysicsLoop = {};
@@ -359,7 +357,7 @@ function DrawObject(Parent) {
         ctx.fillStyle = self.Parent.colour;
         ctx.fillRect(-self.Parent.size.x * 0.5, -self.Parent.size.y * 0.5, self.Parent.size.x, self.Parent.size.y);
         
-        if (self.Parent.physicalAppearance) {
+        if (self.Parent.colliderType == Enum.colliderType.box) {
             ctx.beginPath();
             ctx.arc(0,0,self.Parent.physicalAppearanceSize/2,0,2*Math.PI);
             ctx.closePath();
@@ -416,7 +414,7 @@ socketio.on("IDrequest_to_client", function (data) {
     clientID = data.socketID;
     clientRoom = data.socketRoom;
     Game[0] = new Stage();
-    LoadWorld( Game[0], Enum.Worlds.BattleArena );
+    LoadWorld( Game[0], Enum.Worlds.MainWorld );
     //LoadWorld( Game[0], Enum.Worlds.TestWorld );
     
 });
