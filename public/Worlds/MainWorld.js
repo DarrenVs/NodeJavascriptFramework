@@ -7,13 +7,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---LEVEL SETUP---///
     /////////////////////
     
-    ChunkProperties.tilesXCount = 15;//canvas.width / ChunkProperties.tilesXCount;
-    
-    ChunkProperties.totalLevelHeight = canvas.height;
-    
-    //Player:
-    var player;
-    
     var highestPlayerPos = canvas.height / 2;
     
     this.update["MainWorldUpdate"] = function() {
@@ -57,12 +50,12 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     
     //Enemy
-    var enemy = new Enemy({
-        position: Vector2.new(80, 80),
-        size: Vector2.new(20, 20),
-        ID: 'enemy',
-        colour: "blue"
-    });
+    //var enemy = new Enemy({
+    //    position: Vector2.new(80, 80),
+    //    size: Vector2.new(20, 20),
+    //    ID: 'enemy',
+    //    colour: "blue"
+    //});
     
     stage.addChild(enemy);
     
@@ -75,12 +68,11 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         }
         
         if(lowestIndex == player.creatorID) {
-            var parameters = {
+            
+            EventQue["sendChunk"] = {
                 chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
                 stageID: Game[0].ID.substr(Game[0].ID.indexOf(":")+1),
-            };
-            
-            events.sendChunk(parameters);
+            }
         }
     }
     

@@ -10,7 +10,6 @@ function Player(properties) {
     GameObject(this, properties);
     this.extends = {
         physics:Physics(this),
-        //collision:Collision(this),
         extraCollision:ExtraCollision(this),
         tank:Tank(this),
         navigation:AutomaticWalk(this),
@@ -157,9 +156,7 @@ function Player(properties) {
                 self.velocity.y += fallingGravity;
             }
             
-            collisions = {};
-            
-            updateRate++;  
+            updateRate++;
     
             sendObject(self, false, true);
         } else {
@@ -168,7 +165,7 @@ function Player(properties) {
     }
     
     this.Die = function() {
-        console.log("delete player");
+        console.log("player dies");
         
         delete playerList[self.creatorID];
         self.Health = 0;

@@ -17,6 +17,9 @@ var ChunkProperties = {
         //calculate the y Length of this chunk, take its total length and divide it by its width.
         var yLength = (chunkToSpawn.length * chunkToSpawn[0].length) / this.tilesXCount;
         
+        //increase the total level height by the height of this chunk, so we know when to spawn another chunk
+        this.totalLevelHeight -= yLength * this.tileSize;
+        
         for (y = 0; y < yLength; y++)
         {
             for (x = 0; x < this.tilesXCount; x++)
@@ -25,7 +28,7 @@ var ChunkProperties = {
                 
                 var newObject = new Enum.ClassName[this.Tiles[chunkToSpawn[y][x]]]({
                     size: new Vector2.new(this.tileSize, this.tileSize),
-                    position: new Vector2.new(x * this.tileSize + this.tileSize / 2, -y * this.tileSize + this.totalLevelHeight),
+                    position: new Vector2.new(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.totalLevelHeight),
                 })
                 
                 newObject.extends["collision"] = Collision(newObject);
@@ -37,9 +40,6 @@ var ChunkProperties = {
                 Game[stageID].addChild( newObject );
             }
         }
-        
-        //increase the total level height by the height of this chunk, so we know when to spawn another chunk
-        this.totalLevelHeight -= yLength * this.tileSize;
     },
     
     pushToSpawnAble: function(arrayOfChunks) {
@@ -50,10 +50,6 @@ var ChunkProperties = {
     
     //loads every chunk in the uncompressedChunkLibary
     startLoadingChunks: function() {
-        
-        //this.tilesXCount = canvas.width / this.tilesXCount;
-        
-        //this.totalLevelHeight = canvas.height;
         
         for(var i in this.uncompressedChunkLibary) {
             if(typeof this.uncompressedChunkLibary[i] === 'string') {
@@ -102,7 +98,7 @@ var ChunkProperties = {
     
     uncompressedChunkLibary: {
         
-        startLobbyChunk:        "111111111111111100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001111111111111111",
+        startLobbyChunk:        "100000000000001100000000000001100000000000001110000000000011101111111111101100100000001001100010000010001110001000100011111000101000111111100010001111111110000011111111111111111111",
 
         intermediateChunk : "100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001",
 

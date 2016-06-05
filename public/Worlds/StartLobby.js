@@ -1,11 +1,17 @@
 Enum.Worlds.StartLobby = Worlds.length;
 
+var player;
+
 Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     GameObject( this );
     
-    ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.startLobbyChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
+    var self = this;
     
-    var player;
+    ChunkProperties.totalLevelHeight = canvas.height;
+    
+    console.log("startlobby");
+    
+    ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.startLobbyChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
     
     this.update["StartLobbyUpdate"] = function() {
         
@@ -20,8 +26,9 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             stage.addChild( player );
         }
         
-        if(Object.keys(playerList).length > 1) {
-            LoadWorld(Game[0].ID.substr(Game[0].ID.indexOf(":")+1), Enum.Worlds.MainWorld);
+        if(Object.keys(playerList).length > 1 || INPUT_CLICK["82"]) {
+            LoadWorld(stage, Enum.Worlds.MainWorld);
+            delete self.update["StartLobbyUpdate"];
         }
     }
 }
