@@ -48,21 +48,18 @@ function EnemyBase(properties, _self) {
     //---End-trigger-collider----\\
     
     //---Edge-checkers---\\
-    self.addChild(new EmptyObject({
+    EdgeRight = new EmptyObject({
         position: Vector2.new(self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
         ID: "EdgeRight"
-    }));
-    self.addChild(new EmptyObject({
+    });
+    EdgeLeft = new EmptyObject({
         position: Vector2.new(-self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
         ID: "EdgeLeft"
-    }));
-    
-    var EdgeRight = self.childs[clientID + ":EdgeRight"];
-    var EdgeLeft = self.childs[clientID + ":EdgeLeft"];
+    });
     
     EdgeRight.extends = {
         collision: ExtraCollision(EdgeRight)
@@ -90,6 +87,9 @@ function EnemyBase(properties, _self) {
             console.log('leaving platform');
         //}
     };    
+    
+    self.addChild(EdgeRight);
+    self.addChild(EdgeLeft);
     
     /*
     EdgeRight.onCollisionEnter["enter"] = function(Obj, Dir) {console.log("enter"); } 
