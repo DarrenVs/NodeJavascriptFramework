@@ -57,7 +57,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //    colour: "blue"
     //});
     
-    stage.addChild(enemy);
+    //stage.addChild(enemy);
     
     function checkIfRightPlayer() {
         var lowestIndex = player.creatorID;

@@ -25,7 +25,6 @@ var events = {
     },
     
     sendChunk: function(parameters) {
-        console.log("build chunk");
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },
 };

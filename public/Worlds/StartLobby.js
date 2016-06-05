@@ -9,8 +9,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     ChunkProperties.totalLevelHeight = canvas.height;
     
-    console.log("startlobby");
-    
     ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.startLobbyChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
     
     this.update["StartLobbyUpdate"] = function() {
