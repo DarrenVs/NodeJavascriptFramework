@@ -1,3 +1,8 @@
+
+var PhysicsLoop = {};
+
+
+
 // Sub Class
 function Physics(Parent) {
     var Parent = Parent;
@@ -7,8 +12,13 @@ function Physics(Parent) {
     //Parent.friction = 0;
     Parent.velocity = new Vector2.new(0, 0);
     Parent.rotateVelocity = 0;
+    
+    
+    Parent.Anchored = Parent.anchored || false;
+    Parent.Velocity = Parent.velocity || Vector2.new();
 
-    Parent.__defineSetter__('anchored', function() {
+    
+    Parent.__defineGetter__('anchored', function() {
         return Parent.Anchored
     });
     Parent.__defineSetter__('anchored', function(val) {
@@ -20,15 +30,23 @@ function Physics(Parent) {
         else if(!val && PhysicsLoop[Parent.ID] == undefined)
             PhysicsLoop[Parent.ID] = updatePhysics;
     });
-    
-    
-    Parent.anchored = false;
-    
-    
-    if (!Parent.collisionEvents) Parent.collisionEvents = {};
-    Parent.collisionEvents["physics"] = function( Obj, direction, force, distance, canCollide ) {
+    Parent.__defineGetter__('velocity', function() {
+        return Parent.Velocity
+    });
+    Parent.__defineSetter__('velocity', function(val) {
+        Parent.Velocity = val;
         
-        if (canCollide) {
+        if (val.x != 0 || val.y != 0)
+            PhysicsLoop[Parent.ID] = true;
+    });
+    
+    
+    
+    
+    if (!Parent.collisionStay) Parent.collisionStay = {};
+    Parent.collisionStay["physics"] = function( Obj, direction, force, distance, canCollide ) {
+        
+        if (!Parent.anchored && canCollide) {
             Parent.velocity = Vector2.add(
                 Parent.velocity,
                 // +

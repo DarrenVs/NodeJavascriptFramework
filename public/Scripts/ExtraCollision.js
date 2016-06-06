@@ -18,7 +18,7 @@ function ExtraCollision(Parent) {
     
     var oldCollisions = {};
     
-    Parent.collisionEvents["extraCollision"] = function(Obj, direction, force, distance) { 
+    Parent.collisionStay["extraCollision"] = function(Obj, direction, force, distance) { 
         
         currentCollisions[Obj.ID] = { Obj:Obj, direction:direction, force:force, distance:distance};
         

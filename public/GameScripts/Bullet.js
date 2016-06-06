@@ -28,12 +28,12 @@ function Bullet(properties) {
         if (self.lifeTime <= 0)
             self.destroy();
     }
-    this.collisionEvents["explode"] = function( Obj, direction, force, distance, canCollide) {
+    this.collisionEnter["explode"] = function( Obj, direction, force, distance, canCollide) {
         
         if (canCollide) {
             explosion(self.position, self.explodeRadius, self.damage, self.stageID, self.ignoreObjectIDs, self.ID);
             self.destroy();
-            delete self.collisionEvents["explode"]; // To prevent the bullet from making multible explosions in one frame
+            //delete self.collisionEnter["explode"]; // To prevent the bullet from making multible explosions in one frame
         }
     }
 }
@@ -59,7 +59,7 @@ function ExplosionObject(properties) {
     this.alive = 1;
     
     
-    this.collisionEvents["explosion"] = function(Obj) {
+    this.collisionEnter["explosion"] = function(Obj) {
         if (Obj.ClassType == Enum.ClassType.Player && !damagedObjectIDs[Obj.ID]) {
             Obj.health -= self.damage;
             damagedObjectIDs[Obj.ID] = true;

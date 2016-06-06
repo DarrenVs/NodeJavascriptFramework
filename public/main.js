@@ -456,17 +456,13 @@ socketio.on("object_from_broadcaster", function (data) {
 
 
                 /*if (stage.allChilds[ ReplicatedObject.ID ]) {
-
                     for (var i in ReplicatedObject) {
                         stage.allChilds[ ReplicatedObject.ID ][ i ] = ReplicatedObject[ i ];
                     }
-
                 } else if (ReplicatedObject.parentID) {
-
                     var newObject = Enum.ClassName[ ReplicatedObject.constructorName ] ?
                         new Enum.ClassName[ ReplicatedObject.constructorName ](ReplicatedObject) :
                         new EmptyObject(ReplicatedObject);
-
                     stage.addChild(newObject, false);
                 }*/
 
@@ -575,52 +571,3 @@ setInterval(function() {
         EventQue = {};
     }
 }, 0)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
