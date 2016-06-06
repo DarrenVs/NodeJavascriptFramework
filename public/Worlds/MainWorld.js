@@ -8,6 +8,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     /////////////////////
     
     var highestPlayerPos = canvas.height / 2;
+    stage.gravity = Vector2.new(0, 5);
     
     this.update["MainWorldUpdate"] = function() {
         
@@ -48,16 +49,15 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["easyChunks"]);
     
-    
     //Enemy
-    //var enemy = new Enemy({
-    //    position: Vector2.new(80, 80),
-    //    size: Vector2.new(20, 20),
-    //    ID: 'enemy',
-    //    colour: "blue"
-    //});
-    
-    //stage.addChild(enemy);
+    var enemy = new EnemyShoot({
+       position: Vector2.new(80, 80),
+       size: Vector2.new(20, 20),
+       ID: 'enemy',
+       colour: "blue"
+    });
+     console.log("spawned enemy");
+    stage.addChild(enemy);
     
     function checkIfRightPlayer() {
         var lowestIndex = player.creatorID;
