@@ -2,7 +2,10 @@ var ChunkProperties = {
     
     Tiles: {
         0:false, //Air
-        1:Enum.ClassType.Unknown, //Wall
+        1:Enum.ClassType.Unknown,
+        //1:Enum.ClassType.Platform_40x40,
+        //2:Enum.ClassType.Platform_80x80,
+        //3:Enum.ClassType.Platform_120x80,
     },
     
     tilesXCount: 15,
