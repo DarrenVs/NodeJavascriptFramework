@@ -39,10 +39,9 @@ function EnemyBase(properties, _self) {
     
     trigger.collisionEvents["Triggered"] = function (Obj) {
         if (Obj.ClassType == Enum.ClassType.Player) {
-            console.log("GOT TRIGGERED!!!"); 
             self.triggered = true;
-            target = Obj;
-        } //else self.triggered = false;
+            self.target = Obj;
+        } else self.triggered = false;
     }
     
     //---End-trigger-collider----\\

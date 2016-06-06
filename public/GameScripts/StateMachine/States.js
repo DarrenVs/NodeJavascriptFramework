@@ -103,13 +103,6 @@ EnemyStates = {
                 base.returnState = StatesEnum.charge;
                 return false;
             }
-            /*
-            if (!base.parent.triggered){
-                base.returnState = StatesEnum.specialWander;
-                return false;
-            }
-            */
-            
                        
              return true;       
         }
@@ -119,7 +112,8 @@ EnemyStates = {
                     base.parent.position.x + Math.random() * rageIntencity - rageIntencity/2,
                     base.parent.position.y + Math.random() * rageIntencity - rageIntencity/2);
                     
-            timeLeft -= 1*RENDERSETTINGS.deltaTime;
+            timeLeft -= 1;
+            console.log(timeLeft);
         }
         
         this.Leave = function() {
@@ -127,6 +121,7 @@ EnemyStates = {
         }
     },
     
+    //____Idle____
     ChargeGun: function (_attackRange, _chargeSpeed, _chargeCoolDown) {
         this.__proto__ = new State();
         var base = this.__proto__;
@@ -143,6 +138,7 @@ EnemyStates = {
         }
         
         this.Reason = function () {
+            console.log(base.parent.target.position);
             var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
             
             if (STOP) {
@@ -157,17 +153,12 @@ EnemyStates = {
             } else if (typeof(resetCharge) == 'number') {
                 clearInterval(resetCharge);
             }
-            /*
+            
             if (magnitude < attackRange) {
                 base.returnState = StatesEnum.interact;
                 return false;
-            }*/
-            
-            
-            if (INPUT[32]) {
-                base.returnState = StatesEnum.interact;                
-                return false;
             }
+            
             return true;
         }
         
@@ -176,7 +167,7 @@ EnemyStates = {
             base.parent.position = Vector2.subtract(
                 base.parent.position,
                 Vector2.multiply(
-                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.stage.mousePosition)), 
+                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.target.position)), 
                 chargeSpeed)
             );
             
@@ -239,7 +230,7 @@ EnemyStates = {
             base.parent.position = Vector2.subtract(
                 base.parent.position,
                 Vector2.multiply(
-                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.stage.mousePosition)), 
+                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.target.position)), 
                 chargeSpeed)
             );
             
@@ -248,6 +239,7 @@ EnemyStates = {
         this.Leave = function() {
             STOP = false;
             resetCharge = undefined;
+
             return base.Leave();
         }
         
@@ -283,7 +275,7 @@ EnemyStates = {
             var bullet = new Bullet({
                     position: Vector2.add(base.parent.position, Vector2.multiply(base.parent.forward, 1)),
                     size: new Vector2.new(3, 10),
-                    rotation: getObjectRotation(base.parent), //rotation fram this to target
+                    rotation: Vector2.toAngle(Vector2.unit (Vector2.subtract(base.parent.position, base.parent.target.position))), 
                 });
                 base.parent.ignoreObjectIDs[bullet.ID] = true;
                 base.parent.stage.addChild(bullet);
@@ -292,6 +284,11 @@ EnemyStates = {
         
         this.Leave = function() {
             return base.Leave();
+        }
+        
+        this.cancleCharge = function () {
+            STOP = true;
+            base.parent.target = undefined;
         }
     },
 
