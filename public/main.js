@@ -27,14 +27,6 @@ var events = {
 };
 
 
-
-
-
-
-
-var PhysicsLoop = {};
-
-
 function print( arg ) {
     console.log(arg);
 }
@@ -88,16 +80,17 @@ window.addEventListener("load", function () {
     //  Values
     
 
-    ! function drawFrame() {
+    function drawFrame() {
         RENDERSETTINGS.renderTime = Math.min((new Date().getTime() - RENDERSETTINGS.renderDate) * 0.001, 10);
         RENDERSETTINGS.renderDate = new Date().getTime();
         
         RENDERSETTINGS.FPS = 1 / RENDERSETTINGS.renderTime;
+        RENDERSETTINGS.frameCount++;
         
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-        ctx.fillRect(0,0,canvas.width, canvas.height);
-        //ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        //ctx.fillRect(0,0,canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         for (var stageIndex in Game) {
             updateObject(Game[stageIndex]);
@@ -106,18 +99,17 @@ window.addEventListener("load", function () {
                 RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
                 
                 for (var ObjID in PhysicsLoop) {
+                    
+                    delete CollisionLoop[ObjID];
                     updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
                 
-                CollisionGrid.testedObjects = {};
-                for (var index in CollisionGrid.grid) {
-                    
-                    for (var ObjID in CollisionGrid.grid[index]) {
-                        
-                        if (CollisionGrid.testedObjects[ObjID] == undefined) {
-                            CollisionGrid.testedObjects[ObjID] = true;
-                            updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
-                        }
+                if (!(RENDERSETTINGS.frameCount%2)) {
+                    CollisionGrid.testedObjects = {};
+                    for (var ObjID in CollisionLoop) {
+
+                        delete CollisionLoop[ObjID];
+                        updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                     }
                 }
             //}
@@ -128,7 +120,9 @@ window.addEventListener("load", function () {
         INPUT_CLICK = {};
         
         window.requestAnimationFrame(drawFrame);
-    }()
+    }
+    drawFrame();
+    //window.setInterval(drawFrame, (1/30)*1000);
 })
 
 
@@ -147,7 +141,9 @@ function Stage(properties) {
 
     var self = this;
     
-    
+    this.__defineGetter__('mousePosition', function(val) {
+        return Vector2.subtract( MOUSE.Position, self.position );
+    });
     
     GameObject(this, properties);
 
@@ -189,8 +185,10 @@ function getObjectRotation(Obj) {
     
     return Obj.Parent ? Obj.rotation + getObjectRotation(Obj.Parent) : Obj.rotation;
 }
-
-
+function getObjectPosition(Obj) {
+    
+    return Obj.Parent ? Vector2.add(Obj.position, getObjectPosition(Obj.Parent)) : Obj.position;
+}
 
 
 
@@ -254,6 +252,10 @@ function GameObject(Parent, properties, inheritances) {
     })
     
 
+    
+    Parent.__defineGetter__('globalPosition', function() {
+        return getObjectPosition(Parent);
+    })
     
 
 
@@ -355,14 +357,14 @@ function DrawObject(Parent) {
         ctx.fillStyle = self.Parent.colour;
         ctx.fillRect(-self.Parent.size.x * 0.5, -self.Parent.size.y * 0.5, self.Parent.size.x, self.Parent.size.y);
         
-        if (self.Parent.colliderType == Enum.colliderType.circle) {
+        /*if (self.Parent.colliderType == Enum.colliderType.circle) {
             ctx.beginPath();
             ctx.arc(0,0,self.Parent.hitbox.x/2,0,2*Math.PI);
             ctx.closePath();
             ctx.stroke();
         } else if (self.Parent.colliderType == Enum.colliderType.box) {
             ctx.strokeRect(-self.Parent.hitbox.x*.5, -self.Parent.hitbox.y*.5, self.Parent.hitbox.x, self.Parent.hitbox.y);
-        }
+        }*/
     }
 }
 
