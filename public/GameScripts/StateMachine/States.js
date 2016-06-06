@@ -15,10 +15,9 @@ this.State = {
 //----------------------------\\
 
 EnemyStates = {
-    NormalWander: function (_alertRange, _walkSpeed) {
+    NormalWander: function (_walkSpeed) {
         this.__proto__ = new State();
         var base = this.__proto__;
-        var alertRange = _alertRange || 80;
         
         var enemies = [];
         this.Enter = function (_parent) {
@@ -29,7 +28,7 @@ EnemyStates = {
         }
         
         this.Reason = function () {
-            if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) < alertRange) {
+            if (base.parent.triggered) {
                 base.returnState = StatesEnum.alert;
                 return false;
             }
@@ -49,10 +48,9 @@ EnemyStates = {
         }
     },
     
-    AngryWander: function (_alertRange, _walkSpeed) {
+    AngryWander: function (_walkSpeed) {
         this.__proto__ = new State();
         var base = this.__proto__;
-        var alertRange = _alertRange || 80;
         
         var enemies = [];
         this.Enter = function (_parent) {
@@ -63,7 +61,7 @@ EnemyStates = {
         }
         
         this.Reason = function () {
-            if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) < alertRange) {
+            if (base.parent.triggered) {
                 base.returnState = StatesEnum.alert;
                 return false;
             }
@@ -84,12 +82,14 @@ EnemyStates = {
     },
 
     //__alert__
-    Enrage: function (_responseTime, _range) {
+    Enrage: function (_responseTime, _rageIntencity) {
         this.__proto__ = new State();
         var base = this.__proto__;
+        
         var responseTime = _responseTime || 20;
-        var range = _range || 100;
-        var timeLeft = responseTime;    
+        var rageIntencity = _rageIntencity;
+         
+        var timeLeft = responseTime;   
                 
         this.Enter = function (_parent) {
             base.Enter(_parent);
@@ -103,7 +103,7 @@ EnemyStates = {
                 base.returnState = StatesEnum.charge;
                 return false;
             }
-            if (Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition) > range){
+            if (!base.parent.triggered){
                 base.returnState = StatesEnum.specialWander;
                 return false;
             }
@@ -113,10 +113,10 @@ EnemyStates = {
         
         this.Act = function () {
                 base.parent.position = Vector2.new(
-                    base.parent.position.x + Math.random() * 4 - 2,
-                    base.parent.position.y + Math.random() * 4 - 2);
+                    base.parent.position.x + Math.random() * rageIntencity - rageIntencity/2,
+                    base.parent.position.y + Math.random() * rageIntencity - rageIntencity/2);
                     
-            timeLeft -= 0.2;
+            timeLeft -= 1*RENDERSETTINGS.deltaTime;
         }
         
         this.Leave = function() {
@@ -125,24 +125,36 @@ EnemyStates = {
     },
     
     //____Idle____
-    Charge: function (_range, _attackRange, _attackSpeed) {
+    Charge: function (_attackRange, _chargeSpeed, _chargeCoolDown) {
         
         this.__proto__ = new State();
         var base = this.__proto__;
-        var range = _range || 180;
+        
         var attackRange = _attackRange || 20;
-        var attackSpeed = _attackSpeed || 5;
+        var chargeSpeed = _chargeSpeed || 5;
+        var chargeCooldown = _chargeCoolDown || 5;
+        var resetCharge = undefined;
+        var STOP = false;
         
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            parent.colour = "yellow";
+            parent.colour = "red";
         }
         
         this.Reason = function () {
-            var magnitude = Vector2.magnitude(this.parent.position, base.parent.stage.mousePosition);
-            if (magnitude > range){
+            var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
+            
+            if (STOP) {
                 base.returnState = StatesEnum.specialWander;
                 return false;
+            }
+            
+            if (!base.parent.triggered) {  
+                if (typeof(resetCharge) != 'undefined') {
+                    setTimeout(cancleCharge, chargeCooldown);
+                }
+            } else if (typeof(resetCharge) == 'number') {
+                clearInterval(resetCharge);
             }
             
             if (magnitude < attackRange) {
@@ -158,13 +170,20 @@ EnemyStates = {
                 base.parent.position,
                 Vector2.multiply(
                     Vector2.unit (Vector2.subtract(base.parent.position, base.parent.stage.mousePosition)), 
-                attackSpeed)
+                chargeSpeed)
             );
             
         }
         
         this.Leave = function() {
+            STOP = false;
+            resetCharge = undefined;
             return base.Leave();
+        }
+        
+        this.cancleCharge = function () {
+            STOP = true;
+            base.parent.target = undefined;
         }
     },
 
@@ -176,7 +195,7 @@ EnemyStates = {
         
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            _parent.colour = "orange";
+            _parent.colour = "black";
             deltDamage = false;
         }
         
