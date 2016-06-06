@@ -41,4 +41,6 @@ var Enum = {
             PlayerJumpSpriteSheet: newImage("Images/PlayerJump-SpriteSheet.png"),
         }
     },
+    
+    SpawnAbleChunks: [],
 }

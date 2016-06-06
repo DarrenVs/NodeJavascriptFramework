@@ -33,7 +33,7 @@ EnemyStates = {
                 return false;
             }
             
-                    
+                               
             return true;
         }
         
@@ -65,8 +65,8 @@ EnemyStates = {
                 base.returnState = StatesEnum.alert;
                 return false;
             }
-            
-                    
+                
+           
             return true;
         }
         
@@ -103,11 +103,8 @@ EnemyStates = {
                 base.returnState = StatesEnum.charge;
                 return false;
             }
-            if (!base.parent.triggered){
-                base.returnState = StatesEnum.specialWander;
-                return false;
-            }
-            
+           
+                       
              return true;       
         }
         
@@ -125,6 +122,73 @@ EnemyStates = {
     },
     
     //____Idle____
+    ChargeGun: function (_attackRange, _chargeSpeed, _chargeCoolDown) {
+        this.__proto__ = new State();
+        var base = this.__proto__;
+        
+        var attackRange = _attackRange || 20;
+        var chargeSpeed = _chargeSpeed || 5;
+        var chargeCooldown = _chargeCoolDown || 5;
+        var resetCharge = undefined;
+        var STOP = false;
+        
+        this.Enter = function (_parent) {
+            base.Enter(_parent);
+            parent.colour = "red";
+        }
+        
+        this.Reason = function () {
+            var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
+            
+            if (STOP) {
+                base.returnState = StatesEnum.specialWander;
+                return false;
+            }
+            
+            if (!base.parent.triggered) {  
+                if (typeof(resetCharge) != 'undefined') {
+                    setTimeout(cancleCharge, chargeCooldown);
+                }
+            } else if (typeof(resetCharge) == 'number') {
+                clearInterval(resetCharge);
+            }
+            /*
+            if (magnitude < attackRange) {
+                base.returnState = StatesEnum.interact;
+                return false;
+            }*/
+            
+            
+            if (INPUT[32]) {
+                base.returnState = StatesEnum.interact;                
+                return false;
+            }
+            return true;
+        }
+        
+        this.Act = function () {
+            
+            base.parent.position = Vector2.subtract(
+                base.parent.position,
+                Vector2.multiply(
+                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.stage.mousePosition)), 
+                chargeSpeed)
+            );
+            
+        }
+        
+        this.Leave = function() {
+            STOP = false;
+            resetCharge = undefined;
+            return base.Leave();
+        }
+        
+        this.cancleCharge = function () {
+            STOP = true;
+            base.parent.target = undefined;
+        }
+    },
+
     Charge: function (_attackRange, _chargeSpeed, _chargeCoolDown) {
         
         this.__proto__ = new State();
@@ -161,6 +225,7 @@ EnemyStates = {
                 base.returnState = StatesEnum.interact;
                 return false;
             }
+            
             return true;
         }
         
@@ -178,6 +243,52 @@ EnemyStates = {
         this.Leave = function() {
             STOP = false;
             resetCharge = undefined;
+<<<<<<< HEAD
+=======
+            return base.Leave();
+        }
+        
+        this.cancleCharge = function () {
+            STOP = true;
+            base.parent.target = undefined;
+        }
+    },
+    
+    Shoot: function () {
+        this.__proto__ = new State();
+        var base = this.__proto__;
+        var deltDamage = false;
+        
+        this.Enter = function (_parent) {
+            base.Enter(_parent);
+            _parent.colour = "black";
+            deltDamage = false;
+        }
+        
+        this.Reason = function () {
+            if (deltDamage) {    
+                //!if hit 
+                base.returnState = StatesEnum.charge;
+                //else
+                base.returnState = StatesEnum.AngryWander; 
+                                    
+                return false;
+            } return true;
+        }
+        
+        this.Act = function () {
+            var bullet = new Bullet({
+                    position: Vector2.add(base.parent.position, Vector2.multiply(base.parent.forward, 1)),
+                    size: new Vector2.new(3, 10),
+                    rotation: getObjectRotation(base.parent), //rotation fram this to target
+                });
+                base.parent.ignoreObjectIDs[bullet.ID] = true;
+                base.parent.stage.addChild(bullet);
+            deltDamage = true;
+        }
+        
+        this.Leave = function() {
+>>>>>>> 882ea2c1ea63a122173d65866f8d38eb22636814
             return base.Leave();
         }
         
