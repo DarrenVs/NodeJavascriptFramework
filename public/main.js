@@ -14,25 +14,31 @@ var replicatedObjectCount = 0;
 var clientID = undefined;
 var clientRoom = undefined;
 var connectionList = {};
+var playerList = {};
 var Game = {};
 
 
 var events = {
     
+    
     test: function(arguments) {
         
         console.log(arguments);
     },
-    
+
     sendChunk: function(parameters) {
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },
 };
 
 
-var PhysicsLoop = {};
+function print( arg ) {
+    console.log(arg);
+}
+
 
 function updateObject(obj) {
+
     if (obj.update) {
         for (i in obj.update) {
             if (obj.Parent)
@@ -68,11 +74,8 @@ window.addEventListener("load", function () {
     (window.onresize = function() {
         
         console.log("resize");
-        //canvas.width = window.innerWidth;
-        //canvas.height = window.innerHeight;
-        
-        canvas.width = 600;
-        canvas.height = 960;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     })();
     
     
@@ -82,33 +85,39 @@ window.addEventListener("load", function () {
     //  Values
     
 
-    ! function drawFrame() {
+    function drawFrame() {
         RENDERSETTINGS.renderTime = Math.min((new Date().getTime() - RENDERSETTINGS.renderDate) * 0.001, 10);
         RENDERSETTINGS.renderDate = new Date().getTime();
         
         RENDERSETTINGS.FPS = 1 / RENDERSETTINGS.renderTime;
+        RENDERSETTINGS.frameCount++;
         
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-        ctx.fillRect(0,0,canvas.width, canvas.height);
-        //ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        //ctx.fillRect(0,0,canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         for (var stageIndex in Game) {
             updateObject(Game[stageIndex]);
-            for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
+            //for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
                 
-                RENDERSETTINGS.deltaTime = Math.min(RENDERSETTINGS.renderTime - i, 1/60);
+                RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
                 
                 for (var ObjID in PhysicsLoop) {
+                    
+                    delete CollisionLoop[ObjID];
                     updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
                 
-                for (var index in CollisionGrid.grid) {
-                    
-                    for (var ObjID in CollisionGrid.grid[index])
+                if (!(RENDERSETTINGS.frameCount%2)) {
+                    CollisionGrid.testedObjects = {};
+                    for (var ObjID in CollisionLoop) {
+
+                        delete CollisionLoop[ObjID];
                         updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
+                    }
                 }
-            }
+            //}
         }
         
         
@@ -116,7 +125,9 @@ window.addEventListener("load", function () {
         INPUT_CLICK = {};
         
         window.requestAnimationFrame(drawFrame);
-    }()
+    }
+    drawFrame();
+    //window.setInterval(drawFrame, (1/30)*1000);
 })
 
 
@@ -135,16 +146,11 @@ function Stage(properties) {
 
     var self = this;
     
-    
-    GameObject(this, properties);
-    
-    
     this.__defineGetter__('mousePosition', function(val) {
         return Vector2.subtract( MOUSE.Position, self.position );
     });
-    
-    
-    this.getGlobalPos = function( Obj ) {
+
+     this.getGlobalPos = function( Obj ) {
         var position = Vector2.new(Obj.position.x, Obj.position.y);
         
         if (Obj.Parent != undefined)
@@ -152,6 +158,8 @@ function Stage(properties) {
             
         return position;
     }
+
+    GameObject(this, properties);
 
     this.allChilds = {};
     this.stageID = 0;
@@ -191,8 +199,10 @@ function getObjectRotation(Obj) {
     
     return Obj.Parent ? Obj.rotation + getObjectRotation(Obj.Parent) : Obj.rotation;
 }
-
-
+function getObjectPosition(Obj) {
+    
+    return Obj.Parent ? Vector2.add(Obj.position, getObjectPosition(Obj.Parent)) : Obj.position;
+}
 
 
 
@@ -256,6 +266,10 @@ function GameObject(Parent, properties, inheritances) {
     })
     
 
+    
+    Parent.__defineGetter__('globalPosition', function() {
+        return getObjectPosition(Parent);
+    })
     
 
 
@@ -357,12 +371,14 @@ function DrawObject(Parent) {
         ctx.fillStyle = self.Parent.colour;
         ctx.fillRect(-self.Parent.size.x * 0.5, -self.Parent.size.y * 0.5, self.Parent.size.x, self.Parent.size.y);
         
-        if (self.Parent.colliderType == Enum.colliderType.box) {
+        /*if (self.Parent.colliderType == Enum.colliderType.circle) {
             ctx.beginPath();
-            ctx.arc(0,0,self.Parent.physicalAppearanceSize/2,0,2*Math.PI);
+            ctx.arc(0,0,self.Parent.hitbox.x/2,0,2*Math.PI);
             ctx.closePath();
             ctx.stroke();
-        }
+        } else if (self.Parent.colliderType == Enum.colliderType.box) {
+            ctx.strokeRect(-self.Parent.hitbox.x*.5, -self.Parent.hitbox.y*.5, self.Parent.hitbox.x, self.Parent.hitbox.y);
+        }*/
     }
 }
 
@@ -405,8 +421,8 @@ var socketio = io.connect(window.location.host);
 
 socketio.on("UpdatePlayerlist", function (data) {
     
-    connectionList = data;
-    console.log('updated connectionList: ' + data);
+    playerList = data;
+    console.log('updated playerlist: ' + data);
 });
 
 socketio.on("IDrequest_to_client", function (data) {
@@ -415,8 +431,6 @@ socketio.on("IDrequest_to_client", function (data) {
     clientRoom = data.socketRoom;
     Game[0] = new Stage();
     LoadWorld( Game[0], Enum.Worlds.StartLobby );
-    //LoadWorld( Game[0], Enum.Worlds.TestWorld );
-    
 });
 
 
@@ -571,3 +585,28 @@ setInterval(function() {
         EventQue = {};
     }
 }, 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

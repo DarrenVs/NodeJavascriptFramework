@@ -85,7 +85,7 @@ function Player(properties) {
     
     var wallJumpDirection = 0;
     
-    this.collisionEvents["PlayerCollision"] = function(Obj, Dir) {
+    this.collisionStay["PlayerCollision"] = function(Obj, Dir) {
         if (Obj.ClassType == Enum.ClassType.IntermediatePlatform && Obj.position.y < self.position.y) {
             self.position.y -= 40; 
         }

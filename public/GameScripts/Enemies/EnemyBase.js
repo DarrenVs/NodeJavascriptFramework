@@ -37,11 +37,17 @@ function EnemyBase(properties, _self) {
     trigger.hitbox = trigger.size;
     trigger.collisionActive = false;
     
-    trigger.collisionEvents["Triggered"] = function (Obj) {
+    trigger.collisionEnter["Triggered"] = function (Obj) {
         if (Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
-        } else self.triggered = false;
+        } 
+    }
+    trigger.collisionExit["notTriggered"] = function (Obj) {
+        if (Obj.ClassType == Enum.ClassType.Player) {
+            self.triggered = false;
+            self.target = undefined;
+        } 
     }
     
     //---End-trigger-collider----\\

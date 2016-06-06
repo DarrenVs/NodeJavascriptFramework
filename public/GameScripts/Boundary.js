@@ -22,7 +22,7 @@ function Boundary(properties) {
         self.velocity.y = -self.stage.getGlobalPos(self.stage).y + canvas.height - yOffSet * 5;
     }
     
-    this.collisionEvents["outOfBounds"] = function(Obj) {
+    this.collisionStay["outOfBounds"] = function(Obj) {
         console.log(Obj.ID + " died, Out of Bounds");
         
         if(Obj.health != undefined) {
