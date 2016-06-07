@@ -94,6 +94,7 @@ function Player(properties) {
                 Obj.collisionActive = true;
             } else if(Math.round(Dir.y) == 1) {
                 Obj.collisionActive = false;
+                self.position.y -= 40;
                 console.log("under");
             }
         }

@@ -12,6 +12,8 @@ function IntermediatePlatform(properties) {
     self.ClassType = Enum.ClassType.IntermediatePlatform;
     self.colliderType = Enum.colliderType.box;
     
+    self.anchored = true;
+    
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
     this.collisionStay["IntermediatePlatformStay"] = function(Obj, Dir) {
@@ -23,7 +25,8 @@ function IntermediatePlatform(properties) {
                 self.collisionActive = true;
             } else if(Math.round(Dir.y) == -1) {
                 self.collisionActive = false;
-                console.log("under");
+                Obj.position.y += 4500;
+                console.log("under me");
             }
         }
     }
