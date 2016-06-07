@@ -17,9 +17,11 @@ function AutomaticWalk(Parent, walkSpeed) {
     
     if (!Parent.collisionEvents) Parent.collisionEvents = {};
     
-    Parent.collisionStay["TurnAround"] = function(Obj, Dir) { 
+    Parent.collisionEnter["TurnAround"] = function(Obj, Dir) { 
+        console.log(Parent.collisionDirection);
         
-        if(Dir.x != 0) {
+        if(Math.round(Parent.collisionDirection.x) != 0) {
+           // console.log("turn around@", Obj); 
             Parent.walkSpeed *= -1;
         }
     }

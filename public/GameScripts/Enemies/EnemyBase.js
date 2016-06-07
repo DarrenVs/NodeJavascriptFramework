@@ -17,6 +17,7 @@ function EnemyBase(properties, _self) {
         AI: new StateMachine(self, StatesEnum.wander, true)
     }
     
+    self.anchored = false;
     self.hitbox = self.size;
     self.ClassType = Enum.ClassType.Enemy;
     
