@@ -99,27 +99,26 @@ function Collision(Parent) {
     Parent.collisionCount = 0;
     Parent.collisionDirection = Vector2.new();
     Parent.lastCollisionDirection = Vector2.new();
+    Parent.priorityCollisionDirection = Vector2.new();
+    Parent.priorityCollisionDepth = 0;
     Parent.collisionDepth = 0;
     Parent.collisionUpdates = 0;
     
     
     Parent.collisionStay["collision"] = function( Obj, direction, force, distance, canCollide ) {
         
-        if (!Parent.anchored && Parent.collisionActive && canCollide) {
+        if (!Parent.anchored && Parent.collisionActive && canCollide && CheckCollision(Parent, Obj, RENDERSETTINGS.deltaTime)) {
+            
             Parent.position = Vector2.add(
                 Parent.position,
                 // +
                 Vector2.multiply(
                     direction,
                     // *
-                    distance// * force
+                    distance * force
                 )
             );
         }
-    }
-    Parent.collisionExit["collision"] = function( Obj, direction, force, distance, canCollide ) {
-        
-        console.log("exiting: " + Obj.ClassType)
     }
     
     
@@ -130,6 +129,9 @@ function Collision(Parent) {
 function updateCollision( Obj1, deltaTime ) {
     
     if (Obj1) {
+        
+        Obj1.priorityCollisionDirection = Vector2.new();
+        Obj1.priorityCollisionDepth = 0;
         
         for (var grid in Obj1.oldGrids) {
             for (var Obj2ID in CollisionGrid.grid[ grid ]) {
@@ -144,63 +146,63 @@ function updateCollision( Obj1, deltaTime ) {
                     if (Obj1.ID != Obj2ID && Obj2.extends.collision != undefined) {
 
                         if (CheckCollision(Obj1, Obj2, deltaTime)) {
-                            
-                            
-                            Obj1.collisionUpdates = 0;
-                            for (var Obj2ID in Obj1.collisions) {
-
-                                if (Obj1.collisions[Obj2ID].lifeTime == 3) {
-
-                                    for (i in Obj1.collisionEnter)
-                                        Obj1.collisionEnter[i](
-                                            Obj1.collisions[Obj2ID].Obj,        // The object with collision
-                                            Obj1.collisions[Obj2ID].direction,  // Direction away from the object
-                                            Obj1.collisions[Obj2ID].force,      // Force on the ojbect
-                                            Obj1.collisions[Obj2ID].distance,   // Distance inside the object
-                                            Obj1.collisions[Obj2ID].canCollide  // Can Collide?
-                                        );
-                                }
-
-
-                                if (Obj1.collisions[Obj2ID].lifeTime > 0) {
-
-                                    for (i in Obj1.collisionStay)
-                                        Obj1.collisionStay[i](
-                                            Obj1.collisions[Obj2ID].Obj,        // The object with collision
-                                            Obj1.collisions[Obj2ID].direction,  // Direction away from the object
-                                            Obj1.collisions[Obj2ID].force,      // Force on the ojbect
-                                            Obj1.collisions[Obj2ID].distance,   // Distance inside the object
-                                            Obj1.collisions[Obj2ID].canCollide  // Can Collide?
-                                        );
-                                }
-
-
-                                if (Obj1.collisions[Obj2ID].lifeTime-- <= 0) {
-
-                                    for (i in Obj1.collisionExit)
-                                        Obj1.collisionExit[i](
-                                            Obj1.collisions[Obj2ID].Obj,        // The object with collision
-                                            Obj1.collisions[Obj2ID].direction,  // Direction away from the object
-                                            Obj1.collisions[Obj2ID].force,      // Force on the ojbect
-                                            Obj1.collisions[Obj2ID].distance,   // Distance inside the object
-                                            Obj1.collisions[Obj2ID].canCollide  // Can Collide?
-                                        );
-
-                                    Obj1.collisionDirection = Vector2.subtract(Obj1.collisionDirection, Obj1.collisions[Obj2ID].direction);
-                                    Obj1.collisionDepth -= Obj1.collisions[Obj2ID].distance;
-                                    Obj1.collisionCount--;
-                                    delete Obj1.collisions[Obj2ID];
-                                }
-
-                                Obj1.collisionUpdates++;
-                            }
-                            
-                            CheckCollision(Obj2, Obj1, deltaTime);
+                            //CheckCollision(Obj2, Obj1, deltaTime);
                         }
                     }
                 }
             }
         }
+        
+        Obj1.collisionUpdates = 0;
+        for (var Obj2ID in Obj1.collisions) {
+            if (Obj1.collisions[Obj2ID].lifeTime == 3) {
+
+                 for (i in Obj1.collisionEnter)
+                     Obj1.collisionEnter[i](
+                         Obj1.collisions[Obj2ID].Obj, // The object with collision
+                         Obj1.collisions[Obj2ID].direction, // Direction away from the object
+                         Obj1.collisions[Obj2ID].force, // Force on the ojbect
+                         Obj1.collisions[Obj2ID].distance, // Distance inside the object
+                         Obj1.collisions[Obj2ID].canCollide, // Can Collide?
+                         Obj1.collisions[Obj2ID].collisionFrames // Amount of frames with collision
+                     );
+             }
+
+
+             if (Obj1.collisions[Obj2ID].lifeTime >= 2) {
+
+                 for (i in Obj1.collisionStay)
+                     Obj1.collisionStay[i](
+                         Obj1.collisions[Obj2ID].Obj, // The object with collision
+                         Obj1.collisions[Obj2ID].direction, // Direction away from the object
+                         Obj1.collisions[Obj2ID].force, // Force on the ojbect
+                         Obj1.collisions[Obj2ID].distance, // Distance inside the object
+                         Obj1.collisions[Obj2ID].canCollide, // Can Collide?
+                         Obj1.collisions[Obj2ID].collisionFrames // Amount of frames with collision
+                     );
+             }
+
+
+             if (Obj1.collisions[Obj2ID].lifeTime-- <= 0) {
+
+                 for (i in Obj1.collisionExit)
+                     Obj1.collisionExit[i](
+                         Obj1.collisions[Obj2ID].Obj, // The object with collision
+                         Obj1.collisions[Obj2ID].direction, // Direction away from the object
+                         Obj1.collisions[Obj2ID].force, // Force on the ojbect
+                         Obj1.collisions[Obj2ID].distance, // Distance inside the object
+                         Obj1.collisions[Obj2ID].canCollide, // Can Collide?
+                         Obj1.collisions[Obj2ID].collisionFrames // Amount of frames with collision
+                     );
+
+                 Obj1.collisionDirection = Vector2.subtract(Obj1.CollisionDirection, Obj1.collisions[Obj2ID].direction);
+                 Obj1.CollisionDepth -= Obj1.collisions[Obj2ID].distance;
+                 Obj1.collisionCount--;
+                 delete Obj1.collisions[Obj2ID];
+             }
+
+             Obj1.collisionUpdates++;
+         }
     }
 }
 
@@ -248,42 +250,54 @@ function CheckCollision( Obj1, Obj2, deltaTime ) {
             
             
             if (Obj1.collisions[Obj2.ID]) {
-                Obj1.collisionDirection = Vector2.subtract(Obj1.collisionDirection, Obj1.collisions[Obj2.ID].direction);
-                Obj1.collisionDepth -= Obj1.collisions[Obj2.ID].distance;
+                Obj1.CollisionDirection = Vector2.subtract(Obj1.CollisionDirection, Obj1.collisions[Obj2.ID].direction);
+                Obj1.CollisionDepth -= Obj1.collisions[Obj2.ID].distance;
             } else
                 Obj1.collisionCount++;
-            Obj1.collisionDirection = Vector2.add(Obj1.collisionDirection, direction);
-            Obj1.collisionDepth += distance;
+            Obj1.CollisionDirection = Vector2.add(Obj1.CollisionDirection, direction);
+            Obj1.CollisionDepth += distance;
             Obj1.lastCollisionDirection = direction;
             
             Obj1.collisions[Obj2.ID] = {
+                collisionFrames: Obj1.collisions[Obj2.ID] == undefined ? 1 : Obj1.collisions[Obj2.ID].collisionFrames + 1,
                 lifeTime: Obj1.collisions[Obj2.ID] == undefined ? 3 : (Obj1.collisions[Obj2.ID].lifeTime > 2 ? Obj1.collisions[Obj2.ID].lifeTime : 2),
                 Obj: Obj2,
                 direction: direction,
-                distance: distance,
+                distance: Math.ceil(distance * 100) / 100,
                 force: force,
                 canCollide: canCollide,
             };
             
+            if (Obj1.collisions[Obj2.ID].distance > Obj1.priorityCollisionDepth) {
+                Obj1.priorityCollisionDepth = Obj1.collisions[Obj2.ID].distance;
+                Obj1.priorityCollisionDirection = Obj1.collisions[Obj2.ID].direction;
+            }
+            
             
             
             if (Obj2.collisions[Obj1.ID]) {
-                Obj2.collisionDirection = Vector2.subtract(Obj1.collisionDirection, Obj2.collisions[Obj1.ID].direction);
-                Obj2.collisionDepth -= Obj2.collisions[Obj1.ID].distance;
+                Obj2.CollisionDirection = Vector2.subtract(Obj1.CollisionDirection, Obj2.collisions[Obj1.ID].direction);
+                Obj2.CollisionDepth -= Obj2.collisions[Obj1.ID].distance;
             } else
                 Obj2.collisionCount++;
-            Obj2.collisionDirection = Vector2.add(Obj1.collisionDirection, Vector2.multiply( direction, -1 ));
-            Obj2.collisionDepth += distance;
+            Obj2.CollisionDirection = Vector2.add(Obj1.CollisionDirection, Vector2.multiply( direction, -1 ));
+            Obj2.CollisionDepth += distance;
             Obj1.lastCollisionDirection = Vector2.multiply( direction, -1 );
             
             Obj2.collisions[Obj1.ID] = {
+                collisionFrames: Obj2.collisions[Obj1.ID] == undefined ? 1 : Obj2.collisions[Obj1.ID].collisionFrames + 1,
                 lifeTime: Obj2.collisions[Obj1.ID] == undefined ? 3 : (Obj2.collisions[Obj1.ID].lifeTime > 2 ? Obj2.collisions[Obj1.ID].lifeTime : 2),
                 Obj: Obj1,
                 direction: Vector2.multiply( direction, -1 ),
-                distance: distance,
+                distance: Math.ceil(distance * 100) / 100,
                 force: -force + 1,
                 canCollide: canCollide,
             };
+            
+            if (Obj2.collisions[Obj1.ID].distance > Obj2.priorityCollisionDepth) {
+                Obj2.priorityCollisionDepth = Obj2.collisions[Obj1.ID].distance;
+                Obj2.priorityCollisionDirection = Obj2.collisions[Obj1.ID].direction;
+            }
             
             
             
@@ -353,42 +367,54 @@ function CheckCollision( Obj1, Obj2, deltaTime ) {
             
             
             if (Obj1.collisions[Obj2.ID]) {
-                Obj1.collisionDirection = Vector2.subtract(Obj1.collisionDirection, Obj1.collisions[Obj2.ID].direction);
-                Obj1.collisionDepth -= Obj1.collisions[Obj2.ID].distance;
+                Obj1.CollisionDirection = Vector2.subtract(Obj1.CollisionDirection, Obj1.collisions[Obj2.ID].direction);
+                Obj1.CollisionDepth -= Obj1.collisions[Obj2.ID].distance;
             } else
                 Obj1.collisionCount++;
-            Obj1.collisionDirection = Vector2.add(Obj1.collisionDirection, Vector2.directions[ edges[ direction ] ]);
-            Obj1.collisionDepth += distance[ edges[ direction ]];
+            Obj1.CollisionDirection = Vector2.add(Obj1.CollisionDirection, Vector2.directions[ edges[ direction ] ]);
+            Obj1.CollisionDepth += distance[ edges[ direction ]];
             Obj1.lastCollisionDirection = Vector2.directions[ edges[ direction ] ];
             
             Obj1.collisions[Obj2.ID] = {
+                collisionFrames: Obj1.collisions[Obj2.ID] == undefined ? 1 : Obj1.collisions[Obj2.ID].collisionFrames + 1,
                 lifeTime: Obj1.collisions[Obj2.ID] == undefined ? 3 : (Obj1.collisions[Obj2.ID].lifeTime > 2 ? Obj1.collisions[Obj2.ID].lifeTime : 2),
                 Obj: Obj2,
                 direction: Vector2.directions[ edges[ direction ] ],
-                distance: distance[ edges[ direction ]],
+                distance: Math.ceil(distance[ edges[ direction ]] * 100) / 100,
                 force: force,
                 canCollide: canCollide,
             };
             
+            if (Obj1.collisions[Obj2.ID].distance > Obj1.priorityCollisionDepth) {
+                Obj1.priorityCollisionDepth = Obj1.collisions[Obj2.ID].distance;
+                Obj1.priorityCollisionDirection = Obj1.collisions[Obj2.ID].direction;
+            }
+            
             
             
             if (Obj2.collisions[Obj1.ID]) {
-                Obj2.collisionDirection = Vector2.subtract(Obj2.collisionDirection, Obj2.collisions[Obj1.ID].direction);
-                Obj2.collisionDepth -= Obj2.collisions[Obj1.ID].distance;
+                Obj2.CollisionDirection = Vector2.subtract(Obj2.CollisionDirection, Obj2.collisions[Obj1.ID].direction);
+                Obj2.CollisionDepth -= Obj2.collisions[Obj1.ID].distance;
             } else
                 Obj2.collisionCount++;
-            Obj2.collisionDirection = Vector2.add(Obj2.collisionDirection, Vector2.multiply( Vector2.directions[ edges[ direction ] ], -1 ));
-            Obj2.collisionDepth += distance[ edges[ direction ]];
+            Obj2.CollisionDirection = Vector2.add(Obj2.CollisionDirection, Vector2.multiply( Vector2.directions[ edges[ direction ] ], -1 ));
+            Obj2.CollisionDepth += distance[ edges[ direction ]];
             Obj1.lastCollisionDirection = Vector2.multiply( Vector2.directions[ edges[ direction ] ], -1 );
             
             Obj2.collisions[Obj1.ID] = {
+                collisionFrames: Obj2.collisions[Obj1.ID] == undefined ? 1 : Obj2.collisions[Obj1.ID].collisionFrames + 1,
                 lifeTime: Obj2.collisions[Obj1.ID] == undefined ? 3 : (Obj2.collisions[Obj1.ID].lifeTime > 2 ? Obj2.collisions[Obj1.ID].lifeTime : 2),
                 Obj: Obj1,
                 direction: Vector2.multiply( Vector2.directions[ edges[ direction ] ], -1 ),
-                distance: distance[ edges[ direction ]],
+                distance: Math.ceil(distance[ edges[ direction ]] * 100) / 100,
                 force: -force + 1,
                 canCollide: canCollide,
             };
+            
+            if (Obj2.collisions[Obj1.ID].distance > Obj2.priorityCollisionDepth) {
+                Obj2.priorityCollisionDepth = Obj2.collisions[Obj1.ID].distance;
+                Obj2.priorityCollisionDirection = Obj2.collisions[Obj1.ID].direction;
+            }
             
             
             return true;

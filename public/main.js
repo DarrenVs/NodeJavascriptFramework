@@ -98,13 +98,15 @@ window.addEventListener("load", function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         for (var stageIndex in Game) {
+            
+            updateObject(Game[stageIndex]);
             //for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
                 
                 RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
                 
                 for (var ObjID in PhysicsLoop) {
                     
-                    delete CollisionLoop[ObjID];
+                    delete PhysicsLoop[ObjID];
                     updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
                 
@@ -117,7 +119,6 @@ window.addEventListener("load", function () {
                     }
                 //}
             //}
-            updateObject(Game[stageIndex]);
         }
         
         
@@ -411,7 +412,6 @@ var socketio = io.connect(window.location.host);
 socketio.on("UpdatePlayerlist", function (data) {
     
     playerList = data;
-    console.log('updated playerlist: ' + data);
 });
 
 socketio.on("IDrequest_to_client", function (data) {

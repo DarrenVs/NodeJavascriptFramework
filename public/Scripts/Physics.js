@@ -30,6 +30,8 @@ function Physics(Parent) {
         else if(!val && PhysicsLoop[Parent.ID] == undefined)
             PhysicsLoop[Parent.ID] = updatePhysics;
     });
+    Parent.anchored = Parent.anchored;
+    
     Parent.__defineGetter__('velocity', function() {
         return Parent.Velocity
     });
@@ -44,22 +46,39 @@ function Physics(Parent) {
     
     
     if (!Parent.collisionStay) Parent.collisionStay = {};
-    Parent.collisionStay["physics"] = function( Obj, direction, force, distance, canCollide ) {
+    Parent.collisionStay["physics"] = function( Obj, direction, force, distance, canCollide, collisionFrames ) {
         
-        if (!Parent.anchored && canCollide && Parent.collisionUpdates == 0) {
+        if (!Parent.anchored && canCollide && collisionFrames >= 3) {
             Parent.velocity = Vector2.subtract(
                 Parent.velocity,
                 // +
-                //Vector2.multiply(
+                Vector2.multiply(
                     Vector2.multiply(
-                        Parent.lastCollisionDirection,
+                        direction,
                         // *
                         Vector2.new( Math.abs(Parent.velocity.x), Math.abs(Parent.velocity.y) )
-                    )//,
+                    ),
                     // *
-                    //force
-                //)
+                    -force
+                )
             )
+            
+            if (Obj.velocity) {
+                
+                Obj.velocity = Vector2.add(
+                    Obj.velocity,
+                    // +
+                    Vector2.multiply(
+                        Vector2.multiply(
+                            direction,
+                            // *
+                            Vector2.new( Math.abs(Parent.velocity.x), Math.abs(Parent.velocity.y) )
+                        ),
+                        // *
+                        -force
+                    )
+                )
+            }
         }
     }
     
