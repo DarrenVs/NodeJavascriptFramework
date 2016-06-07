@@ -14,9 +14,17 @@ function IntermediatePlatform(properties) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    this.collisionEnter["IntermediatePlatformStay"] = function(Obj, Dir) {
-        if (Obj.ClassType == Enum.ClassType.Player && Obj.position.y < self.position.y) {
-            self.position.y -= 40; 
+    this.collisionStay["IntermediatePlatformStay"] = function(Obj, Dir) {
+        console.log("yo");
+        
+        if (Obj.ClassType == Enum.ClassType.Player) {
+            if(Math.round(Dir.y) == 1) {
+                console.log("above");
+                self.collisionActive = true;
+            } else if(Math.round(Dir.y) == -1) {
+                self.collisionActive = false;
+                console.log("under");
+            }
         }
     }
 }

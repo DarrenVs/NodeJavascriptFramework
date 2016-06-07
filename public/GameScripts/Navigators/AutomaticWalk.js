@@ -18,10 +18,9 @@ function AutomaticWalk(Parent, walkSpeed) {
     if (!Parent.collisionEvents) Parent.collisionEvents = {};
     
     Parent.collisionEnter["TurnAround"] = function(Obj, Dir) { 
-        console.log(Parent.collisionDirection);
         
-        if(Math.round(Parent.collisionDirection.x) != 0) {
-           // console.log("turn around@", Obj); 
+        if(Math.abs(Obj.position.y - Parent.position.y) < Parent.hitbox.y/2) {
+            
             Parent.walkSpeed *= -1;
         }
     }

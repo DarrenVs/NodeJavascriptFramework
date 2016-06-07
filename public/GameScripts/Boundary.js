@@ -7,7 +7,6 @@ function Boundary(properties) {
     
     this.extends = {
         collision:Collision(this),
-        physics:Physics(this),
     };
     
     self.ClassType = Enum.ClassType.Boundary;
@@ -19,10 +18,10 @@ function Boundary(properties) {
     var yOffSet = 10;
     
     this.update["boundaryUpdate"] = function() {
-        self.velocity.y = -self.stage.getGlobalPos(self.stage).y + canvas.height - yOffSet * 5;
+        self.position.y = -self.stage.getGlobalPos(self.stage).y + canvas.height - yOffSet * 5;
     }
     
-    this.collisionStay["outOfBounds"] = function(Obj) {
+    this.collisionEnter["outOfBounds"] = function(Obj) {
         console.log(Obj.ID + " died, Out of Bounds");
         
         if(Obj.health != undefined) {
