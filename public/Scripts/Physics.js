@@ -10,8 +10,8 @@ function Physics(Parent) {
     
     //Parent.bouncyness = 0;
     //Parent.friction = 0;
-    Parent.velocity = new Vector2.new(0, 0);
-    Parent.rotateVelocity = 0;
+    Parent.velocity = Parent.velocity || new Vector2.new(0, 0);
+    Parent.rotateVelocity = Parent.rotateVelocity || 0;
     
     
     Parent.Anchored = Parent.anchored || false;
@@ -46,13 +46,13 @@ function Physics(Parent) {
     if (!Parent.collisionStay) Parent.collisionStay = {};
     Parent.collisionStay["physics"] = function( Obj, direction, force, distance, canCollide ) {
         
-        if (!Parent.anchored && canCollide) {
-            Parent.velocity = Vector2.add(
+        if (!Parent.anchored && canCollide && Parent.collisionUpdates == 0) {
+            Parent.velocity = Vector2.subtract(
                 Parent.velocity,
                 // +
                 //Vector2.multiply(
                     Vector2.multiply(
-                        direction,
+                        Parent.lastCollisionDirection,
                         // *
                         Vector2.new( Math.abs(Parent.velocity.x), Math.abs(Parent.velocity.y) )
                     )//,
