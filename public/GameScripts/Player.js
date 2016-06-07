@@ -59,6 +59,8 @@ function Player(properties) {
     
     this.DrawObject.currentAnimation = "run";
     
+    this.anchored = false;
+    
     this.size = Vector2.new(60, 60);
     
     this.colliderType = Enum.colliderType.box;
