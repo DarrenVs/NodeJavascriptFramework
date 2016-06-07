@@ -15,6 +15,8 @@ function IntermediatePlatform(properties) {
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
     this.collisionEnter["IntermediatePlatformStay"] = function(Obj, Dir) {
-        
+        if (Obj.ClassType == Enum.ClassType.Player && Obj.position.y < self.position.y) {
+            self.position.y -= 40; 
+        }
     }
 }
