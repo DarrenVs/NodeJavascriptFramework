@@ -136,7 +136,7 @@ function Player(properties) {
             //if (Vector2.magnitude(self.velocity) > 0.)
             self.rotation = Vector2.toAngle(self.velocity);
 
-            self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.stage.position)) - self.rotation;
+            self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.Parent.globalPosition)) - self.rotation;
 
             
             self.stage.position.y = self.position.y * -1 + canvas.height/2;// = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));

@@ -11,6 +11,7 @@ function Sprite( Parent, Img, sprites, animations ) {
         sprites[i].cellSize = Vector2.new( sprites[i].size.x / sprites[i].columns, sprites[i].size.y / sprites[i].rows );
     
     
+    var currentAnimation;
     //this.currentAnimation = "";
     this.__defineGetter__('currentAnimation', function() {
         return currentAnimation;

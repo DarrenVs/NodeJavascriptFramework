@@ -18,7 +18,7 @@ var playerList = {};
 var Game = {};
 
 
-var events = {
+var events = events || {
     
     
     test: function(arguments) {
@@ -98,7 +98,6 @@ window.addEventListener("load", function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         for (var stageIndex in Game) {
-            updateObject(Game[stageIndex]);
             //for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
                 
                 RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
@@ -109,15 +108,16 @@ window.addEventListener("load", function () {
                     updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                 }
                 
-                if (!(RENDERSETTINGS.frameCount%2)) {
+                //if (!(RENDERSETTINGS.frameCount%2)) {
                     CollisionGrid.testedObjects = {};
                     for (var ObjID in CollisionLoop) {
 
                         delete CollisionLoop[ObjID];
                         updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
                     }
-                }
+                //}
             //}
+            updateObject(Game[stageIndex]);
         }
         
         
@@ -166,17 +166,6 @@ function Stage(properties) {
     
     
     this.addChild(new Background());
-    
-    this.update["cameraMovement"] = function() {
-        
-        if (self.creatorID == clientID) {
-            
-            /*if (INPUT["38"]) self.position = Vector2.add(self.position, new Vector2.new(0,-1));
-            if (INPUT["40"]) self.position = Vector2.add(self.position, new Vector2.new(0,1));
-            if (INPUT["37"]) self.position = Vector2.add(self.position, new Vector2.new(-1,0));
-            if (INPUT["39"]) self.position = Vector2.add(self.position, new Vector2.new(1,0));*/
-        }
-    }
 }
 
 function updateStage(Obj) {
@@ -201,7 +190,7 @@ function getObjectRotation(Obj) {
 }
 function getObjectPosition(Obj) {
     
-    return Obj.Parent ? Vector2.add(Obj.position, getObjectPosition(Obj.Parent)) : Obj.position;
+    return ((Obj.Parent && Obj.Parent != Obj.stage) ? Vector2.add(Obj.position, getObjectPosition(Obj.Parent)) : Obj.position);
 }
 
 
@@ -460,7 +449,6 @@ socketio.on("object_from_broadcaster", function (data) {
             //Check if the client owns the stage or if the sender is the same person as the recever
             if (ReplicatedObject.stageID != undefined && ReplicatedObject.creatorID != clientID)// && Game[ReplicatedObject.stageID])
             {
-
 
                 if (!Game[ReplicatedObject.stageID])
                     Game[ReplicatedObject.stageID] = new Stage();
