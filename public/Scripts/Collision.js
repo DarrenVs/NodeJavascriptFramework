@@ -38,6 +38,18 @@ var CollisionGrid = {
 }
 
 
+function addToCollisionLoop( Obj ) {
+    
+    CollisionLoop[Obj.ID] = true;
+    
+    for (var i in Obj.childs) {
+        
+        if (Obj.childs[i].extends.collision)
+            addToCollisionLoop(Obj.childs[i]);
+    }
+}
+
+
 //Sub Class
 function Collision(Parent) {
     var Parent = Parent;
@@ -71,7 +83,7 @@ function Collision(Parent) {
             
             Parent.oldGrids = newGrids;
             
-            CollisionLoop[Parent.ID] = true;
+            addToCollisionLoop( Parent );
         }
     })
     Parent.__defineGetter__('position', function(val) {
