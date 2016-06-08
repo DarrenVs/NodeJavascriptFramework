@@ -7,7 +7,7 @@ function Player(properties) {
     GameObject(this, properties);
     this.extends = {
         physics:Physics(this),
-        extraCollision:ExtraCollision(this),
+        collision:Collision(this),
         tank:Tank(this),
         navigation:AutomaticWalk(this),
     };

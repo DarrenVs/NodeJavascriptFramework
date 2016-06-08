@@ -7,7 +7,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---LEVEL SETUP---///
     /////////////////////
 
-    ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.enemyTestChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
+    //ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.enemyTestChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
     
     var highestPlayerPos = canvas.height / 2;
     stage.gravity = Vector2.new(0, 5);
