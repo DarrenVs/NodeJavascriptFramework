@@ -88,26 +88,16 @@ function Player(properties) {
     var wallJumpDirection = 0;
     
     this.collisionStay["PlayerCollision"] = function(Obj, Dir) {
-        if (Obj.ClassType == Enum.ClassType.IntermediatePlatform) {
-            if(Math.round(Dir.y) == -1) {
-                console.log("above");
-                Obj.collisionActive = true;
-            } else if(Math.round(Dir.y) == 1) {
-                Obj.collisionActive = false;
-                self.position.y -= 40;
-                console.log("under");
-            }
-        }
         
         //if we are standing on the ground 
-        if(Dir.y == -1) {
+        if(Math.round(Dir.y) == -1) {
             
             wallJumpDirection = 0;
             grounded = true;
             self.autoWalk = true;
             canDoubleJump = true;
             
-        } else if(Dir.x != 0) {//else if the collision comes from left or right (wall jumping)
+        } else if(Math.round(Dir.x) != 0) {//else if the collision comes from left or right (wall jumping)
             
             wallJumpDirection = Dir.x;
             grounded = false;

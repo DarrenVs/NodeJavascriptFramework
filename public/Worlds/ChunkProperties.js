@@ -2,10 +2,10 @@ var ChunkProperties = {
     
     Tiles: {
         0:false, //Air
-        1:Enum.ClassType.Unknown,
-        //1:Enum.ClassType.Platform_40x40,
-        //2:Enum.ClassType.Platform_80x80,
-        //3:Enum.ClassType.Platform_120x80,
+        //1:Enum.ClassType.Unknown,
+        1:Enum.ClassType.Platform_40x40,
+        2:Enum.ClassType.Platform_80x80,
+        3:Enum.ClassType.Platform_120x80,
     },
     
     tilesXCount: 15,
@@ -102,6 +102,9 @@ var ChunkProperties = {
     uncompressedChunkLibary: {
         
         startLobbyChunk:        "100000000000001100000000000001100000000000001110000000000011101111111111101100100000001001100010000010001110001000100011111000101000111111100010001111111110000011111111111111111111",
+        
+        
+        enemyTestChunk: "10294u1257129751-9515-75",
 
         intermediateChunk : "100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001",
 

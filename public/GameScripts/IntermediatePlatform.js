@@ -16,18 +16,18 @@ function IntermediatePlatform(properties) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    this.collisionStay["IntermediatePlatformStay"] = function(Obj, Dir) {
-        console.log("yo");
+    for(var i in playerList) {
+        self.ignoreObjectIDs[playerList[i].ID] = true;
+    }
+    
+    this.collisionStay["IntermediatePlatformStay"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
         
-        if (Obj.ClassType == Enum.ClassType.Player) {
-            if(Math.round(Dir.y) == 1) {
-                console.log("above");
-                self.collisionActive = true;
-            } else if(Math.round(Dir.y) == -1) {
-                self.collisionActive = false;
-                Obj.position.y += 4500;
-                console.log("under me");
+        if(self.ignoreObjectIDs[Obj.ID] != undefined && collisionFrames >= 2){
+            
+            if (Obj.position.y < self.position.y && !CheckCollision(Obj, self, RENDERSETTINGS.deltaTime)) {
+                
+                delete self.ignoreObjectIDs[Obj.ID];
             }
-        }
+        } 
     }
 }
