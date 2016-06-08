@@ -16,8 +16,17 @@ function IntermediatePlatform(properties) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
+    for(var i in playerList) {
+        self.ignoreObjectIDs[playerList[i]] = true;
+    }
+    
     this.collisionStay["IntermediatePlatformStay"] = function(Obj, Dir) {
         console.log("yo");
+        
+        for(var i in self.ignoreObjectIDs) {
+            if(self.ignoreObjectIDs[i] == Obj.ID)
+                delete self.ignoreObjectIDs[Obj.ID];
+        }
         
         if (Obj.ClassType == Enum.ClassType.Player) {
             if(Math.round(Dir.y) == 1) {
