@@ -18,10 +18,10 @@ function Boundary(properties) {
     var yOffSet = 10;
     
     this.update["boundaryUpdate"] = function() {
-        self.position.y = -self.stage.getGlobalPos(self.stage).y + canvas.height - yOffSet * 5;
+        self.position = Vector2.new( self.position.x, -self.stage.getGlobalPos(self.stage).y + canvas.height - yOffSet * 5 );
     }
     
-    this.collisionEnter["outOfBounds"] = function(Obj) {
+    this.collisionStay["outOfBounds"] = function(Obj) {
         console.log(Obj.ID + " died, Out of Bounds");
         
         if(Obj.health != undefined) {

@@ -1,8 +1,5 @@
 Enum.ClassName[Enum.ClassType.Player] = Player;
 
-
-var playerList = {}
-
 // BaseClass
 function Player(properties) {
     this.health = 100;

@@ -4,6 +4,18 @@ Enum.ClassName[Enum.ClassType.Platform_40x40] = Platform_40x40;
 function Platform_40x40(properties) {
     var self = this;
     GameObject(this, properties);
+     
+    this.extends = {
+        collision:Collision(this),
+    };
+    
+    self.size = Vector2.new(40, 40);
+    
+    self.colliderType = Enum.colliderType.box;
+    
+    self.hitbox = Vector2.new(self.size.x, self.size.y);
+    
+    self.anchored = true;
     
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -26,12 +38,4 @@ function Platform_40x40(properties) {
             },
         }
     );
-    
-    self.size = Vector2.new(40, 40);
-    
-    self.colliderType = Enum.colliderType.box;
-    
-    self.hitbox = Vector2.new(self.size.x, self.size.y);
-    
-    
 }

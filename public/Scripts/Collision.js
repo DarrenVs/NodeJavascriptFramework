@@ -1,7 +1,7 @@
 CollisionLoop = {};
 
 var CollisionGrid = {
-    gridSize: Vector2.new(14000, 10040),
+    gridSize: Vector2.new(10000, 100),
     grid:{
         
     },
