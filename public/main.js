@@ -420,7 +420,6 @@ socketio.on("IDrequest_to_client", function (data) {
     clientRoom = data.socketRoom;
     Game[0] = new Stage();
     LoadWorld( Game[0], Enum.Worlds.StartLobby );
-    LoadWorld( Game[0], Enum.Worlds.Parallax );
 });
 
 

@@ -29,8 +29,6 @@ var Enum = {
 
         EnemyWalk: 11,
         EnemyShoot: 12,
-        
-        ParallaxObject: 13,
     },
     
     ClassName: {
@@ -73,24 +71,12 @@ var Enum = {
             Background: newImage("Images/Backgrounds/background.png"),
             
             //parallax
-            ParallaxObjects: {
-                //layer 1
-                1: [
-                    newImage("Images/Backgrounds/Parallax/parallax_1.png"),
-                    newImage("Images/Backgrounds/Parallax/parallax_2.png"),
-                ],
-                //layer 2
-                2: [
-                    newImage("Images/Backgrounds/Parallax/parallax_3.png"),
-                    newImage("Images/Backgrounds/Parallax/parallax_4.png"),
-                ],
-                //layer 3
-                3: [
-                    newImage("Images/Backgrounds/Parallax/parallax_5.png"),
-                    newImage("Images/Backgrounds/Parallax/parallax_6.png"),
-                ]
-            
-            },
+            parallax_1: newImage("Images/Backgrounds/Parallax/parallax_1.png"),
+            parallax_2: newImage("Images/Backgrounds/Parallax/parallax_2.png"),
+            parallax_3: newImage("Images/Backgrounds/Parallax/parallax_3.png"),
+            parallax_4: newImage("Images/Backgrounds/Parallax/parallax_4.png"),
+            parallax_5: newImage("Images/Backgrounds/Parallax/parallax_5.png"),
+            parallax_6: newImage("Images/Backgrounds/Parallax/parallax_6.png"),
         }
     },
     
