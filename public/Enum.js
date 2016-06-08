@@ -22,10 +22,13 @@ var Enum = {
         Boundary: 5,
         IntermediatePlatform: 6,
         MousePointer: 7,
-        
+
         Platform_40x40: 8,
         Platform_80x80: 9,
         Platform_80x120: 10,
+
+        EnemyWalk: 11,
+        EnemyShoot: 12,
     },
     
     ClassName: {

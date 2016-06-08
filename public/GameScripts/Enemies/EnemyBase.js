@@ -8,13 +8,13 @@ function EnemyBase(properties, _self) {
     self.health = 100;
     self.triggered = false;
     self.target = undefined; 
-    
+
     GameObject(self, properties);
     
     self.extends = {
         physics: Physics(self),
         collision:Collision(self),
-        AI: new StateMachine(self, StatesEnum.wander, true)
+        AI: new StateMachine(self, StatesEnum.wander, null, null, true)
     }
     
     self.anchored = false;
@@ -72,6 +72,8 @@ function EnemyBase(properties, _self) {
     }
     EdgeLeft.extends = {
         collision: ExtraCollision(EdgeLeft)
+
+        zet het naar nomrmale collision en dverander naar de goeie namen
     }
     
     EdgeRight.hitbox = EdgeRight.size;

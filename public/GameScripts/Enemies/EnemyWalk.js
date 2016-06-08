@@ -1,7 +1,13 @@
+Enum.ClassName[Enum.ClassType.EnemyWalk] = EnemyWalk;
+
 function EnemyWalk(properties) {
     this.__proto__ = new EnemyBase(properties, this);
     var self = this;
-       
+
+    self.size = Vector2.new(20, 20);
+    self.hitbox = self.size;
+    self.colour = 'blue';
+
     var sm = self.extends.AI;
     sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(350));
     sm.AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(500));
@@ -9,5 +15,4 @@ function EnemyWalk(properties) {
     sm.AddState(StatesEnum.charge, new EnemyStates.Charge(20, 5, 5));
     sm.AddState(StatesEnum.interact, new EnemyStates.Attack());
     
-    console.log(Game[0]);
 }

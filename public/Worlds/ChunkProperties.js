@@ -6,6 +6,9 @@ var ChunkProperties = {
         1:Enum.ClassType.Platform_40x40,
         2:Enum.ClassType.Platform_80x80,
         3:Enum.ClassType.Platform_120x80,
+
+        4:Enum.ClassType.EnemyWalk,
+        5:Enum.ClassType.EnemyShoot,
     },
     
     tilesXCount: 15,
@@ -38,7 +41,7 @@ var ChunkProperties = {
                 newObject.anchored = true;
                 
                 newObject.colliderType = Enum.colliderType.box;
-                newObject.hitbox = Vector2.new(newObject.size.x, newObject.size.y);
+                newObject.hitbox = Vector2.new(newObject.size.x, newObject.size.y); 
                 
                 Game[stageID].addChild( newObject );
             }
@@ -103,8 +106,7 @@ var ChunkProperties = {
         
         startLobbyChunk:        "100000000000001100000000000001100000000000001110000000000011101111111111101100100000001001100010000010001110001000100011111000101000111111100010001111111110000011111111111111111111",
         
-        
-        enemyTestChunk: "10294u1257129751-9515-75",
+        enemyTestChunk: "100000000000001100400000004001101111000111101100000000000001100000050000001100000111000001",
 
         intermediateChunk : "100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001",
 

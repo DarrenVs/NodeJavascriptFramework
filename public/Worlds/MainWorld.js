@@ -6,6 +6,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     /////////////////////
     //---LEVEL SETUP---///
     /////////////////////
+
+    ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.enemyTestChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
     
     var highestPlayerPos = canvas.height / 2;
     stage.gravity = Vector2.new(0, 5);
@@ -51,13 +53,9 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     //Enemy
     /*
-    var enemy = new EnemyShoot({
-       position: Vector2.new(80, 80),
-       size: Vector2.new(20, 20),
-       ID: 'enemy',
-       colour: "blue"
+    var enemy = new EnemyWalk({
+        position: Vector2.new(80    , 100)
     });
-     console.log("spawned enemy");
     stage.addChild(enemy);
     */
     
