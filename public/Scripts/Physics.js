@@ -3,6 +3,18 @@ var PhysicsLoop = {};
 
 
 
+function addToPhysicsLoop( Obj ) {
+    
+    PhysicsLoop[Obj.ID] = true;
+    
+    for (var i in Obj.childs) {
+        
+        if (Obj.childs[i].extends.physics)
+            addToPhysicsLoop(Obj.childs[i]);
+    }
+}
+
+
 // Sub Class
 function Physics(Parent) {
     var Parent = Parent;
@@ -39,7 +51,7 @@ function Physics(Parent) {
         Parent.Velocity = val;
         
         if (val.x != 0 || val.y != 0)
-            PhysicsLoop[Parent.ID] = true;
+            addToPhysicsLoop( Parent );
     });
     
     
