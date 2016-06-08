@@ -7,7 +7,15 @@ StatesEnum = {
     specialWander: 'specialWander',
     alert: 'alert',
     charge: 'charge',
-    interact: 'interact'
+    interact: 'interact',
+
+    jump: 'jump',
+    extraJump: 'extraJump',
+    specialJump: 'specialJump',
+    slide: 'slide',
+    stun: 'stun',
+
+    inAir: 'inAir',
 }
 //((((((((((((()))))))))))))\\
 
@@ -118,18 +126,23 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
                     currentState = states[newStateKey];
                 } else {
                     if (debug)
-                        console.log("switching to defualt");
+                        console.log("switching to defualt: " + defaultStateKey);
                     currentState = states[defaultStateKey];
                 }
                 currentState.Enter(parent);
             }
         }
-        if (anyState && anyState.Return()) {
-            console.log("loggin default");
-            var newStateKey = anyState.Return();
-            if (typeof states[newStateKey] != undefined) {
-                currentState = states[newStateKey];
-            } 
+
+        if (anyState) {
+            anyState.Act();
+
+            if (anyState.Return()) {
+                var newStateKey = anyState.Return();
+                if (typeof states == 'number' && typeof states[newStateKey] != undefined) {
+                    currentState = states[newStateKey];
+                    if (debug) console.log("anyState set state to " + newStateKey);
+                } else if (debug) console.log("state given by anyState is not a valid state");
+            }
         }
     }
 }

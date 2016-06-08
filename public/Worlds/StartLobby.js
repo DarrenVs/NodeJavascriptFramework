@@ -7,7 +7,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     var self = this;
 
-    stage.gravity = Vector2.new(0, 5);
+    stage.gravity = Vector2.new(0, 22);
     
     ChunkProperties.totalLevelHeight = canvas.height;
     

@@ -3,16 +3,30 @@ Enum.ClassName[Enum.ClassType.Player] = Player;
 // BaseClass
 function Player(properties) {
     this.health = 100;
+    console.log(PlayerStates);
     
     GameObject(this, properties);
+    var self = this;
+    
     this.extends = {
         physics:Physics(this),
-        extraCollision:ExtraCollision(this),
+        collision:Collision(this),
         tank:Tank(this),
-        navigation:AutomaticWalk(this),
+        navigation:new StateMachine(self, StatesEnum.inAir, 
+            PlayerStates.Setup(self), 
+            PlayerStates.AnyState(self), 
+            true),
     };
     
-    var self = this;
+    //-----Adding the states!!!-----\\
+    var sm = this.extends.navigation;
+    sm.AddState(StatesEnum.wander, new PlayerStates.Walk());
+    sm.AddState(StatesEnum.jump, new PlayerStates.Jump());
+    sm.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
+    sm.AddState(StatesEnum.slide, new PlayerStates.Slide());
+    sm.AddState(StatesEnum.stun, new PlayerStates.Stagger());
+    sm.AddState(StatesEnum.inAir, new PlayerStates.InAir());
+
     
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -121,7 +135,7 @@ function Player(properties) {
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {
         if (self.creatorID == clientID) {
-            
+            /*
             //jumping
             if (INPUT_CLICK["32"]) {
                 
@@ -155,6 +169,8 @@ function Player(properties) {
             updateRate++;
     
             sendObject(self, false, true);
+            */
+
         } else {
             self.health--;
         }

@@ -22,15 +22,13 @@ function EnemyBase(properties, _self) {
     self.ClassType = Enum.ClassType.Enemy;
     
     //---Trigger-collider----\\
-    self.addChild(new EmptyObject({
+    var trigger = new EmptyObject({
        position: Vector2.new(),
        size: Vector2.new(600, 10),
        colour: "rgba(0, 0, 0, 0.2)", 
        ID: "Trigger",
-    }));
-    
-    var trigger = self.childs[clientID + ":Trigger"];
-    
+    });
+        
     trigger.extends = {
         collision:Collision(trigger),
     }
@@ -39,18 +37,22 @@ function EnemyBase(properties, _self) {
     trigger.collisionActive = false;
     
     trigger.collisionEnter["Triggered"] = function (Obj) {
+        console.log("collisiong with something");
         if (Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
         } 
     }
     trigger.collisionExit["notTriggered"] = function (Obj) {
+        console.log("collisiong with something");
+        
         if (Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = false;
             self.target = undefined;
         } 
     }
     
+    self.addChild(trigger);
     //---End-trigger-collider----\\
     
     //---Edge-checkers---\\
@@ -68,12 +70,10 @@ function EnemyBase(properties, _self) {
     });
     
     EdgeRight.extends = {
-        collision: ExtraCollision(EdgeRight)
+        collision: Collision(EdgeRight)
     }
     EdgeLeft.extends = {
-        collision: ExtraCollision(EdgeLeft)
-
-        zet het naar nomrmale collision en dverander naar de goeie namen
+        collision: Collision(EdgeLeft)
     }
     
     EdgeRight.hitbox = EdgeRight.size;
@@ -84,13 +84,13 @@ function EnemyBase(properties, _self) {
     
     //console.log(EdgeRight.extends);
     //console.log(EdgeLeft.extends);
-    EdgeRight.onCollisionExit["exit"] = function (Obj, Dir) {
+    EdgeRight.collisionExit["exit"] = function (Obj, Dir) {
         //if (Obj.ClassType == Enum.ClassType.Terrain) {
             console.log('leaving platform');
         //}
     };
     
-    EdgeLeft.onCollisionExit["exit"] = function (Obj, Dir) {
+    EdgeLeft.collisionExit["exit"] = function (Obj, Dir) {
         //if (Obj.ClassType == Enum.ClassType.Terrain) {
             console.log('leaving platform');
         //}
