@@ -5,6 +5,18 @@ function Platform_80x120(properties) {
     var self = this;
     GameObject(this, properties);
     
+    this.extends = {
+        collision:Collision(this),
+    };
+    
+    self.size = Vector2.new(80, 120);
+    
+    self.colliderType = Enum.colliderType.box;
+    
+    self.hitbox = Vector2.new(self.size.x, self.size.y);
+    
+    self.anchored = true;
+    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.Platforms_80x120[Math.floor(Math.random() * Enum.Images.Sprites.Platforms_80x120.length)],   //Image

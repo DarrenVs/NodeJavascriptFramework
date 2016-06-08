@@ -34,12 +34,6 @@ var ChunkProperties = {
                     position: new Vector2.new(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.totalLevelHeight),
                 })
                 
-                newObject.extends["collision"] = Collision(newObject);
-                newObject.anchored = true;
-                
-                newObject.colliderType = Enum.colliderType.box;
-                newObject.hitbox = Vector2.new(newObject.size.x, newObject.size.y);
-                
                 Game[stageID].addChild( newObject );
             }
         }

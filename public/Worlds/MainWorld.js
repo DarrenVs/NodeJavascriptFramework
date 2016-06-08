@@ -49,18 +49,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["easyChunks"]);
     
-    //Enemy
-    /*
-    var enemy = new EnemyShoot({
-       position: Vector2.new(80, 80),
-       size: Vector2.new(20, 20),
-       ID: 'enemy',
-       colour: "blue"
-    });
-     console.log("spawned enemy");
-    stage.addChild(enemy);
-    */
-    
     function checkIfRightPlayer() {
         var lowestIndex = player.creatorID;
         
