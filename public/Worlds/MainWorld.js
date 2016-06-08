@@ -85,7 +85,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     })
 
     boundary.extends["collision"] = Collision(boundary);
-    boundary.anchored = true;
+    boundary.collisionActive = false;
                 
     stage.addChild( boundary );
     
