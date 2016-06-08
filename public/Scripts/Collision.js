@@ -107,7 +107,7 @@ function Collision(Parent) {
     
     Parent.collisionStay["collision"] = function( Obj, direction, force, distance, canCollide ) {
         
-        if (!Parent.anchored && Parent.collisionActive && canCollide && CheckCollision(Parent, Obj, RENDERSETTINGS.deltaTime)) {
+        if (!Parent.anchored && Parent.collisionActive && Obj.collisionActive && canCollide && CheckCollision(Parent, Obj, RENDERSETTINGS.deltaTime)) {
             
             Parent.position = Vector2.add(
                 Parent.position,
@@ -298,6 +298,7 @@ function CheckCollision( Obj1, Obj2, deltaTime ) {
                 Obj2.priorityCollisionDepth = Obj2.collisions[Obj1.ID].distance;
                 Obj2.priorityCollisionDirection = Obj2.collisions[Obj1.ID].direction;
             }
+            CollisionLoop[Obj2.ID] = true;
             
             
             
@@ -415,6 +416,7 @@ function CheckCollision( Obj1, Obj2, deltaTime ) {
                 Obj2.priorityCollisionDepth = Obj2.collisions[Obj1.ID].distance;
                 Obj2.priorityCollisionDirection = Obj2.collisions[Obj1.ID].direction;
             }
+            CollisionLoop[Obj2.ID] = true;
             
             
             return true;
