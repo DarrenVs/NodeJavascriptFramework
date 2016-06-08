@@ -72,7 +72,7 @@ State = function () {
 
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
 //STATE MACHINE
-StateMachine = function (_parent, _defaultStateKey, debug) {
+StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
     //This will hold the states with their value
     var states = {};
     //Set default state
@@ -86,7 +86,7 @@ StateMachine = function (_parent, _defaultStateKey, debug) {
     for (key in StatesEnum)
         states[key] = 1;
         
-        
+    if (setup) setup(parent);
     //Add the state if on a spot if it is extended from State (id is a StatesEnum state)
     this.AddState = function (id, state) {
         if (typeof(states[id]) != 'undefined') {        
@@ -122,7 +122,10 @@ StateMachine = function (_parent, _defaultStateKey, debug) {
                 }
                 currentState.Enter(parent);
             }
-        
+        }
+        if (anyState && anyState.Return()) {
+                var newState = anyState.Return();
+                if (states[newStateKey])
         }
     }
 }
