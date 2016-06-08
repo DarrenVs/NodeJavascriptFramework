@@ -38,10 +38,4 @@ function Platform_80x120(properties) {
             },
         }
     );
-    
-    self.size = Vector2.new(80, 120);
-    
-    self.colliderType = Enum.colliderType.box;
-    
-    self.hitbox = Vector2.new(self.size.x, self.size.y);
 }
