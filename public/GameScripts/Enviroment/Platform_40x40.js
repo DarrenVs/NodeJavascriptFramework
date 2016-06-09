@@ -17,13 +17,15 @@ function Platform_40x40(properties) {
     
     self.anchored = true;
     
+    Enum.Images.Sprites.Platforms_40x40[Math.floor(Math.random() * Enum.Images.Sprites.Platforms_40x40.length)];
+    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.Platforms_40x40[Math.floor(Math.random() * Enum.Images.Sprites.Platforms_40x40.length)],   //Image
         {   //Sprites
             platform_40x40: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(40, 40),
+                size: Vector2.new(167, 167),
                 columns: 1,
                 rows: 1,
             },

@@ -54,19 +54,29 @@ var Enum = {
             
             //platforms
             Platforms_40x40: [
-                newImage("Images/Platforms/platform_1_40x40.png"),
-                newImage("Images/Platforms/platform_2_40x40.png"),
-                newImage("Images/Platforms/platform_3_40x40.png")
+                newImage("Images/Platforms/Platforms_40x40/platform_1_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_2_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_3_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_4_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_5_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_6_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_7_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_7_40x40.png")
             ],
             
             Platforms_80x80: [
-                newImage("Images/Platforms/platform_1_80x80.png"),
-                newImage("Images/Platforms/platform_2_80x80.png"),
-                newImage("Images/Platforms/platform_3_80x80.png")
+                newImage("Images/Platforms/Platforms_80x80/platform_1_80x80.png"),
+                newImage("Images/Platforms/Platforms_80x80/platform_2_80x80.png"),
+                newImage("Images/Platforms/Platforms_80x80/platform_3_80x80.png"),
+                newImage("Images/Platforms/Platforms_80x80/platform_4_80x80.png"),
+                newImage("Images/Platforms/Platforms_80x80/platform_5_80x80.png"),
+                newImage("Images/Platforms/Platforms_80x80/platform_6_80x80.png"),
+                newImage("Images/Platforms/Platforms_80x80/platform_7_80x80.png"),
+                newImage("Images/Platforms/Platforms_80x80/platform_8_80x80.png"),
             ],
             
             Platforms_80x120: [
-                newImage("Images/Platforms/platform_1_80x120.png"),
+                newImage("Images/Platforms/Platforms_80x120/platform_1_80x120.png"),
             ],
             
             //background
