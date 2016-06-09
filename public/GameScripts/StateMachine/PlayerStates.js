@@ -28,25 +28,36 @@ PlayerStates = {
         parent.onGround = false;
         parent.extraJumpsLeft = 0;
         parent.autoWalk = true;
+        parent.wall = {};
 
-        parent.collisionEnter["PlayerHitSomething"] = function (Obj, Dir) {
-            if(Math.abs(Obj.position.y - parent.position.y) < parent.hitbox.y/2) {
-                parent.wallHitDir = Dir;
-            }
+        parent.collisionStay["PlayerHitSomething"] = function (Obj, Dir, force, distance, canCollide, collisionFrames ) {
+            if (canCollide) {
 
-            if (Dir.y == -1) {
-                parent.onGround = true;
+            
+                if(collisionFrames >= 3 && Math.round(Dir.x) != 0) {
+                    parent.wallHitDir = Dir;
+                    parent.wall[Obj.ID] = true;
+                }
+
+                if (Dir.y == -1) {
+                    parent.onGround = true;
+                }
             }
         }
 
-        parent.collisionExit["PlayerStopedTouching"] = function (Obj, Dir) {
-            if(Math.abs(Obj.position.y - parent.position.y) < parent.hitbox.y/2) {
-                parent.wallHitDir = 0;
-            }
+        parent.collisionExit["PlayerStopedTouching"] = function (Obj, Dir, force, distance, canCollide ) {
+            
+            if (canCollide) {
+                if (parent.wall[Obj.ID] != undefined)
+                    delete parent.wall[Obj.ID];
+                
+                if (Object.keys(parent.wall).length == 0)
+                    parent.wallHitDir = 0;
 
-            if (Dir.y == -1) {
-                if (parent.collisionCount <= 1) {
-                    parent.onGround = false;
+                if (Dir.y == -1) {
+                    if (parent.collisionCount <= 1) {
+                        parent.onGround = false;
+                    }
                 }
             }
         }
@@ -83,6 +94,8 @@ PlayerStates = {
             base.Enter(_parent);
             base.parent.extraJumpsLeft = amoundOfExtraJumps;
             base.parent.autoWalk = true;
+
+            base.player.DrawObject.animation = "walk";
         }
 
         this.Reason = function () {
@@ -108,6 +121,11 @@ PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
+            base.player.DrawObject.animation = "jump";
+        }
+
+        this.Enter = function (_parent) {
+            base.Enter(_parent);
             base.parent.velocity.y = -jumpStrength;
 
             base.parent.returnState = StatesEnum.inAir;
@@ -126,6 +144,7 @@ PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
+            base.player.DrawObject.animation = "wallJump";            
 
             base.parent.velocity = Vector2.new(
                 jumpSideStrength * base.parent.wallHitDir.x,
@@ -147,10 +166,11 @@ PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
+            base.parent.autoWalk = false;
+            base.player.DrawObject.animation = "inAir";            
         }
 
         this.Reason = function () {
-
             if (base.parent.onGround) {
 
                 base.returnState = StatesEnum.wander;
@@ -171,6 +191,11 @@ PlayerStates = {
             return true;
         }
 
+        this.Leave = function () {
+            base.parent.autoWalk = true;
+            return base.Leave();
+        }
+
     },
     //-----End-inAir-----\\
 
@@ -186,9 +211,12 @@ PlayerStates = {
         this.Enter = function (_parent) {
             base.Enter(_parent);
             base.parent.autoWalk = false;
+
+            base.player.DrawObject.animation = "slide";            
         }
 
         this.Reason = function () {
+
             if (base.parent.onGround) {
                 base.returnState = StatesEnum.wander;
                 return false;
@@ -196,13 +224,14 @@ PlayerStates = {
                 base.returnState = StatesEnum.specialJump;
                 return false;
             } else if (!base.parent.wallHitDir) {
+                base.returnState = StatesEnum.inAir;
                 return false;
             }
             return true;
         }
 
         this.Act = function () {
-            base.parent.velocity.x = 20 * -base.parent.wallHitDir.x;
+            base.parent.velocity.x = 80 * -base.parent.wallHitDir.x;
             base.parent.velocity.y = base.parent.stage.gravity.y * slideSpeed;
         }
 
@@ -218,6 +247,11 @@ PlayerStates = {
 
         var staggerUp = _staggerUp || 4;
         var staggerSide = _staggerSide || 2.5;
+
+        this.Enter = function (_parent) {
+            base.Enter(_parent);
+            base.player.DrawObject.animation = "stagger";
+        }
         
         this.Enter = function (_parent) {
             base.Enter(_parent);
