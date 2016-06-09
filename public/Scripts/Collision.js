@@ -55,6 +55,8 @@ function Collision(Parent) {
     var Parent = Parent;
     var self = this;
     
+    
+    Parent.canCollide = true;
     Parent.colliderType = Parent.colliderType || Enum.colliderType.box;
     Parent.hitbox = Parent.hitbox || Vector2.new(50, 50);
     Parent.mass = Parent.mass || 1;
@@ -375,7 +377,9 @@ function CheckCollision( Obj1, Obj2, deltaTime ) {
             var canCollide = ( !Obj1.ignoreObjectIDs[Obj2.ID]             
                      && !Obj2.ignoreObjectIDs[Obj1.ID]           
                      && !Obj1.ignoreObjectType[Obj2.ClassType]   
-                     && !Obj2.ignoreObjectType[Obj1.ClassType] );
+                     && !Obj2.ignoreObjectType[Obj1.ClassType]
+                     && Obj1.canCollide
+                     && Obj2.canCollide );
             
             
             
