@@ -560,9 +560,9 @@ setInterval(function() {
     }
     
     
-	if (stringifyedObjects) {
-       // console.log("Sending..");
-        // emit the object to the server for broadcasting
+	if (Object.keys(EventQue).length > 0) {
+        
+        // emit the event to the server for broadcasting
         socketio.emit("event", JSON.stringify(EventQue));
         EventQue = {};
     }
