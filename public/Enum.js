@@ -85,17 +85,17 @@ var Enum = {
             //parallax
             ParallaxObjects: {
                 //layer 1
-                1: [
+                2: [
                     newImage("Images/Backgrounds/Parallax/parallax_1.png"),
                     newImage("Images/Backgrounds/Parallax/parallax_2.png"),
                 ],
                 //layer 2
-                2: [
+                3: [
                     newImage("Images/Backgrounds/Parallax/parallax_3.png"),
                     newImage("Images/Backgrounds/Parallax/parallax_4.png"),
                 ],
                 //layer 3
-                3: [
+                4: [
                     newImage("Images/Backgrounds/Parallax/parallax_5.png"),
                     newImage("Images/Backgrounds/Parallax/parallax_6.png"),
                 ]
