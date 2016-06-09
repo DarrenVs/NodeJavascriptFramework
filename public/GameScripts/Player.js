@@ -91,7 +91,7 @@ function Player(properties) {
     this.__defineSetter__('health', function(val) {
         Health = val;
         if (Health <= 0)
-            self.Die();
+            self.die();
     })
     
     var grounded = true;
@@ -178,7 +178,11 @@ function Player(properties) {
         }
     }
     
-    this.Die = function() {
+    this.manualDestroy = function() {
+        self.health = 0;
+    }
+    
+    this.die = function() {
         console.log("player dies");
         
         delete playerList[self.creatorID];

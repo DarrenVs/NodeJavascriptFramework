@@ -26,17 +26,6 @@ Worlds[Enum.Worlds.Parallax] = function( stage ) {
         },
     };
     
-    /*
-                var newObject = new Enum.ClassName[Enum.ClassType.ParallaxObject]({
-                    size: new Vector2.new(1000, 1000),
-                    position: new Vector2.new(Math.random() * canvas.width, spawnYPosition * Math.random()),
-                },
-                stage,
-                2
-            )
-    stage.addChild( newObject );
-    */
-    
     for(var l in layers) {
         for(c = 0; c < layers[l].maxLayerCount; c++) {
             var newObject = new Enum.ClassName[Enum.ClassType.ParallaxObject]({
@@ -51,25 +40,4 @@ Worlds[Enum.Worlds.Parallax] = function( stage ) {
         }
                     
     }
-    
-    /*
-    this.update["ParallaxUpdate"] = function() {
-        
-        if(Math.round(self.stage.getGlobalPos(self.stage).y % spawnDistance) == 0) {
-            if(!alreadySpawned) {
-                
-                for(var i in layers) {
-                    if(layers[i].layerCount <= layers[i].maxLayerCount) {
-                        
-                    }
-                    
-                } 
-                
-                console.log("spawn");
-                alreadySpawned = true;
-            }
-        } else {
-            alreadySpawned = false;
-        }
-    }*/
 }
