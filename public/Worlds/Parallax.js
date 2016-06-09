@@ -15,13 +15,13 @@ Worlds[Enum.Worlds.Parallax] = function( stage ) {
     
     var layers = {
         
-        1: {
+        2: {
             maxLayerCount: 3,
         },
-        2: {
+        3: {
             maxLayerCount: 5,
         },
-        3: {
+        4: {
             maxLayerCount: 10,
         },
     };

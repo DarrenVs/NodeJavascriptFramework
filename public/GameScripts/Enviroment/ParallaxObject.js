@@ -17,7 +17,7 @@ function ParallaxObject(properties, stage, layer) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    self.collisionActive = false;
+    self.canCollide = false;
     
     self.anchored = true;
     
