@@ -82,6 +82,7 @@ io.sockets.on('connection', function(socket) {
 	
 	socket.on('disconnect', function() {
 		delete rooms[currentRoom].Players[socketID];
+		io.sockets.in(currentRoom).emit("UpdatePlayerlist", rooms[currentRoom].Players);
 	});
 	
 	//On client request playerlist

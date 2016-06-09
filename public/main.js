@@ -13,7 +13,7 @@ var objectCount = 0;
 var replicatedObjectCount = 0;
 var clientID = undefined;
 var clientRoom = undefined;
-var playerList = {};
+var connectionList = {};
 var Game = {};
 
 
@@ -269,6 +269,10 @@ function GameObject(Parent, properties, inheritances) {
     
     //Methods\\
     Parent.destroy = function () {
+        
+        for (i in Parent.childs) {
+            Parent.childs[i].destroy();
+        }
 
         for (var oldGrid in Parent.oldGrids) {
             
@@ -397,7 +401,7 @@ var socketio = io.connect(window.location.host);
 
 socketio.on("UpdatePlayerlist", function (data) {
     
-    playerList = data;
+    connectionList = data;
 });
 
 socketio.on("IDrequest_to_client", function (data) {
