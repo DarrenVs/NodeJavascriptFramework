@@ -27,6 +27,7 @@ PlayerStates = {
         parent.wallHitDir = 0;
         parent.onGround = false;
         parent.extraJumpsLeft = 0;
+        parent.amoundOfExtraJumps = 1;
         parent.autoWalk = true;
         parent.wall = {};
 
@@ -88,14 +89,16 @@ PlayerStates = {
 
         var walkSpeed = _walkSpeed || 120;
         var jumpButton = _jumpButton || "32";
-        var amoundOfExtraJumps = _amoundOfExtraJumps || 1;
+        
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.extraJumpsLeft = amoundOfExtraJumps;
+
+            base.parent.amoundOfExtraJumps = _amoundOfExtraJumps || 1;
+            base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;
             base.parent.autoWalk = true;
 
-            base.player.DrawObject.animation = "walk";
+            base.parent.DrawObject.animation = "walk";
         }
 
         this.Reason = function () {
@@ -117,11 +120,11 @@ PlayerStates = {
         this.__proto__ = new State();
         var base = this.__proto__;
 
-        var jumpStrength = _jumpStrength || 600;
+        var jumpStrength = _jumpStrength || 500;
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.player.DrawObject.animation = "jump";
+            base.parent.DrawObject.animation = "jump";
         }
 
         this.Enter = function (_parent) {
@@ -139,12 +142,12 @@ PlayerStates = {
         this.__proto__ = new State();
         var base = this.__proto__;
 
-        var jumpUpStrength = _jumpUpStrength || 800;
-        var jumpSideStrength = _jumpSideStrength || 500;
+        var jumpUpStrength = _jumpUpStrength || 400;
+        var jumpSideStrength = _jumpSideStrength || 400;
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.player.DrawObject.animation = "wallJump";            
+            base.parent.DrawObject.animation = "wallJump";   
 
             base.parent.velocity = Vector2.new(
                 jumpSideStrength * base.parent.wallHitDir.x,
@@ -167,7 +170,7 @@ PlayerStates = {
         this.Enter = function (_parent) {
             base.Enter(_parent);
             base.parent.autoWalk = false;
-            base.player.DrawObject.animation = "inAir";            
+            base.parent.DrawObject.animation = "inAir";     
         }
 
         this.Reason = function () {
@@ -205,14 +208,15 @@ PlayerStates = {
         this.__proto__ = new State();
         var base = this.__proto__;
 
-        var slideSpeed = _slideSpeed || 1.8;
+        var slideSpeed = _slideSpeed || 3;
         var wallJumpButton = _wallJumpButton || "32";
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
             base.parent.autoWalk = false;
+            base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;                     
 
-            base.player.DrawObject.animation = "slide";            
+            base.parent.DrawObject.animation = "slide";            
         }
 
         this.Reason = function () {
@@ -250,7 +254,7 @@ PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.player.DrawObject.animation = "stagger";
+            base.parent.DrawObject.animation = "stagger";
         }
         
         this.Enter = function (_parent) {

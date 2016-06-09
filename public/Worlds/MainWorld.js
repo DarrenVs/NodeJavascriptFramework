@@ -11,6 +11,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     var highestPlayerPos = canvas.height / 2;
     stage.gravity = Vector2.new(0, 22);
+    stage.airDenicty = 0;
     
     this.update["MainWorldUpdate"] = function() {
         
