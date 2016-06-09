@@ -1,9 +1,11 @@
 Enum.ClassName[Enum.ClassType.Player] = Player;
 
+var playerList = {};
+
 // BaseClass
 function Player(properties) {
     this.health = 100;
-    console.log(PlayerStates);
+    //console.log(PlayerStates);
     
     GameObject(this, properties);
     var self = this;

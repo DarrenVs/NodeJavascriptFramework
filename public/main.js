@@ -14,7 +14,6 @@ var replicatedObjectCount = 0;
 var clientID = undefined;
 var clientRoom = undefined;
 var connectionList = {};
-var playerList = {};
 var Game = {};
 
 
@@ -283,6 +282,10 @@ function GameObject(Parent, properties, inheritances) {
     
     //Methods\\
     Parent.destroy = function () {
+        
+        for (i in Parent.childs) {
+            Parent.childs[i].destroy();
+        }
 
         for (var oldGrid in Parent.oldGrids) {
             
@@ -411,7 +414,7 @@ var socketio = io.connect(window.location.host);
 
 socketio.on("UpdatePlayerlist", function (data) {
     
-    playerList = data;
+    connectionList = data;
 });
 
 socketio.on("IDrequest_to_client", function (data) {
@@ -567,9 +570,9 @@ setInterval(function() {
     }
     
     
-	if (stringifyedObjects) {
-       // console.log("Sending..");
-        // emit the object to the server for broadcasting
+	if (Object.keys(EventQue).length > 0) {
+        
+        // emit the event to the server for broadcasting
         socketio.emit("event", JSON.stringify(EventQue));
         EventQue = {};
     }

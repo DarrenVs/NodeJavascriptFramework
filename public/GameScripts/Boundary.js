@@ -22,7 +22,7 @@ function Boundary(properties) {
     }
     
     this.collisionStay["outOfBounds"] = function(Obj) {
-        console.log(Obj.ID + " died, Out of Bounds");
+        //console.log(Obj.ID + " died, Out of Bounds");
         
         if(Obj.health != undefined) {
             Obj.health = 0;
