@@ -136,18 +136,26 @@ function Player(properties) {
             //if (Vector2.magnitude(self.velocity) > 0.)
             self.rotation = Vector2.toAngle(self.velocity);
 
-            self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.Parent.globalPosition)) - self.rotation;
+            self.cannon.rotation = Vector2.toAngle(self.globalPosition, self.stage.mousePosition) - self.rotation;
 
+<<<<<<< HEAD:public/GameScripts/Examples/Player.js
             
             self.stage.position.y = self.position.y * -1 + canvas.height/2;// = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
             self.stage.position.x = self.position.x * -1 + canvas.width/2;
             //self.stage.position = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
+=======
+            self.stage.position = Vector2.add(Vector2.multiply(self.globalPosition,-1), new Vector2.new(canvas.width/2, canvas.height/2));
+>>>>>>> 6c65f58338b4aaec88a219a707e1b99213548589:public/Scripts/Player.js
             
             updateRate++;
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
                 updateRate = 0;
                 var bullet = new Bullet({
+<<<<<<< HEAD:public/GameScripts/Examples/Player.js
                     position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),//self.physicalAppearanceSize/2)),
+=======
+                    position: Vector2.add(self.globalPosition, Vector2.multiply(self.cannon.forward, 5)),
+>>>>>>> 6c65f58338b4aaec88a219a707e1b99213548589:public/Scripts/Player.js
                     size: new Vector2.new(3, 10),
                     rotation: getObjectRotation(self.cannon),
                     //ignoreObjectIDs: {[self.ID]: true}

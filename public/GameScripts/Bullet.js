@@ -39,6 +39,8 @@ function Bullet(properties) {
 }
 
 function ExplosionObject(properties) {
+    var self = this;
+    GameObject(this, properties);
     
     this.extends = {
         "collision": Collision(this),
@@ -46,15 +48,13 @@ function ExplosionObject(properties) {
     this.colliderType = Enum.colliderType.circle;
     this.anchored = true;
     this.mass = 100;
-    this.size = new Vector2.new(300,300);
+    this.size = this.hitbox = new Vector2.new(10,10);
     this.damage = 20;
     var damagedObjectIDs = {};
     this.ignoreObjectType = {
         [Enum.ClassType.Bullet]: true
     }
     
-    var self = this;
-    GameObject(this, properties);
     
     this.alive = 1;
     
