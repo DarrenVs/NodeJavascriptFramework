@@ -91,7 +91,7 @@ PlayerStates = {
        //-----\\
         wallHitColl.collisionEnter["hitGround"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
-                if (dir) parent.wallHitDir = dir.x;
+                if (dir.x) parent.wallHitDir = dir.x;
                 parent.wallsHit++;
             }
         }
@@ -99,6 +99,7 @@ PlayerStates = {
         wallHitColl.collisionExit["hitGround"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
                 parent.wallsHit--;
+                //console.log(parent.wallsHit, " wal exit ", obj);
             }
         }
 
@@ -293,7 +294,7 @@ PlayerStates = {
             base.parent.autoWalk = false;
             base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;                  
 
-            base.parent.DrawObject.animation = "slide";            
+            base.parent.DrawObject.animation = "slide";    
         }
 
         this.Reason = function () {
@@ -303,7 +304,7 @@ PlayerStates = {
             } else if (INPUT_CLICK[wallJumpButton]) {
                 base.returnState = StatesEnum.specialJump;
                 return false;
-            } else if (!base.parent.wallHitDir) {
+            } else if (base.parent.wallsHit <= 0) {
                 base.returnState = StatesEnum.inAir;
                 return false;
             }
@@ -317,7 +318,7 @@ PlayerStates = {
 
         this.Leave = function () {
             base.parent.autoWalk = true;
-            return base.Leave();
+            return base.Leave(); 
         }
     },
 
