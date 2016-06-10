@@ -9,8 +9,6 @@ function IntermediatePlatform(properties) {
         collision:Collision(this),
     };
     
-    console.log(self.position.x);
-    
     self.ClassType = Enum.ClassType.IntermediatePlatform;
     self.colliderType = Enum.colliderType.box;
     
