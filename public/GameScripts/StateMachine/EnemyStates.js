@@ -15,16 +15,42 @@ this.State = {
 //----------------------------\\
 
 EnemyStates = {
+    Setup: function (parent) {
+
+        parent.wallHitDir = 0;
+
+        parent.collisionEnter["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
+            if (canCollide) {
+                if(collisionFrames >= 3 && Math.round(Dir.x) != 0) {
+                    console.log("chaning dir");
+                    parent.wallHitDir = Dir;
+                    parent.wall[Obj.ID] = true;
+                }
+            }
+        }
+
+        parent.collisionExit["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
+            if (canCollide) {
+                if (parent.wall[Obj.ID] != undefined)
+                    delete parent.wall[Obj.ID];
+                
+                if (Object.keys(parent.wall).length == 0)
+                    parent.wallHitDir = 0;
+            }
+        }
+    },
+
     NormalWander: function (_walkSpeed) {
         this.__proto__ = new State();
         var base = this.__proto__;
         
         var enemies = [];
+        var walkSpeed = 1;
+
         this.Enter = function (_parent) {
             base.Enter(_parent);
             _parent.colour = "blue";
                         
-            _parent.extends["Navigation"] = AutomaticWalk(_parent, _walkSpeed);
         }
         
         this.Reason = function () {
@@ -32,18 +58,21 @@ EnemyStates = {
                 base.returnState = StatesEnum.alert;
                 return false;
             }
-            
-                               
+                     
             return true;
         }
         
             this.Act = function () {
-                base.Act();
+
+                if (base.parent.wallHitDir) {
+                    walkSpeed = base.parent.wallHitDir * _walkSpeed;
+                } 
+
+                base.parent.position.x += walkSpeed;
             } 
         
             
         this.Leave = function() {
-            delete base.parent.update["NavigationUpdate"];  
             return base.Leave();
         }
     },

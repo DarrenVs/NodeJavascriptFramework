@@ -23,7 +23,6 @@ function EnemyBase(properties, _self) {
     
     //---Trigger-collider----\\
     var trigger = new EmptyObject({
-       position: Vector2.new(),
        size: Vector2.new(600, 10),
        colour: "rgba(0, 0, 0, 0.2)", 
        ID: "Trigger",
@@ -34,7 +33,11 @@ function EnemyBase(properties, _self) {
     }
     
     trigger.hitbox = trigger.size;
-    trigger.collisionActive = false;
+    trigger.collisionActive = false
+
+    trigger.update["test"] = function () {
+        trigger.position = trigger.position;
+    }
     
     trigger.collisionEnter["Triggered"] = function (Obj) {
         console.log("collisiong with something");

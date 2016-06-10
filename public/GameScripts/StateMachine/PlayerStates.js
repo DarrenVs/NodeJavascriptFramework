@@ -10,11 +10,9 @@ PlayerStates = {
 
         this.Act = function () {
 
-            if (parent.wallHitDir.x == 1) {
-                    parent.walkSpeed = Math.abs(parent.walkSpeed);
-                } else if (parent.wallHitDir.x == -1) {
-                    parent.walkSpeed = -Math.abs(parent.walkSpeed);
-                }
+            if (parent.wallHitDir.x == 1 && parent.onGround || !parent.onGround && !parent.wallsHit === 0 && INPUT_CLICK["32"]) {
+                    parent.walkSpeed = parent.walkSpeed *= -1;
+            } 
 
             if (parent.autoWalk) parent.velocity.x = parent.walkSpeed;
         }
@@ -23,14 +21,76 @@ PlayerStates = {
 
     Setup: function (parent) {
         if (!parent.extends.collision) parent.extends.collision = Collision(parent);
+        
+        //-----\\
+        var groundColl = new EmptyObject ({
+            size: Vector2.new(5, 5),
+            position: Vector2.new(0, parent.hitbox.y/1.5)
+        });
 
+        groundColl.extends = {
+            collision: Collision(groundColl)
+        }
+        groundColl.hitbox = groundColl.size;
+        groundColl.collisionActive = false;
+        //-----\\
+
+        //-----\\
+        var wallHitColl = new EmptyObject({
+            size: Vector2.new(50, 5),
+        });
+
+        wallHitColl.extends = {
+            collision: Collision(wallHitColl)
+        }
+        wallHitColl.hitbox = wallHitColl.size;
+        wallHitColl.collisionActive = false;
+        //-----\\
+
+        //-----\\
+        parent.onGround = 0;
         parent.wallHitDir = 0;
-        parent.onGround = false;
-        parent.extraJumpsLeft = 0;
-        parent.amoundOfExtraJumps = 1;
-        parent.autoWalk = true;
-        parent.wall = {};
+        parent.wallsHit = 0;
 
+        parent.amoundOfExtraJumps = 1;
+        parent.extraJumpsLeft = 0;
+
+        parent.autoWalk = true;
+        //-----\\
+
+        //-----\\
+        groundColl.collisionEnter["hitGround"] = function (obj, dir, force, distance, canCollide) {
+                console.log("on ground");                
+            if (canCollide) {
+                parent.onGround++;
+            }
+        }
+
+        groundColl.collisionExit["hitGround"] = function (obj, dir, force, distance, canCollide) {
+            if (canCollide) {
+                parent.onGround--;
+            }
+        }
+        //-----\\
+
+       //-----\\
+        wallHitColl.collisionEnter["hitGround"] = function (obj, dir, force, distance, canCollide) {
+            if (canCollide) {
+                parent.wallsHit++;
+            }
+        }
+
+        wallHitColl.collisionExit["hitGround"] = function (obj, dir, force, distance, canCollide) {
+            if (canCollide) {
+                parent.wallsHit--;
+            }
+        }
+
+        parent.addChild(groundColl);
+        parent.addChild(wallHitColl);
+        //-----\\
+
+/*
         parent.collisionStay["PlayerHitSomething"] = function (Obj, Dir, force, distance, canCollide, collisionFrames ) {
             if (canCollide) {
 
@@ -40,7 +100,7 @@ PlayerStates = {
                     parent.wall[Obj.ID] = true;
                 }
 
-                if (Dir.y == -1) {
+                if (Dir.y == -1 && collisionFrames >= 3) {
                     parent.onGround = true;
                 }
             }
@@ -56,12 +116,12 @@ PlayerStates = {
                     parent.wallHitDir = 0;
 
                 if (Dir.y == -1) {
-                    if (parent.collisionCount <= 1) {
-                        parent.onGround = false;
-                    }
+                    parent.onGround = false;
                 }
             }
+            
         }
+        */
     },
 
 
@@ -102,7 +162,7 @@ PlayerStates = {
         }
 
         this.Reason = function () {
-            if (!base.parent.onGround) {
+            if (base.parent.onGround === 0) {
                 base.returnState = StatesEnum.inAir;
                 return false;
             } else if (INPUT_CLICK[jumpButton]) {
@@ -153,7 +213,6 @@ PlayerStates = {
                 jumpSideStrength * base.parent.wallHitDir.x,
                 -jumpUpStrength
                 );
-
             base.returnState = StatesEnum.inAir;
         }
     },
@@ -174,12 +233,12 @@ PlayerStates = {
         }
 
         this.Reason = function () {
-            if (base.parent.onGround) {
+            if (base.parent.onGround > 0) {
 
                 base.returnState = StatesEnum.wander;
                 return false;
 
-            } else if (base.parent.wallHitDir) {
+            } else if (base.parent.wallHitDir && base.parent.velocity.y > 0) {
 
                 base.returnState = StatesEnum.slide;
                 return false;
@@ -214,7 +273,7 @@ PlayerStates = {
         this.Enter = function (_parent) {
             base.Enter(_parent);
             base.parent.autoWalk = false;
-            base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;                     
+            base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;                  
 
             base.parent.DrawObject.animation = "slide";            
         }

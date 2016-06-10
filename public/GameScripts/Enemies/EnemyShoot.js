@@ -9,7 +9,7 @@ function EnemyShoot (properties) {
     self.colour = 'red';
 
     var sm = self.extends.AI;
-    sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(350));
+    sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(500));
     sm.AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(500));
     sm.AddState(StatesEnum.alert, new EnemyStates.Enrage(20, 15));
     sm.AddState(StatesEnum.charge, new EnemyStates.ChargeGun(500, 5, 5));

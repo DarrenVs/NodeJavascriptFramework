@@ -9,7 +9,7 @@ function EnemyWalk(properties) {
     self.colour = 'blue';
 
     var sm = self.extends.AI;
-    sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(350));
+    sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(500));
     sm.AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(500));
     sm.AddState(StatesEnum.alert, new EnemyStates.Enrage(15, 15));
     sm.AddState(StatesEnum.charge, new EnemyStates.Charge(20, 5, 5));
