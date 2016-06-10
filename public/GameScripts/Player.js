@@ -5,7 +5,6 @@ var playerList = {};
 // BaseClass
 function Player(properties) {
     this.health = 100;
-    //console.log(PlayerStates);
     
     GameObject(this, properties);
     var self = this;

@@ -39,19 +39,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             stage.addChild( player );
         }
         
-        //stage.position.y = cameraController.cameraPosition();
-        
-        /*
-        //keep the camera at the position of the highest player
-        for (var index in playerList) {
-            if(playerList[index].position.y < highestPlayerPos) {
-               highestPlayerPos =  playerList[index].position.y
-            } 
-        }
-        
-        stage.position.y = -highestPlayerPos + canvas.height / 1.5;
-        */
-        
         if(Object.keys(playerList).length > 1 || INPUT_CLICK["82"]) {
             for(i = 0; i < barrier.length; i++) {
                 barrier[i].destroy();

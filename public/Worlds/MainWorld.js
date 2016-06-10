@@ -31,17 +31,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         
         stage.position.y = cameraController.cameraPosition();
         
-        /*
-        //keep the camera at the position of the highest player
-        for (var index in playerList) {
-            if(playerList[index].position.y < highestPlayerPos) {
-               highestPlayerPos =  playerList[index].position.y
-            } 
-        }
-        
-        stage.position.y = -highestPlayerPos + canvas.height / 1.5;
-        */
-        
         //////////////////////////
         //---LEVEL GENERATING---///
         //////////////////////////
@@ -94,7 +83,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     var intermediatePlatformHeight = 10;
     
     //the offset of the platforms from mid
-    var intermediatePlatformPosition = 2.35;
+    var intermediatePlatformPosition = 2;
     
     function spawnIntermediateChunk() {
         
