@@ -9,6 +9,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
 
     //ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.enemyTestChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
     
+    stage.addChild(new Parallax());
+    
     var highestPlayerPos = canvas.height / 2;
     stage.gravity = Vector2.new(0, 22);
     stage.airDenicty = 0;
@@ -27,6 +29,9 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         }
         
         
+        stage.position.y = cameraController.cameraPosition();
+        
+        /*
         //keep the camera at the position of the highest player
         for (var index in playerList) {
             if(playerList[index].position.y < highestPlayerPos) {
@@ -34,7 +39,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
             } 
         }
         
-        stage.position.y = -highestPlayerPos + canvas.height / 2;
+        stage.position.y = -highestPlayerPos + canvas.height / 1.5;
+        */
         
         //////////////////////////
         //---LEVEL GENERATING---///
@@ -51,14 +57,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     /////////////////////////////////
     
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["easyChunks"]);
-    
-    //Enemy
-    /*
-    var enemy = new EnemyWalk({
-        position: Vector2.new(80    , 100)
-    });
-    stage.addChild(enemy);
-    */
     
     function checkIfRightPlayer() {
         var lowestIndex = player.creatorID;
