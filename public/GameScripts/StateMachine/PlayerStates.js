@@ -250,7 +250,6 @@ PlayerStates = {
         }
 
         this.Reason = function () {
-            console.log(base.parent.wallsHit);
             if (base.parent.onGround > 0) {
 
                 base.returnState = StatesEnum.wander;
