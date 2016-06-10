@@ -94,45 +94,6 @@ function Player(properties) {
             self.die();
     })
     
-    var grounded = true;
-    
-    var canDoubleJump = false;
-    
-    var wallJumpDirection = 0;
-    
-    this.collisionStay["PlayerCollision"] = function(Obj, Dir) {
-        
-        //if we are standing on the ground 
-        if(Math.round(Dir.y) == -1) {
-            
-            wallJumpDirection = 0;
-            grounded = true;
-            self.autoWalk = true;
-            canDoubleJump = true;
-            
-        } else if(Math.round(Dir.x) != 0) {//else if the collision comes from left or right (wall jumping)
-            
-            wallJumpDirection = Dir.x;
-            grounded = false;
-            self.autoWalk = false;
-            currentGravity = slidingGravtiy;
-            canDoubleJump = true;
-            
-        }
-    }
-    
-    //the speeds for different kind of jumps
-    var jumpSpeed = 400;
-    
-    var doubleJumpSpeed = 300;
-    
-    //the direction and speed we walljump
-    var wallJumpSpeed = 400;
-    
-    var fallingGravity = 9.3;
-    
-    var slidingGravtiy = 9.3;
-    
     var updateRate = 0;
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {

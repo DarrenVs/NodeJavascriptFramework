@@ -10,9 +10,18 @@ PlayerStates = {
 
         this.Act = function () {
 
-            if (parent.wallHitDir.x == 1 && parent.onGround || !parent.onGround && !parent.wallsHit === 0 && INPUT_CLICK["32"]) {
-                    parent.walkSpeed = parent.walkSpeed *= -1;
-            } 
+
+            if (parent.lastWallHit != parent.wallHitDir) {
+                parent.lastWallHit = parent.wallHitDir
+                if (!parent.turnAround) parent.autoWalk = false;
+
+                if (parent.wallHitDir == -1) {
+                    parent.walkSpeed = -Math.abs(parent.walkSpeed);
+                } else if (parent.wallHitDir == 1) {
+                    parent.walkSpeed = Math.abs(parent.walkSpeed);         
+                }
+            }
+            
 
             if (parent.autoWalk) parent.velocity.x = parent.walkSpeed;
         }
@@ -24,8 +33,9 @@ PlayerStates = {
         
         //-----\\
         var groundColl = new EmptyObject ({
-            size: Vector2.new(5, 5),
-            position: Vector2.new(0, parent.hitbox.y/1.5)
+            size: Vector2.new(20, 5),
+            position: Vector2.new(0, parent.hitbox.y/1.5),
+            colour: "rgba(112, 112, 112, 0.3)"
         });
 
         groundColl.extends = {
@@ -37,7 +47,9 @@ PlayerStates = {
 
         //-----\\
         var wallHitColl = new EmptyObject({
-            size: Vector2.new(50, 5),
+            position: Vector2.new(0, -5),
+            size: Vector2.new(35, 30),
+            colour: "rgba(112, 112, 112, 0.3)"
         });
 
         wallHitColl.extends = {
@@ -45,12 +57,16 @@ PlayerStates = {
         }
         wallHitColl.hitbox = wallHitColl.size;
         wallHitColl.collisionActive = false;
+        wallHitColl.ignoreObjectType[Enum.ClassType.Player] = true;
         //-----\\
 
         //-----\\
         parent.onGround = 0;
         parent.wallHitDir = 0;
+        parent.lastWallHit = 0;
         parent.wallsHit = 0;
+
+        parent.turnAround = true;
 
         parent.amoundOfExtraJumps = 1;
         parent.extraJumpsLeft = 0;
@@ -60,7 +76,6 @@ PlayerStates = {
 
         //-----\\
         groundColl.collisionEnter["hitGround"] = function (obj, dir, force, distance, canCollide) {
-                console.log("on ground");                
             if (canCollide) {
                 parent.onGround++;
             }
@@ -76,6 +91,7 @@ PlayerStates = {
        //-----\\
         wallHitColl.collisionEnter["hitGround"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
+                if (dir) parent.wallHitDir = dir.x;
                 parent.wallsHit++;
             }
         }
@@ -208,9 +224,9 @@ PlayerStates = {
         this.Enter = function (_parent) {
             base.Enter(_parent);
             base.parent.DrawObject.animation = "wallJump";   
-
+            
             base.parent.velocity = Vector2.new(
-                jumpSideStrength * base.parent.wallHitDir.x,
+                jumpSideStrength * base.parent.wallHitDir,
                 -jumpUpStrength
                 );
             base.returnState = StatesEnum.inAir;
@@ -228,17 +244,19 @@ PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.autoWalk = false;
+            //base.parent.autoWalk = false;
+            base.parent.turnAround = false;
             base.parent.DrawObject.animation = "inAir";     
         }
 
         this.Reason = function () {
+            console.log(base.parent.wallsHit);
             if (base.parent.onGround > 0) {
 
                 base.returnState = StatesEnum.wander;
                 return false;
 
-            } else if (base.parent.wallHitDir && base.parent.velocity.y > 0) {
+            } else if (base.parent.wallsHit > 0 && base.parent.velocity.y > 0) {
 
                 base.returnState = StatesEnum.slide;
                 return false;
@@ -254,7 +272,8 @@ PlayerStates = {
         }
 
         this.Leave = function () {
-            base.parent.autoWalk = true;
+            //base.parent.autoWalk = true;
+            base.parent.turnAround = true;
             return base.Leave();
         }
 
@@ -279,7 +298,6 @@ PlayerStates = {
         }
 
         this.Reason = function () {
-
             if (base.parent.onGround) {
                 base.returnState = StatesEnum.wander;
                 return false;
@@ -294,7 +312,7 @@ PlayerStates = {
         }
 
         this.Act = function () {
-            base.parent.velocity.x = 80 * -base.parent.wallHitDir.x;
+            base.parent.velocity.x = 80 * -base.parent.wallHitDir;
             base.parent.velocity.y = base.parent.stage.gravity.y * slideSpeed;
         }
 
