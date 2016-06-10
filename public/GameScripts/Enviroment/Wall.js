@@ -17,9 +17,11 @@ function Wall(properties) {
     
     self.anchored = true;
     
+    console.log(self.position);
+    
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.Platforms_40x40[Math.floor(Math.random() * Enum.Images.Sprites.Platforms_40x40.length)],   //Image
+        Enum.Images.Sprites.Platforms_40x40[0],   //Image
         {   //Sprites
             platform_40x40: {
                 position: Vector2.new(0, 0),

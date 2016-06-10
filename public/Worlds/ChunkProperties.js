@@ -2,7 +2,6 @@ var ChunkProperties = {
     
     Tiles: {
         0:false, //Air
-        //1:Enum.ClassType.Unknown,
         1:Enum.ClassType.Platform_40x40,
         2:Enum.ClassType.Platform_80x80,
         3:Enum.ClassType.Platform_120x80,
@@ -11,11 +10,11 @@ var ChunkProperties = {
         5:Enum.ClassType.EnemyShoot,
     },
     
-    tilesXCount: 15,
+    tilesXCount: 13,
 
     tileSize: 40,
     
-    //the height of the level we will spawn new chunks at
+    //the height of the level we will start spawning new chunks at
     totalLevelHeight: 955,
     
     spawnChunk: function(chunkToSpawn, stageID) {
@@ -34,12 +33,14 @@ var ChunkProperties = {
                 
                 var newObject = new Enum.ClassName[this.Tiles[chunkToSpawn[y][x]]]({
                     size: new Vector2.new(this.tileSize, this.tileSize),
-                    position: new Vector2.new(x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.totalLevelHeight),
+                    position: new Vector2.new(x * this.tileSize + this.tileSize * 1.5, y * this.tileSize + this.totalLevelHeight),
                 })
                 
                 Game[stageID].addChild( newObject );
             }
         }
+        
+        this.spawnWalls(yLength, stageID);
     },
     
     pushToSpawnAble: function(arrayOfChunks) {
@@ -93,17 +94,42 @@ var ChunkProperties = {
         return chunk;
     },
     
+    spawnWalls: function(yLength, stageID) {
+        
+        for(y = 0; y < yLength; y ++) {
+            for(x = 0; x < 2; x++) {
+                if(x == 0)
+                    var newObject = new Enum.ClassName[Enum.ClassType.Wall]({
+                        size: new Vector2.new(this.tileSize, this.tileSize),
+                        position: new Vector2.new(this.tileSize / 2, y * this.tileSize + this.totalLevelHeight),
+                    })
+                else {
+                    var newObject = new Enum.ClassName[Enum.ClassType.Wall]({
+                        size: new Vector2.new(this.tileSize, this.tileSize),
+                        position: new Vector2.new(canvas.width - this.tileSize / 2, y * this.tileSize + this.totalLevelHeight),
+                    })
+                }
+
+                Game[stageID].addChild( newObject );
+            }
+        }
+    },
     
     chunkLibary: {},
     
     uncompressedChunkLibary: {
         
-        startLobbyChunk:        "100000000000001100000000000001100000000000001110000000000011101111111111101100100000001001100010000010001110001000100011111000101000111111100010001111111110000011111111111111111111",
+        startLobbyChunk:        "000000000000000000000000000000000000000111100000111111110000011111111000001111111111111111111111111111111111111111111111111111111111111111111111111111111111",
         
         enemyTestChunk: "100000000000001100400000004001101111000111101100000000000001100000050000001100000111000001",
 
-        intermediateChunk : "100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001",
+        intermediateChunk : "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
 
+        
+        easyChunks : [
+            "00000000000000011000000011001100000001100000011000000000001100000001100000001100110000000110000000000000",
+            ],
+        /*
         easyChunks : [
         "100110000000001100000010000011100000011100001111000001110001100000000000001100000000000001",
         "100000000000001100001100100001100000000100011100000000100011100110000000011100110000000001100100010010001100000000000001100000000000001",
@@ -114,7 +140,8 @@ var ChunkProperties = {
                 "110000010000011110000010000011100000010000001100000010000001100100000001001100000000000001100000000000001111000111000111111000111000111100000000000001100000000000001",
         "100000000000001111111000111111100000000000001100000000000001100111111111001100000000000001100000000000001111111000111111100000000000001",
         ],
-
+        */
+        
         testEnemyChunks : [
         "100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001100000000000001",
         ]
