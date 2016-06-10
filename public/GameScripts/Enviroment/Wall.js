@@ -17,8 +17,6 @@ function Wall(properties) {
     
     self.anchored = true;
     
-    console.log(self.position);
-    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.Platforms_40x40[0],   //Image

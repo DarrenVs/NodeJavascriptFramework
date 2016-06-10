@@ -137,41 +137,6 @@ function Player(properties) {
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {
         if (self.creatorID == clientID) {
-            /*
-            //jumping
-            if (INPUT_CLICK["32"]) {
-                
-                if(grounded) { //normal jump
-                    
-                    self.velocity.y -= jumpSpeed;
-                    
-                } else if(wallJumpDirection != 0) { //wall jump
-                    
-                    self.velocity.y -= wallJumpSpeed;
-                    self.autoWalk = true;
-                    wallJumpDirection = 0;
-                    
-                } else if(canDoubleJump) { //double jump
-                    
-                    self.velocity.y -= doubleJumpSpeed;
-                    canDoubleJump = false;
-                    
-                }
-            }
-            
-            grounded = false;
-            
-            if(wallJumpDirection != 0) {
-                self.velocity.y += slidingGravtiy;
-            }
-            else {
-                self.velocity.y += fallingGravity;
-            }
-            
-            updateRate++;
-    
-            sendObject(self, false, true);
-            */
 
         } else {
             self.health--;
