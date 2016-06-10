@@ -7,8 +7,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---LEVEL SETUP---///
     /////////////////////
 
-    //ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.enemyTestChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
-    
     stage.addChild(new Parallax());
     
     var highestPlayerPos = canvas.height / 2;
@@ -30,17 +28,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         
         
         stage.position.y = cameraController.cameraPosition();
-        
-        /*
-        //keep the camera at the position of the highest player
-        for (var index in playerList) {
-            if(playerList[index].position.y < highestPlayerPos) {
-               highestPlayerPos =  playerList[index].position.y
-            } 
-        }
-        
-        stage.position.y = -highestPlayerPos + canvas.height / 1.5;
-        */
         
         //////////////////////////
         //---LEVEL GENERATING---///
@@ -94,7 +81,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     var intermediatePlatformHeight = 10;
     
     //the offset of the platforms from mid
-    var intermediatePlatformPosition = 2.35;
+    var intermediatePlatformPosition = 2;
     
     function spawnIntermediateChunk() {
         
@@ -103,9 +90,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
             position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight - ChunkProperties.tileSize * intermediatePlatformPosition)
         })
 
-        intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
-        intermediatePlatform.anchored = true;
-        
         stage.addChild( intermediatePlatform );
         
         ChunkProperties.spawnChunk(intermediateChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
@@ -114,10 +98,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
             size: new Vector2.new(canvas.width, intermediatePlatformHeight),
             position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight + ChunkProperties.tileSize * intermediatePlatformPosition)
         })
-        
-        intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
-        intermediatePlatform.anchored = true;
-
 
         stage.addChild( intermediatePlatform );
     }

@@ -15,9 +15,7 @@ function Player(properties) {
     var self = this;
     
     
-<<<<<<< HEAD:public/GameScripts/Examples/Player.js
     this.physicalAppearanceSize = 30;
-=======
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.SampleSprite1,   //Image
@@ -137,25 +135,35 @@ function Player(properties) {
             self.rotation = Vector2.toAngle(self.velocity);
 
             self.cannon.rotation = Vector2.toAngle(self.globalPosition, self.stage.mousePosition) - self.rotation;
+<<<<<<< HEAD
 
 <<<<<<< HEAD:public/GameScripts/Examples/Player.js
+=======
+>>>>>>> 9d396008a31e32a2edbf14e2e8088e852dbebb6a
             
             self.stage.position.y = self.position.y * -1 + canvas.height/2;// = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
             self.stage.position.x = self.position.x * -1 + canvas.width/2;
             //self.stage.position = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
-=======
             self.stage.position = Vector2.add(Vector2.multiply(self.globalPosition,-1), new Vector2.new(canvas.width/2, canvas.height/2));
+<<<<<<< HEAD
 >>>>>>> 6c65f58338b4aaec88a219a707e1b99213548589:public/Scripts/Player.js
+=======
+>>>>>>> 9d396008a31e32a2edbf14e2e8088e852dbebb6a
             
             updateRate++;
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
                 updateRate = 0;
                 var bullet = new Bullet({
+<<<<<<< HEAD
 <<<<<<< HEAD:public/GameScripts/Examples/Player.js
-                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),//self.physicalAppearanceSize/2)),
 =======
+>>>>>>> 9d396008a31e32a2edbf14e2e8088e852dbebb6a
+                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 1)),//self.physicalAppearanceSize/2)),
                     position: Vector2.add(self.globalPosition, Vector2.multiply(self.cannon.forward, 5)),
+<<<<<<< HEAD
 >>>>>>> 6c65f58338b4aaec88a219a707e1b99213548589:public/Scripts/Player.js
+=======
+>>>>>>> 9d396008a31e32a2edbf14e2e8088e852dbebb6a
                     size: new Vector2.new(3, 10),
                     rotation: getObjectRotation(self.cannon),
                     //ignoreObjectIDs: {[self.ID]: true}

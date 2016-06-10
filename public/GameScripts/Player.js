@@ -5,7 +5,6 @@ var playerList = {};
 // BaseClass
 function Player(properties) {
     this.health = 100;
-    //console.log(PlayerStates);
     
     GameObject(this, properties);
     var self = this;
@@ -19,6 +18,9 @@ function Player(properties) {
             PlayerStates.AnyState(self), 
             false),
     };
+    
+    self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
+    console.log("hard setted player position, dont forget");
     
     //-----Adding the states!!!-----\\
     var sm = this.extends.navigation;
