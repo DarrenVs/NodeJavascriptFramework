@@ -7,8 +7,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---LEVEL SETUP---///
     /////////////////////
 
-    //ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.enemyTestChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
-    
     stage.addChild(new Parallax());
     
     var highestPlayerPos = canvas.height / 2;
@@ -92,9 +90,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
             position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight - ChunkProperties.tileSize * intermediatePlatformPosition)
         })
 
-        intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
-        intermediatePlatform.anchored = true;
-        
         stage.addChild( intermediatePlatform );
         
         ChunkProperties.spawnChunk(intermediateChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
@@ -103,10 +98,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
             size: new Vector2.new(canvas.width, intermediatePlatformHeight),
             position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight + ChunkProperties.tileSize * intermediatePlatformPosition)
         })
-        
-        intermediatePlatform.extends["collision"] = Collision(intermediatePlatform);
-        intermediatePlatform.anchored = true;
-
 
         stage.addChild( intermediatePlatform );
     }
