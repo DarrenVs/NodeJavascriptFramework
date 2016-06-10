@@ -20,6 +20,7 @@ function Player(properties) {
     };
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
+    console.log("hard setted player position, dont forget");
     
     //-----Adding the states!!!-----\\
     var sm = this.extends.navigation;
