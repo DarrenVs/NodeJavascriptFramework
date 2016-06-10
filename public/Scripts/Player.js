@@ -129,7 +129,7 @@ function Player(properties) {
                 self.DrawObject.currentAnimation = self.DrawObject.currentAnimation == "jump" ? "walk" : "jump";
 
             //if (Vector2.magnitude(self.velocity) > 0.)
-            //self.rotation = Vector2.toAngle(self.velocity);
+            self.rotation = Vector2.toAngle(self.velocity);
 
             self.cannon.rotation = Vector2.toAngle(self.globalPosition, self.stage.mousePosition) - self.rotation;
 

@@ -38,17 +38,17 @@ var CollisionGrid = {
 }
 
 
-function updatePosAndGrid( Obj ) {
+function updateObjectsGrid( Obj ) {
     
-    var newGrids = CollisionGrid.new( Parent );
+    var newGrids = CollisionGrid.new( Obj );
     
-    for (var oldGrid in Parent.oldGrids) {
+    for (var oldGrid in Obj.oldGrids) {
         
         if (newGrids[oldGrid] == undefined)
-            delete CollisionGrid.grid[oldGrid][Parent.ID];
+            delete CollisionGrid.grid[oldGrid][Obj.ID];
     }
     
-    Parent.oldGrids = newGrids;
+    Obj.oldGrids = newGrids;
     
     CollisionLoop[Obj.ID] = true;
     
@@ -76,23 +76,61 @@ function Collision(Parent) {
     Parent.collisionEnter = Parent.collisionEnter || {};
     Parent.collisionExit = Parent.collisionExit || {};
     Parent.collisionActive = Parent.collisionActive ||true;
-    Parent.Position = Parent.position;
     
     Parent.oldGrids = {};
     
+    
+    
+    Parent.Position = Vector2.new();
+    Parent.Position.X = Parent.position.x;
+    Parent.Position.Y = Parent.position.y;
+    
+    
     Parent.__defineSetter__('position', function(val) {
         
-        if (val != undefined && val.x != undefined && val.y != undefined) {
+        if (val != undefined && val.x != undefined && val.y != undefined && val.x != NaN && val.y != NaN) {
             Parent.Position.X = val.x;
             Parent.Position.Y = val.y;
             
-            updatePosAndGrid( Parent );
+            updateObjectsGrid( Parent );
         }
     })
-    Parent.__defineGetter__('position', function(val) {
+    Parent.__defineGetter__('position', function() {
         return Parent.Position;
     })
+    
+    
+    
+    Parent.Position.__defineSetter__('x', function(val) {
+        
+        if (val != undefined && val != NaN) {
+            Parent.Position.X = val;
+            
+            updateObjectsGrid( Parent );
+        }
+    })
+    Parent.Position.__defineGetter__('x', function() {
+        return Parent.Position.X;
+    })
+    
+    
+    
+    Parent.Position.__defineSetter__('y', function(val) {
+        
+        if (val != undefined && val != NaN) {
+            Parent.Position.Y = val;
+            
+            updateObjectsGrid( Parent );
+        }
+    })
+    Parent.Position.__defineGetter__('y', function() {
+        return Parent.Position.Y;
+    })
+    
+    
     Parent.position = Parent.position;
+    
+    
     
     
     
