@@ -129,17 +129,17 @@ function Player(properties) {
                 self.DrawObject.currentAnimation = self.DrawObject.currentAnimation == "jump" ? "walk" : "jump";
 
             //if (Vector2.magnitude(self.velocity) > 0.)
-            self.rotation = Vector2.toAngle(self.velocity);
+            //self.rotation = Vector2.toAngle(self.velocity);
 
-            self.cannon.rotation = Vector2.toAngle(self.position, Vector2.subtract(MOUSE.Position, self.Parent.globalPosition)) - self.rotation;
+            self.cannon.rotation = Vector2.toAngle(self.globalPosition, self.stage.mousePosition) - self.rotation;
 
-            self.stage.position = Vector2.add(Vector2.multiply(self.position,-1), new Vector2.new(canvas.width/2, canvas.height/2));
+            self.stage.position = Vector2.add(Vector2.multiply(self.globalPosition,-1), new Vector2.new(canvas.width/2, canvas.height/2));
             
             updateRate++;
             if ((MOUSE_CLICK.mousedown || INPUT_CLICK["32"]) && (updateRate > 5)) {
                 updateRate = 0;
                 var bullet = new Bullet({
-                    position: Vector2.add(self.position, Vector2.multiply(self.cannon.forward, 5)),
+                    position: Vector2.add(self.globalPosition, Vector2.multiply(self.cannon.forward, 5)),
                     size: new Vector2.new(3, 10),
                     rotation: getObjectRotation(self.cannon),
                     //ignoreObjectIDs: {[self.ID]: true}

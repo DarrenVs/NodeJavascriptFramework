@@ -19,13 +19,13 @@ var CollisionGrid = {
                 Math.floor((Obj.globalPosition.y + Vector2.directions[index].y * Obj.hitbox.y) / CollisionGrid.gridSize.y) * CollisionGrid.gridSize.y
             );
 
-            if (!CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y])
+            if (CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] == undefined)
                 CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] = {};
 
-            if (!CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID])
+            if (CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] == undefined)
                 CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] = true;
 
-            if (!Grids[gridLocation.x + "x" + gridLocation.y])
+            if (Grids[gridLocation.x + "x" + gridLocation.y] == undefined)
                 Grids[gridLocation.x + "x" + gridLocation.y] = true;
         }
         
@@ -38,14 +38,24 @@ var CollisionGrid = {
 }
 
 
-function addToCollisionLoop( Obj ) {
+function updatePosAndGrid( Obj ) {
+    
+    var newGrids = CollisionGrid.new( Parent );
+    
+    for (var oldGrid in Parent.oldGrids) {
+        
+        if (newGrids[oldGrid] == undefined)
+            delete CollisionGrid.grid[oldGrid][Parent.ID];
+    }
+    
+    Parent.oldGrids = newGrids;
     
     CollisionLoop[Obj.ID] = true;
     
     for (var i in Obj.childs) {
         
         if (Obj.childs[i].extends.collision)
-            addToCollisionLoop(Obj.childs[i]);
+            Obj.childs[i].position = Obj.childs[i].position;
     }
 }
 
@@ -72,20 +82,11 @@ function Collision(Parent) {
     
     Parent.__defineSetter__('position', function(val) {
         
-        if (val && val.x && val.y) {
-            Parent.Position = Vector2.new( Math.round(val.x * 100) / 100, Math.round(val.y * 100) / 100 );
+        if (val != undefined && val.x != undefined && val.y != undefined) {
+            Parent.Position.X = val.x;
+            Parent.Position.Y = val.y;
             
-            var newGrids = CollisionGrid.new( Parent );
-            
-            for (var oldGrid in Parent.oldGrids) {
-                
-                if (!newGrids[oldGrid])
-                    delete CollisionGrid.grid[oldGrid][Parent.ID];
-            }
-            
-            Parent.oldGrids = newGrids;
-            
-            addToCollisionLoop( Parent );
+            updatePosAndGrid( Parent );
         }
     })
     Parent.__defineGetter__('position', function(val) {
