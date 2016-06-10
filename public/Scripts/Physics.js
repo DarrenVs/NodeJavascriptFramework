@@ -27,7 +27,6 @@ function Physics(Parent) {
     
     
     Parent.Anchored = Parent.anchored || false;
-    Parent.Velocity = Parent.velocity || Vector2.new();
 
     
     Parent.__defineGetter__('anchored', function() {
@@ -44,15 +43,56 @@ function Physics(Parent) {
     });
     Parent.anchored = Parent.anchored;
     
-    Parent.__defineGetter__('velocity', function() {
-        return Parent.Velocity
-    });
+    
+    
+    
+    
+    
+    Parent.Velocity = Vector2.new();
+    Parent.Velocity.X = Parent.velocity.x || 0;
+    Parent.Velocity.Y = Parent.velocity.x || 0;
+    
+    
     Parent.__defineSetter__('velocity', function(val) {
-        Parent.Velocity = val;
         
-        if (val.x != 0 || val.y != 0)
+        if (val != undefined && val.x != undefined && val.y != undefined && val.x != NaN && val.y != NaN) {
+            Parent.Velocity.X = val.x;
+            Parent.Velocity.Y = val.y;
+            
             addToPhysicsLoop( Parent );
-    });
+        }
+    })
+    Parent.__defineGetter__('velocity', function() {
+        return Parent.Velocity;
+    })
+    
+    
+    
+    Parent.Velocity.__defineSetter__('x', function(val) {
+        
+        if (val != undefined && val != NaN) {
+            Parent.Velocity.X = val;
+            
+            addToPhysicsLoop( Parent );
+        }
+    })
+    Parent.Velocity.__defineGetter__('x', function() {
+        return Parent.Velocity.X;
+    })
+    
+    
+    
+    Parent.Velocity.__defineSetter__('y', function(val) {
+        
+        if (val != undefined && val != NaN) {
+            Parent.Velocity.Y = val;
+            
+            addToPhysicsLoop( Parent );
+        }
+    })
+    Parent.Velocity.__defineGetter__('y', function() {
+        return Parent.Velocity.Y;
+    })
     
     
     
