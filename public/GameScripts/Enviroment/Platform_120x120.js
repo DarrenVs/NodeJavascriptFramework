@@ -1,7 +1,7 @@
-Enum.ClassName[Enum.ClassType.Platform_80x80] = Platform_80x80;
+Enum.ClassName[Enum.ClassType.Platform_120x120] = Platform_120x120;
 
 // BaseClass
-function Platform_80x80(properties) {
+function Platform_120x120(properties) {
     var self = this;
     GameObject(this, properties);
     
@@ -9,7 +9,7 @@ function Platform_80x80(properties) {
         collision:Collision(this),
     };
     
-    self.size = Vector2.new(80, 80);
+    self.size = Vector2.new(120, 120);
     
     self.colliderType = Enum.colliderType.box;
     
@@ -19,9 +19,9 @@ function Platform_80x80(properties) {
     
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.Platforms_80x80[Math.floor(Math.random() * Enum.Images.Sprites.Platforms_80x80.length)],   //Image
+        Enum.Images.Sprites.Platforms_120x120[Math.floor(Math.random() * Enum.Images.Sprites.Platforms_120x120.length)],   //Image
         {   //Sprites
-            platform_80x80: {
+            platform_120x120: {
                 position: Vector2.new(0, 0),
                 size: Vector2.new(167, 167),
                 columns: 1,
@@ -29,8 +29,8 @@ function Platform_80x80(properties) {
             },
         },
         {   //Animations
-            platform_80x80: {
-                sprite: "platform_80x80",
+            platform_120x120: {
+                sprite: "platform_120x120",
                 speed: 0, //Per frame
                 keyFrames: [0], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
