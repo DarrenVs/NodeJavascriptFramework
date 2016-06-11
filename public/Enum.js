@@ -64,7 +64,7 @@ var Enum = {
             
             Platforms_120x120: [
                 //newImage("Images/Platforms/Platforms_120x120/platform_1_120x120.png"),
-                newImage("Images/Platforms/Platforms_120x120/platform_2_120x120.png"),
+                //newImage("Images/Platforms/Platforms_120x120/platform_2_120x120.png"),
                 newImage("Images/Platforms/Platforms_120x120/platform_3_120x120.png"),
                 newImage("Images/Platforms/Platforms_120x120/platform_4_120x120.png"),
             ],
