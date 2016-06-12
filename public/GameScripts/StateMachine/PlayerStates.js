@@ -13,17 +13,16 @@ PlayerStates = {
 
             if (parent.lastWallHit != parent.wallHitDir) {
                 parent.lastWallHit = parent.wallHitDir
-                if (!parent.turnAround) parent.autoWalk = false;
-
-                if (parent.wallHitDir == -1) {
-                    parent.walkSpeed = -Math.abs(parent.walkSpeed);
-                } else if (parent.wallHitDir == 1) {
-                    parent.walkSpeed = Math.abs(parent.walkSpeed);         
-                }
+                
+                    if (parent.wallHitDir < 0) {
+                        parent.walkSpeed = -Math.abs(parent.walkSpeed);
+                    } else if (parent.wallHitDir > 0) {
+                        parent.walkSpeed = Math.abs(parent.walkSpeed);         
+                    } 
             }
             
 
-            if (parent.autoWalk) parent.velocity.x = parent.walkSpeed;
+            if (parent.autoWalk && parent.turnAround) parent.velocity.x = parent.walkSpeed;
         }
         return this;
     },
@@ -48,7 +47,7 @@ PlayerStates = {
         //-----\\
         var wallHitColl = new EmptyObject({
             position: Vector2.new(0, -5),
-            size: Vector2.new(35, 30),
+            size: Vector2.new(35, 25),
             colour: "rgba(112, 112, 112, 0.3)"
         });
 
@@ -67,6 +66,7 @@ PlayerStates = {
         parent.wallsHit = 0;
 
         parent.turnAround = true;
+        parent.stopWalking = false;
 
         parent.amoundOfExtraJumps = 1;
         parent.extraJumpsLeft = 0;
@@ -89,17 +89,16 @@ PlayerStates = {
         //-----\\
 
        //-----\\
-        wallHitColl.collisionEnter["hitGround"] = function (obj, dir, force, distance, canCollide) {
+        wallHitColl.collisionEnter["hitWall"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
                 if (dir.x) parent.wallHitDir = dir.x;
-                parent.wallsHit++;
+                parent.wallsHit ++;
             }
         }
 
-        wallHitColl.collisionExit["hitGround"] = function (obj, dir, force, distance, canCollide) {
+        wallHitColl.collisionExit["hitWall"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
-                parent.wallsHit--;
-                //console.log(parent.wallsHit, " wal exit ", obj);
+                parent.wallsHit --;
             }
         }
 
@@ -107,38 +106,6 @@ PlayerStates = {
         parent.addChild(wallHitColl);
         //-----\\
 
-/*
-        parent.collisionStay["PlayerHitSomething"] = function (Obj, Dir, force, distance, canCollide, collisionFrames ) {
-            if (canCollide) {
-
-            
-                if(collisionFrames >= 3 && Math.round(Dir.x) != 0) {
-                    parent.wallHitDir = Dir;
-                    parent.wall[Obj.ID] = true;
-                }
-
-                if (Dir.y == -1 && collisionFrames >= 3) {
-                    parent.onGround = true;
-                }
-            }
-        }
-
-        parent.collisionExit["PlayerStopedTouching"] = function (Obj, Dir, force, distance, canCollide ) {
-            
-            if (canCollide) {
-                if (parent.wall[Obj.ID] != undefined)
-                    delete parent.wall[Obj.ID];
-                
-                if (Object.keys(parent.wall).length == 0)
-                    parent.wallHitDir = 0;
-
-                if (Dir.y == -1) {
-                    parent.onGround = false;
-                }
-            }
-            
-        }
-        */
     },
 
 
@@ -202,11 +169,12 @@ PlayerStates = {
         this.Enter = function (_parent) {
             base.Enter(_parent);
             base.parent.DrawObject.animation = "jump";
+            base.parent.autoWalk = true;
         }
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.velocity.y = -jumpStrength;
+            base.parent.velocity = Vector2.new(base.parent.walkSpeed, -jumpStrength);
 
             base.parent.returnState = StatesEnum.inAir;
         }
@@ -225,9 +193,10 @@ PlayerStates = {
         this.Enter = function (_parent) {
             base.Enter(_parent);
             base.parent.DrawObject.animation = "wallJump";   
+            base.parent.autoWalk = true;
             
             base.parent.velocity = Vector2.new(
-                jumpSideStrength * base.parent.wallHitDir,
+                jumpSideStrength * Math.sign(base.parent.wallHitDir),
                 -jumpUpStrength
                 );
             base.returnState = StatesEnum.inAir;
@@ -245,9 +214,8 @@ PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            //base.parent.autoWalk = false;
-            base.parent.turnAround = false;
-            base.parent.DrawObject.animation = "inAir";     
+            base.parent.DrawObject.animation = "inAir";    
+            base.parent.autoWalk = false;
         }
 
         this.Reason = function () {
@@ -257,7 +225,7 @@ PlayerStates = {
                 return false;
 
             } else if (base.parent.wallsHit > 0 && base.parent.velocity.y > 0) {
-
+                base.parent.stopWalking = true;
                 base.returnState = StatesEnum.slide;
                 return false;
 
@@ -272,8 +240,8 @@ PlayerStates = {
         }
 
         this.Leave = function () {
-            //base.parent.autoWalk = true;
-            base.parent.turnAround = true;
+            //base.parent.stopWalking = false;
+            base.parent.autoWalk = true;
             return base.Leave();
         }
 
@@ -305,6 +273,7 @@ PlayerStates = {
                 base.returnState = StatesEnum.specialJump;
                 return false;
             } else if (base.parent.wallsHit <= 0) {
+                base.parent.autoWalk = false;
                 base.returnState = StatesEnum.inAir;
                 return false;
             }
@@ -312,12 +281,12 @@ PlayerStates = {
         }
 
         this.Act = function () {
-            base.parent.velocity.x = 80 * -base.parent.wallHitDir;
-            base.parent.velocity.y = base.parent.stage.gravity.y * slideSpeed;
+            base.parent.velocity = Vector2.new(80 * -base.parent.wallHitDir,
+            base.parent.stage.gravity.y * slideSpeed);
         }
 
         this.Leave = function () {
-            base.parent.autoWalk = true;
+            base.parent.stopWalking = false;
             return base.Leave(); 
         }
     },

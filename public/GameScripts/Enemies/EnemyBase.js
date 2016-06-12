@@ -14,7 +14,7 @@ function EnemyBase(properties, _self) {
     self.extends = {
         physics: Physics(self),
         collision:Collision(self),
-        AI: new StateMachine(self, StatesEnum.wander, null, null, true)
+        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup, null, true)
     }
     
     self.anchored = false;
@@ -33,25 +33,25 @@ function EnemyBase(properties, _self) {
     }
     
     trigger.hitbox = trigger.size;
-    trigger.collisionActive = false
+    trigger.collisionActive = false;
+    trigger.ignoreObjectType[Enum.ClassType.Player] = true;
 
     trigger.update["test"] = function () {
         trigger.position = trigger.position;
     }
     
-    trigger.collisionEnter["Triggered"] = function (Obj) {
-        console.log("collisiong with something");
-        if (Obj.ClassType == Enum.ClassType.Player) {
+    trigger.collisionEnter["Triggered"] = function (Obj, direction, force, distance, canCollide ) {
+        if (canCollide && Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
         } 
+            console.log("collinding with someting");
     }
-    trigger.collisionExit["notTriggered"] = function (Obj) {
-        console.log("collisiong with something");
+    trigger.collisionExit["notTriggered"] = function (Obj, direction, force, distance, canCollide ) {
         
-        if (Obj.ClassType == Enum.ClassType.Player) {
+        if (canCollide && Obj.ClassType == Enum.ClassType.Enemy) {
             self.triggered = false;
-            self.target = undefined;
+            //self.target = undefined;
         } 
     }
     
@@ -59,13 +59,13 @@ function EnemyBase(properties, _self) {
     //---End-trigger-collider----\\
     
     //---Edge-checkers---\\
-    EdgeRight = new EmptyObject({
+    var EdgeRight = new EmptyObject({
         position: Vector2.new(self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
         ID: "EdgeRight"
     });
-    EdgeLeft = new EmptyObject({
+    var EdgeLeft = new EmptyObject({
         position: Vector2.new(-self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
@@ -88,15 +88,13 @@ function EnemyBase(properties, _self) {
     //console.log(EdgeRight.extends);
     //console.log(EdgeLeft.extends);
     EdgeRight.collisionExit["exit"] = function (Obj, Dir) {
-        //if (Obj.ClassType == Enum.ClassType.Terrain) {
-            console.log('leaving platform');
-        //}
+        self.wallHitDir = -1;
+        console.log("exit ", self.wallHitDir, self);        
     };
     
     EdgeLeft.collisionExit["exit"] = function (Obj, Dir) {
-        //if (Obj.ClassType == Enum.ClassType.Terrain) {
-            console.log('leaving platform');
-        //}
+        console.log("exit ", self.wallHitDir, self);
+        self.wallHitDir = 1;
     };    
     
     self.addChild(EdgeRight);

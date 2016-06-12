@@ -18,7 +18,7 @@ EnemyStates = {
     Setup: function (parent) {
 
         parent.wallHitDir = 0;
-
+        /*
         parent.collisionEnter["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
             if (canCollide) {
                 if(collisionFrames >= 3 && Math.round(Dir.x) != 0) {
@@ -38,6 +38,7 @@ EnemyStates = {
                     parent.wallHitDir = 0;
             }
         }
+        */
     },
 
     NormalWander: function (_walkSpeed) {
@@ -142,7 +143,6 @@ EnemyStates = {
                     base.parent.position.y + Math.random() * rageIntencity - rageIntencity/2);
                     
             timeLeft -= 1;
-            console.log(timeLeft);
         }
         
         this.Leave = function() {
@@ -219,7 +219,7 @@ EnemyStates = {
         this.__proto__ = new State();
         var base = this.__proto__;
         
-        var attackRange = _attackRange || 20;
+        var attackRange = _attackRange || 200;
         var chargeSpeed = _chargeSpeed || 5;
         var chargeCooldown = _chargeCoolDown || 5;
         var resetCharge = undefined;
@@ -232,7 +232,7 @@ EnemyStates = {
         
         this.Reason = function () {
             var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
-            
+            //console.log(magnitude, attackRange);
             if (STOP) {
                 base.returnState = StatesEnum.specialWander;
                 return false;

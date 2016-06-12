@@ -1,7 +1,7 @@
 Enum.ClassName[Enum.ClassType.EnemyWalk] = EnemyWalk;
 
 function EnemyWalk(properties) {
-    this.__proto__ = new EnemyBase(properties, this);
+    this.parrent = new EnemyBase(properties, this)
     var self = this;
 
     self.size = Vector2.new(20, 20);
@@ -12,7 +12,7 @@ function EnemyWalk(properties) {
     sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(500));
     sm.AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(500));
     sm.AddState(StatesEnum.alert, new EnemyStates.Enrage(15, 15));
-    sm.AddState(StatesEnum.charge, new EnemyStates.Charge(20, 5, 5));
+    sm.AddState(StatesEnum.charge, new EnemyStates.Charge(2800, 5, 5));
     sm.AddState(StatesEnum.interact, new EnemyStates.Attack());
     
 }
