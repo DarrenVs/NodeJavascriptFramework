@@ -40,14 +40,14 @@ function EnemyBase(properties, _self) {
     }
     
     trigger.collisionEnter["Triggered"] = function (Obj) {
-        console.log("collisiong with something");
+        //console.log("collisiong with something");
         if (Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
         } 
     }
     trigger.collisionExit["notTriggered"] = function (Obj) {
-        console.log("collisiong with something");
+        //console.log("collisiong with something");
         
         if (Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = false;

@@ -1,6 +1,22 @@
-Enum.ClassName[Enum.ClassType.Player] = Player;
+var PlayerProperties = {
+    playerList: {},
+    player: undefined,
+    
+    choosePlayer: function() {
+            var lowestIndex = this.player.creatorID;
+        
+        for (var index in this.playerList) {
+            if(this.playerList[index].creatorID < lowestIndex)
+                lowestIndex = this.playerList[index].creatorID;
+        }
+        
+        if(lowestIndex == this.player.creatorID) {
+            return true;
+        }
+    },   
+};
 
-var playerList = {};
+Enum.ClassName[Enum.ClassType.Player] = Player;
 
 // BaseClass
 function Player(properties) {
@@ -8,6 +24,8 @@ function Player(properties) {
     
     GameObject(this, properties);
     var self = this;
+    
+    PlayerProperties.player = self;
     
     this.extends = {
         physics:Physics(this),
@@ -70,7 +88,7 @@ function Player(properties) {
         }
     );
     
-    playerList[self.creatorID] = self;
+    PlayerProperties.playerList[self.creatorID] = self;
     
     this.DrawObject.currentAnimation = "run";
     
@@ -113,7 +131,7 @@ function Player(properties) {
     this.die = function() {
         console.log("player dies");
         
-        delete playerList[self.creatorID];
+        delete PlayerProperties.playerList[self.creatorID];
         self.Health = 0;
         sendObject(self);
         self.destroy();

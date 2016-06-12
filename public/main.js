@@ -28,6 +28,10 @@ var events = events || {
     sendChunk: function(parameters) {
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },
+    
+    sendPickup: function(parameters) {
+        PickupProperties.assignPickup(parameters.pickupValue);
+    },
 };
 
 

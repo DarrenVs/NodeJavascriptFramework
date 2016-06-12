@@ -22,7 +22,7 @@ EnemyStates = {
         parent.collisionEnter["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
             if (canCollide) {
                 if(collisionFrames >= 3 && Math.round(Dir.x) != 0) {
-                    console.log("chaning dir");
+                    //console.log("chaning dir");
                     parent.wallHitDir = Dir;
                     parent.wall[Obj.ID] = true;
                 }
@@ -142,7 +142,7 @@ EnemyStates = {
                     base.parent.position.y + Math.random() * rageIntencity - rageIntencity/2);
                     
             timeLeft -= 1;
-            console.log(timeLeft);
+            //console.log(timeLeft);
         }
         
         this.Leave = function() {
@@ -167,7 +167,7 @@ EnemyStates = {
         }
         
         this.Reason = function () {
-            console.log(base.parent.target.position);
+            //console.log(base.parent.target.position);
             var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
             
             if (STOP) {
@@ -340,7 +340,7 @@ EnemyStates = {
         }
         
         this.Act = function () {
-            console.log("YOU GOT HIT BY A SPOOK (get rekt)");
+            //console.log("YOU GOT HIT BY A SPOOK (get rekt)");
             deltDamage = true;
         }
         

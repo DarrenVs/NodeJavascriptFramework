@@ -37,5 +37,5 @@ var Parallax = function() {
             self.addChild( newObject );
         }
                     
-    } */
+    }*/
 }

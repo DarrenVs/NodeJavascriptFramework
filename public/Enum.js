@@ -33,6 +33,8 @@ var Enum = {
         ParallaxObject: 13,
         
         Wall: 14,
+        
+        Pickup: 15,
     },
     
     ClassName: {
