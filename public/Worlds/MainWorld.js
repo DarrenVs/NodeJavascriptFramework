@@ -7,7 +7,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---LEVEL SETUP---///
     /////////////////////
 
-    stage.addChild(new Parallax());
+    //stage.addChild(new Parallax());
     
     stage.gravity = Vector2.new(0, 22);
     stage.airDenicty = 0;
@@ -62,7 +62,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
                 
     stage.addChild( boundary );
     
-
     
     //the offset of the platforms from mid
     var intermediatePlatformChunkHeight= (ChunkProperties.chunkLibary.intermediateChunk.length * ChunkProperties.chunkLibary.intermediateChunk[0].length) / ChunkProperties.tilesXCount;

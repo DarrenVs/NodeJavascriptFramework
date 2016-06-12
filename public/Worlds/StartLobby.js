@@ -13,6 +13,8 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     var barrier = [];
     
+    stage.addChild(new Parallax());
+    
     for(x = 0; x < ChunkProperties.tilesXCount; x++) {
         var newObject = new Enum.ClassName[Enum.ClassType.Wall]({
             size: new Vector2.new(ChunkProperties.tileSize, ChunkProperties.tileSize),
