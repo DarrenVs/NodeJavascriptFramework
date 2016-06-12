@@ -16,8 +16,8 @@ function IntermediatePlatform(properties) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    for(var i in playerList) {
-        self.ignoreObjectIDs[playerList[i].ID] = true;
+    for(var i in PlayerProperties.playerList) {
+        self.ignoreObjectIDs[PlayerProperties.playerList[i].ID] = true;
     }
     
     this.collisionStay["IntermediatePlatformStay"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {

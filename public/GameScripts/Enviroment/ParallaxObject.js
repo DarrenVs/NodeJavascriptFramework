@@ -48,7 +48,7 @@ function ParallaxObject(properties, layer) {
     }
     
     this.manualDestroy = function() {
-        console.log("#ArminionWasHere");
-        self.position =  startPositionY = stage.position.y - Math.random() * 1000;
+        self.position = new Vector2.new(canvas.width * Math.random(), -self.stage.position.y - Math.random());
+        startPositionY = self.position.y;
     }
 }

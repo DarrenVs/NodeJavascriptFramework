@@ -232,7 +232,7 @@ EnemyStates = {
         
         this.Reason = function () {
             var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
-            //console.log(magnitude, attackRange);
+            console.log(magnitude, attackRange);
             if (STOP) {
                 base.returnState = StatesEnum.specialWander;
                 return false;

@@ -1,15 +1,15 @@
 var cameraController = {
     
-    highestPlayerPos: 800,
+    highestPlayerPos: 270,
     
     cameraPosition: function() {
         //keep the camera at the position of the highest player
-        for (var index in playerList) {
-            if(playerList[index].position.y < this.highestPlayerPos) {
-                this.highestPlayerPos =  playerList[index].position.y
+        for (var index in PlayerProperties.playerList) {
+            if(PlayerProperties.playerList[index].position.y < this.highestPlayerPos) {
+                this.highestPlayerPos =  PlayerProperties.playerList[index].position.y
             } 
         }
 
-        return -this.highestPlayerPos + canvas.height / 3.3;
+        return -this.highestPlayerPos + canvas.height / 3.5;
     },
 }

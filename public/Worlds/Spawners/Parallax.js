@@ -5,31 +5,32 @@ var Parallax = function() {
 
     var alreadySpawned = false;
     
-    var spawnYPosition = 200;
+    var spawnYPosition = 6000;
     
     var spawnDistance = 5;
     
     var stagePosition = 0;
     
+    var size = 500;
+    
     var layers = {
         
         2: {
-            maxLayerCount: 3,
-        },
-        3: {
             maxLayerCount: 5,
         },
+        3: {
+            maxLayerCount: 7,
+        },
         4: {
-            maxLayerCount: 10,
+            maxLayerCount: 12,
         },
     };
     
-    /*
     for(var l in layers) {
         for(c = 0; c < layers[l].maxLayerCount; c++) {
             var newObject = new Enum.ClassName[Enum.ClassType.ParallaxObject]({
-                    size: new Vector2.new(100 * l, 100 * l),
-                    position: new Vector2.new(Math.random() * canvas.width, spawnYPosition * Math.random()),
+                    size: new Vector2.new(size / l, size / l),
+                    position: new Vector2.new(Math.random() * canvas.width, canvas.height - spawnYPosition * Math.random()),
                 },
                 l
             )
@@ -37,5 +38,5 @@ var Parallax = function() {
             self.addChild( newObject );
         }
                     
-    } */
+    }
 }
