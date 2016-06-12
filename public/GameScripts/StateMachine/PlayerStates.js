@@ -12,13 +12,13 @@ PlayerStates = {
 
 
             if (parent.lastWallHit != parent.wallHitDir) {
-                parent.lastWallHit = parent.wallHitDir
-                
-                    if (parent.wallHitDir < 0) {
-                        parent.walkSpeed = -Math.abs(parent.walkSpeed);
-                    } else if (parent.wallHitDir > 0) {
-                        parent.walkSpeed = Math.abs(parent.walkSpeed);         
-                    } 
+                parent.lastWallHit = parent.wallHitDir;
+
+                if (parent.wallHitDir < 0) {
+                    parent.walkSpeed = -Math.abs(parent.walkSpeed);
+                } else if (parent.wallHitDir > 0) {
+                    parent.walkSpeed = Math.abs(parent.walkSpeed);         
+                } 
             }
             
 
@@ -57,6 +57,7 @@ PlayerStates = {
         wallHitColl.hitbox = wallHitColl.size;
         wallHitColl.collisionActive = false;
         wallHitColl.ignoreObjectType[Enum.ClassType.Player] = true;
+        wallHitColl.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
         //-----\\
 
         //-----\\
