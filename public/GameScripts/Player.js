@@ -58,9 +58,9 @@ function Player(properties) {
             
             playerMovement: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(589, 201),
-                columns: 7,
-                rows: 2,
+                size: Vector2.new(366, 397),
+                columns: 5,
+                rows: 4,
             },
             jump: {
                 position: Vector2.new(0, 0),
@@ -73,8 +73,8 @@ function Player(properties) {
         {   //Animations
             run: {
                 sprite: "playerMovement",
-                speed: .2, //Per frame
-                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13], //AnimationFrame
+                speed: .3, //Per frame
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
