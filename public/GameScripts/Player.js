@@ -36,13 +36,13 @@ function Player(properties) {
     console.log("hard setted player position, dont forget");
     
     //-----Adding the states!!!-----\\
-    var sm = this.extends.navigation;
-    sm.AddState(StatesEnum.wander, new PlayerStates.Walk());
-    sm.AddState(StatesEnum.jump, new PlayerStates.Jump());
-    sm.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
-    sm.AddState(StatesEnum.slide, new PlayerStates.Slide());
-    sm.AddState(StatesEnum.stun, new PlayerStates.Stagger());
-    sm.AddState(StatesEnum.inAir, new PlayerStates.InAir());
+    var navSM = this.extends.navigation;
+    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk());
+    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump());
+    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
+    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide());
+    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger());
+    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir());
     
     var pickupSM = this.extends.pickupStates;
     pickupSM.AddState(StatesEnum.idle, new PickupStates.idle);
@@ -51,7 +51,6 @@ function Player(properties) {
     pickupSM.AddState(StatesEnum.ball, new PickupStates.ball);
     pickupSM.AddState(StatesEnum.throwAble, new PickupStates.throwAble);
 
-    console.log(navSM);
     
     this.DrawObject = new Sprite(
         this,   //Parent
