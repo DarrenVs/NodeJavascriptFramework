@@ -5,7 +5,12 @@ var PickupStates = {
     },
     
     idle: function() {
-        var base = this.__proto__ = new State();
+        this.__proto__ = new State();
+        var base = this.__proto__;
+
+        this.Reason = function () {
+            return true;
+        }
         
         this.Enter =  function(parent) {
             base.Enter(parent);

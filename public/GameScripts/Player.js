@@ -28,8 +28,8 @@ function Player(properties) {
         navigation: new StateMachine(self, StatesEnum.inAir, 
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
-            true),
-        pickupStates: new StateMachine(self, StatesEnum.idle),
+            false),
+        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, true),
     };
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
@@ -45,16 +45,16 @@ function Player(properties) {
     navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir());
     
     var pickupSM = this.extends.pickupStates;
-    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle);
-    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold);
-    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated);
-    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold);
-    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold);
-    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold);
+    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle());
+    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold());
+    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated());
+    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold());
+    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold());
+    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold());
     
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.PlayerRunSpriteSheet,   //Image
+        Enum.Images.Sprites.PlayerAnimationSheet,   //Image
         
         {   //Sprites
             

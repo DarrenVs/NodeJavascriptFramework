@@ -1,8 +1,9 @@
 /*States enum. Here you define what states the StateMachine will have */
 
+"use strict";
 //((((((((((((()))))))))))))\\
 //STATE MACHINE ENUM
-StatesEnum = {
+var StatesEnum = {
     idle: 'idle',
     
     //enemy
@@ -58,7 +59,7 @@ StatesEnum = {
 
 //----------------------------\\
 //STATE INTERFACE
-State = function () {
+var State = function () {
     this.parent = undefined;
     this.returnState = undefined;
     //Just to be able to check if it is a state
@@ -87,10 +88,10 @@ State = function () {
 //----------------------------\\
 
 
-
+var updateCounter = 0;
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
 //STATE MACHINE
-StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
+var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
     //This will hold the states with their value
     var states = {};
     //Set default state
@@ -103,7 +104,7 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
     var self = this;
     
     //Copies the states from StatesEnum 
-    for (key in StatesEnum)
+    for (var key in StatesEnum)
         states[key] = 1;
         
     if (setup) setup(parent);
@@ -124,7 +125,7 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
     }
     
     //The core logic (should speak for itself)
-    _parent.update["statemachine"] = function () {
+    parent.update["statemachine" + updateCounter++] = function () {
         if (defaultKeyActive) {
 
             if (currentState.Reason()) {
