@@ -24,6 +24,7 @@ StatesEnum = {
     invulnerability: 'invulnerability',
     mine: 'mine',
     ball: 'ball',
+    throwAble: 'throwAble',
 }
 //((((((((((((()))))))))))))\\
 

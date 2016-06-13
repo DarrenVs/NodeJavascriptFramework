@@ -1,7 +1,15 @@
-pickupStates = {
+var PickupStates = {
     
-    defaultState: {
+    defaultState: function() {
         var base = this.__proto__ = new State();
+    },
+    
+    idle: function() {
+        var base = this.__proto__ = new State();
+        
+        this.Enter =  function(parent) {
+            base.Enter(parent);
+        }
     },
     
     invulnerability: function() {

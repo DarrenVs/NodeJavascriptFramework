@@ -1,4 +1,4 @@
-PlayerStates = {
+var PlayerStates = {
 
     AnyState: function (parent) {
         var self = this;

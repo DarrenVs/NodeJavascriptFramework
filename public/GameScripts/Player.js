@@ -1,3 +1,5 @@
+"use strict";
+
 var PlayerProperties = {
     playerList: {},
     player: undefined,
@@ -31,7 +33,7 @@ function Player(properties) {
         physics:Physics(this),
         collision:Collision(this),
         tank:Tank(this),
-        navigation:new StateMachine(self, StatesEnum.inAir, 
+        navigation: new StateMachine(self, StatesEnum.inAir, 
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
             false),
@@ -96,10 +98,10 @@ function Player(properties) {
     );
     
     this.collisionEnter["pickupCollision"] = function(Obj) {
-        if(Obj.ClassType == Enum.ClassType.Pickup) (
+        if(Obj.ClassType == Enum.ClassType.Pickup) {
             //pickupSM.currentState = Obj.pickupValue;
-        )
-    }
+        }
+    };
     
     PlayerProperties.playerList[self.creatorID] = self;
     
