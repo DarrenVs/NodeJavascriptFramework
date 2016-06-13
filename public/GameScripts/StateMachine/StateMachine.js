@@ -97,6 +97,8 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
     
     var parent = _parent;
     var currentState;
+
+    var self = this;
     
     //Copies the states from StatesEnum 
     for (key in StatesEnum)
@@ -126,31 +128,28 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
             if (currentState.Reason()) {
                 currentState.Act();
             } else {
-                var newStateKey = currentState.Leave();
-                
-                if (typeof(states[newStateKey]) != 'undefined') {
-                    if (debug)
-                        console.log("changing to state: " + newStateKey);
-                    currentState = states[newStateKey];
-                } else {
-                    if (debug)
-                        console.log("switching to defualt: " + defaultStateKey);
-                    currentState = states[defaultStateKey];
-                }
+                self.ChangeState(currentState.Leave());
                 currentState.Enter(parent);
             }
         }
 
         if (anyState) {
             anyState.Act();
-
             if (anyState.Return()) {
-                var newStateKey = anyState.Return();
-                if (typeof states == 'number' && typeof states[newStateKey] != undefined) {
-                    currentState = states[newStateKey];
-                    if (debug) console.log("anyState set state to " + newStateKey);
-                } else if (debug) console.log("state given by anyState is not a valid state");
+                self.ChangeState(anyState.Return());
             }
+        }
+    }
+
+    //!!!ONly use if really necessary!!!\\
+    this.ChangeState = function (_newStateKey) {
+        var newStateKey = _newStateKey;
+        if (typeof(states[newStateKey]) != 'undefined') {
+            if (debug) console.log("changing to state: " + newStateKey);
+            currentState = states[newStateKey];
+        } else {
+            if (debug) console.log("switching to defualt: " + defaultStateKey);
+            currentState = states[defaultStateKey];
         }
     }
 }
