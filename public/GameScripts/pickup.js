@@ -16,6 +16,7 @@ var PickupProperties = {
     },
     
     assignPickup: function(pickupValue) {
+        
         this.currentPickup.pickupValue = pickupValue;
         console.log(this.currentPickup.pickupValue);
     },

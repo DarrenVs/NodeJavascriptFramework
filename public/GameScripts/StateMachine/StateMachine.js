@@ -3,19 +3,27 @@
 //((((((((((((()))))))))))))\\
 //STATE MACHINE ENUM
 StatesEnum = {
+    idle: 'idle',
+    
+    //enemy
     wander: 'wander',
     specialWander: 'specialWander',
     alert: 'alert',
     charge: 'charge',
     interact: 'interact',
 
+    //player
     jump: 'jump',
     extraJump: 'extraJump',
     specialJump: 'specialJump',
     slide: 'slide',
     stun: 'stun',
-
     inAir: 'inAir',
+    
+    //pickups
+    invulnerability: 'invulnerability',
+    mine: 'mine',
+    ball: 'ball',
 }
 //((((((((((((()))))))))))))\\
 
