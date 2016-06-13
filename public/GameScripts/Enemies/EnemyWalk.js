@@ -1,7 +1,7 @@
 Enum.ClassName[Enum.ClassType.EnemyWalk] = EnemyWalk;
 
 function EnemyWalk(properties) {
-    this.parrent = new EnemyBase(properties, this)
+    this.parrent = new EnemyBase(this, properties)
     var self = this;
 
     self.size = Vector2.new(20, 20);

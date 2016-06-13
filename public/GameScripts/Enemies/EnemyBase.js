@@ -2,7 +2,7 @@ Enum.ClassName[Enum.ClassType.Enemy] = EnemyBase;
 
 var enemyList = {};
 
-function EnemyBase(properties, _self) {
+function EnemyBase(_self, properties) {
     var self = _self;
     
     self.health = 100;

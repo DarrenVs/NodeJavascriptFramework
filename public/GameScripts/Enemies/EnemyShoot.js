@@ -1,7 +1,7 @@
 Enum.ClassName[Enum.ClassType.EnemyShoot] = EnemyShoot;
 
 function EnemyShoot (properties) {
-    this.parent = new EnemyBase(this, properteis);
+    this.parent = new EnemyBase(this, properties);
     var self = this;
        
     self.size = Vector2.new(20, 20);
