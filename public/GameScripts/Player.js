@@ -36,7 +36,7 @@ function Player(properties) {
         navigation: new StateMachine(self, StatesEnum.inAir, 
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
-            true),
+            false),
         pickupStates: new StateMachine(self, StatesEnum.idle),
     };
     

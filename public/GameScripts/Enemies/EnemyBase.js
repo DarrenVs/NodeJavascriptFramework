@@ -1,3 +1,5 @@
+"use strict";
+
 Enum.ClassName[Enum.ClassType.Enemy] = EnemyBase;
 
 var enemyList = {};
@@ -53,6 +55,7 @@ function EnemyBase(_self, properties) {
             self.triggered = false;
             //self.target = undefined;
         } 
+            //console.log("exit triggre hitting!");
     }
     
     self.addChild(trigger);
@@ -89,11 +92,11 @@ function EnemyBase(_self, properties) {
     //console.log(EdgeLeft.extends);
     EdgeRight.collisionExit["exit"] = function (Obj, Dir) {
         self.wallHitDir = -1;
-        console.log("exit ", self.wallHitDir, self);        
+        //console.log("exit ", self.wallHitDir, self);        
     };
     
     EdgeLeft.collisionExit["exit"] = function (Obj, Dir) {
-        console.log("exit ", self.wallHitDir, self);
+        //console.log("exit ", self.wallHitDir, self);
         self.wallHitDir = 1;
     };    
     
