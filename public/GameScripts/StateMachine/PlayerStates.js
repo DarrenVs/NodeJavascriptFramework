@@ -168,14 +168,11 @@ var PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.DrawObject.animation = "jump";
+            base.parent.DrawObject.currentAnimation = "jumpStart";
             base.parent.autoWalk = true;
-        }
-
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
             base.parent.velocity = Vector2.new(base.parent.walkSpeed, -jumpStrength);
 
+            console.log(base.parent.DrawObject);
             base.parent.returnState = StatesEnum.inAir;
         }
     },
@@ -192,7 +189,7 @@ var PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.DrawObject.animation = "wallJump";   
+            base.parent.DrawObject.currentAnimation = "JumpStart";   
             base.parent.autoWalk = true;
             
             base.parent.velocity = Vector2.new(
@@ -214,7 +211,7 @@ var PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.DrawObject.animation = "inAir";    
+            base.parent.DrawObject.currentAnimation = "inAir";    
             base.parent.autoWalk = false;
         }
 
@@ -262,7 +259,7 @@ var PlayerStates = {
             base.parent.autoWalk = false;
             base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;                  
 
-            base.parent.DrawObject.animation = "slide";    
+            base.parent.DrawObject.currentAnimation = "slide";    
         }
 
         this.Reason = function () {

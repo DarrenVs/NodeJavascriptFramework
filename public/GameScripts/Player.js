@@ -58,34 +58,86 @@ function Player(properties) {
         
         {   //Sprites
             
-            playerMovement: {
+            walk: {
                 position: Vector2.new(0, 0),
                 size: Vector2.new(366, 397),
                 columns: 5,
                 rows: 4,
             },
-            jump: {
-                position: Vector2.new(0, 0),
-                size: Vector2.new(393, 100),
-                columns: 7,
-                rows: 1,
-            }
+            jumpStart: {
+                position: Vector2.new(406, 0),
+                size: Vector2.new(247, 298),
+                columns: 3,
+                rows: 3, 
+            },
+            inAir: {
+                position: Vector2.new(545, 0),
+                size: Vector2.new(481, 256),
+                colmns: 6,
+                rows: 3,
+            },
+            backOnGround: {
+                position: Vector2.new(960, 0),
+                size: Vector2.new(523, 193),
+                colmns: 6,
+                rows: 2,
+            },
+            doubleJump: {
+                position: Vector2.new(1153, 0),
+                size: Vector2.new(),
+                colmns: 4,
+                rows: 3
+            },
+            slide: {
+                position: Vector2.new(1562, 0),
+                size: Vector2.new(40, 96),
+                colmns: 1,
+                rows: 1
+            },
         },
         
         {   //Animations
             run: {
-                sprite: "playerMovement",
+                sprite: "walk",
                 speed: .3, //Per frame
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
             jump: {
-                sprite: "jump",
-                speed: .15, //Per frame
+                sprite: "jumpStart",
+                speed: .3, //Per frame
                 keyFrames: [0,1,2,3,4,5,6], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
+            },
+            inAir: {
+                sprite: 'inAir',
+                speed: .3,
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14, 15, 16],
+                currentKeyFrame: 0,
+                loop: true
+            },
+            backOnGround: {
+                sprite: 'backOnGround',
+                speed: .3,
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10],
+                currentKeyFrame: 0,
+                loop: true,
+            },
+            doubleJump: {
+                sprite: 'doubleJump',
+                speed: .3,
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10, 11],
+                currentKeyFrame: 0,
+                loop: true,
+            },
+            slide: {
+                sprite: 'slide',
+                speed: .3,
+                keyFrames: [0],
+                currentKeyFrame: 0,
+                loop: true,
             },
         }
     );
