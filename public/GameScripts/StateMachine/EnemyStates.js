@@ -15,9 +15,29 @@ this.State = {
 //----------------------------\\
 
 EnemyStates = {
+    AnyState: function () {
+        this.Act = function () {
+            if (parent.oldWallHitDir != parent.wallHitDir) {
+                parent.oldWallHitDir = parent.wallHitDir;
+                if (wallHitDir > 0) parent.walkSpeed = -Math.abs(parent.walkSpeed);
+                else if (wallHitDir < 0) parent.walkSpeed = Math.abs(parent.walkSpeed);
+                else console.log("waklspeeed = 0");
+            }
+        };
+        this.Return = function(){
+            return false;
+        };
+    },
+
     Setup: function (parent) {
 
         parent.wallHitDir = 0;
+        parent.oldWallHitDir = 1;
+        parent.walkSpeed = 0;
+
+        parent.collisionEnter["hitWall"] = function (Obj, dir, force, distance, canCollide) {
+            if (Obj.x) parent.wallHitDir = dir.x;
+        };
         /*
         parent.collisionEnter["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
             if (canCollide) {
@@ -46,12 +66,12 @@ EnemyStates = {
         var base = this.__proto__;
         
         var enemies = [];
-        var walkSpeed = 1;
+        var walkSpeed = _walkSpeed || 1;
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
             _parent.colour = "blue";
-                        
+            parent.walkSpeed = walkSpeed;
         }
         
         this.Reason = function () {
