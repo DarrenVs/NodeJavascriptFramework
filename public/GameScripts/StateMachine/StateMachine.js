@@ -86,7 +86,7 @@ State = function () {
 //----------------------------\\
 
 
-
+var stateMachineCounter = 0;
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
 //STATE MACHINE
 StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
@@ -123,7 +123,7 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
     }
     
     //The core logic (should speak for itself)
-    _parent.update["statemachine"] = function () {
+    _parent.update["statemachine" + stateMachineCounter++] = function () {
         if (defaultKeyActive) {
 
             if (currentState.Reason()) {

@@ -28,7 +28,7 @@ function Player(properties) {
         navigation: new StateMachine(self, StatesEnum.inAir, 
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
-            false),
+            true),
         pickupStates: new StateMachine(self, StatesEnum.idle),
     };
     
@@ -50,6 +50,8 @@ function Player(properties) {
     pickupSM.AddState(StatesEnum.mine, new PickupStates.mine);
     pickupSM.AddState(StatesEnum.ball, new PickupStates.ball);
     pickupSM.AddState(StatesEnum.throwAble, new PickupStates.throwAble);
+
+    console.log(navSM);
     
     this.DrawObject = new Sprite(
         this,   //Parent
