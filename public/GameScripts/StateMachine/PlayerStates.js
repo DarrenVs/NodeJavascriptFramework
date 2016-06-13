@@ -2,7 +2,7 @@ var PlayerStates = {
 
     AnyState: function (parent) {
         var self = this;
-        parent.walkSpeed = 190;
+        parent.walkSpeed = 180;
 
         this.Return = function () {
             return false;
@@ -21,7 +21,6 @@ var PlayerStates = {
                 } 
             }
             
-
             if (parent.autoWalk && parent.turnAround) parent.velocity.x = parent.walkSpeed;
         }
         return this;
@@ -298,18 +297,16 @@ var PlayerStates = {
 
         var staggerUp = _staggerUp || 4;
         var staggerSide = _staggerSide || 2.5;
-
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
-            base.parent.DrawObject.animation = "stagger";
-        }
         
         this.Enter = function (_parent) {
             base.Enter(_parent);
 
-            base.parent.velocity = Vector2.new(staggerSide, staggerUp);
-            base.returnState = StatesEnum.inAir;
-            base.parent.autoWalk = false;
+            if(_parent.staggerAble) {
+                base.parent.velocity = Vector2.new(staggerSide, staggerUp);
+                base.returnState = StatesEnum.inAir;
+                base.parent.autoWalk = false;
+                base.parent.DrawObject.animation = "stagger";
+            }
         }
 
         this.Leave = function () {

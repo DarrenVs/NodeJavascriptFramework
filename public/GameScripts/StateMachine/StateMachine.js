@@ -21,10 +21,11 @@ StatesEnum = {
     inAir: 'inAir',
     
     //pickups
-    invulnerability: 'invulnerability',
-    mine: 'mine',
-    ball: 'ball',
-    throwAble: 'throwAble',
+    invulnerabilityOnHold: 'invulnerabilityOnHold',
+    invulnerabilityActivated: 'invulnerabilityActivated',
+    mineOnHold: 'mineOnHold',
+    ballOnHold: 'ballOnHold',
+    throwAbleOnHold: 'throwAbleOnHold',
 }
 //((((((((((((()))))))))))))\\
 
@@ -86,7 +87,7 @@ State = function () {
 //----------------------------\\
 
 
-var stateMachineCounter = 0;
+
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
 //STATE MACHINE
 StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
@@ -123,7 +124,7 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
     }
     
     //The core logic (should speak for itself)
-    _parent.update["statemachine" + stateMachineCounter++] = function () {
+    _parent.update["statemachine"] = function () {
         if (defaultKeyActive) {
 
             if (currentState.Reason()) {
