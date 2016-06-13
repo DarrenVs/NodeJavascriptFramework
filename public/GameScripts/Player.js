@@ -4,8 +4,11 @@ var PlayerProperties = {
     playerList: {},
     
     checkHosts: function() {
-        for (var index in connectionList)
-            return connectionList[index] == clientID;
+        for (var index in connectionList) {
+            console.log(connectionList[index]);
+            console.log(clientID);
+            return index == clientID;
+        }
     },   
 };
 
@@ -26,7 +29,7 @@ function Player(properties) {
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
             false),
-        //pickupStates: new StateMachine(self, StatesEnum.idle),
+        pickupStates: new StateMachine(self, StatesEnum.idle),
     };
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
@@ -41,14 +44,12 @@ function Player(properties) {
     sm.AddState(StatesEnum.stun, new PlayerStates.Stagger());
     sm.AddState(StatesEnum.inAir, new PlayerStates.InAir());
     
-    /*
     var pickupSM = this.extends.pickupStates;
     pickupSM.AddState(StatesEnum.idle, new PickupStates.idle);
     pickupSM.AddState(StatesEnum.invulnerability, new PickupStates.invulnerability);
     pickupSM.AddState(StatesEnum.mine, new PickupStates.mine);
     pickupSM.AddState(StatesEnum.ball, new PickupStates.ball);
     pickupSM.AddState(StatesEnum.throwAble, new PickupStates.throwAble);
-    */
     
     this.DrawObject = new Sprite(
         this,   //Parent
