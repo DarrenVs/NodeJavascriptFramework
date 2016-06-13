@@ -98,7 +98,7 @@ function Player(properties) {
     
     this.colliderType = Enum.colliderType.box;
     
-    this.hitbox = Vector2.new(self.size.x * 0.5, self.size.y);
+    this.hitbox = Vector2.new(self.size.x * 0.5, self.size.y + 10);
     
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
