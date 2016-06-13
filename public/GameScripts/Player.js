@@ -28,7 +28,7 @@ function Player(properties) {
         navigation: new StateMachine(self, StatesEnum.inAir, 
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
-            false),
+            true),
         pickupStates: new StateMachine(self, StatesEnum.idle),
     };
     
@@ -46,36 +46,35 @@ function Player(properties) {
     
     var pickupSM = this.extends.pickupStates;
     pickupSM.AddState(StatesEnum.idle, new PickupStates.idle);
-    pickupSM.AddState(StatesEnum.invulnerability, new PickupStates.invulnerability);
-    pickupSM.AddState(StatesEnum.mine, new PickupStates.mine);
-    pickupSM.AddState(StatesEnum.ball, new PickupStates.ball);
-    pickupSM.AddState(StatesEnum.throwAble, new PickupStates.throwAble);
-
-console.log(Enum.Images.Sprites);
+    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold);
+    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated);
+    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold);
+    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold);
+    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold);
     
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.PlayerAnimationSheet,   //Image
+        Enum.Images.Sprites.PlayerRunSpriteSheet,   //Image
         
         {   //Sprites
             
-            wander: {
+            playerMovement: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(366, 406),
+                size: Vector2.new(366, 397),
                 columns: 5,
                 rows: 4,
             },
             jump: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(613, 298),
-                columns: 3,
-                rows: 3,
+                size: Vector2.new(393, 100),
+                columns: 7,
+                rows: 1,
             }
         },
         
         {   //Animations
-            wander: {
-                sprite: "wander",
+            run: {
+                sprite: "playerMovement",
                 speed: .3, //Per frame
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
@@ -83,12 +82,11 @@ console.log(Enum.Images.Sprites);
             },
             jump: {
                 sprite: "jump",
-                speed: .3, //Per frame
-                keyFrames: [0,1,2,3,4,5,6, 7, 8], //AnimationFrame
+                speed: .15, //Per frame
+                keyFrames: [0,1,2,3,4,5,6], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
-            
         }
     );
     

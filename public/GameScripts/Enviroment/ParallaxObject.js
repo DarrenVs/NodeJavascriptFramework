@@ -21,13 +21,15 @@ function ParallaxObject(properties, layer) {
     
     self.anchored = true;
     
+    var parallaxImage = Enum.Images.Sprites.ParallaxObjects[layer][Math.floor(Math.random() * Enum.Images.Sprites.ParallaxObjects[layer].length)];
+    
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.ParallaxObjects[layer][Math.floor(Math.random() * Enum.Images.Sprites.ParallaxObjects[layer].length)],   //Image
+        parallaxImage,   //Image
         {   //Sprites
             parallaxObject: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(125, 189),
+                size: Vector2.new(parallaxImage.width, parallaxImage.height),
                 columns: 1,
                 rows: 1,
             },

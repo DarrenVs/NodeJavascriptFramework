@@ -35,6 +35,11 @@ var Enum = {
         Wall: 14,
         
         Pickup: 15,
+        
+        Invulnerability: 16,
+        Mine: 17,
+        Ball: 18,
+        ThrowAbleObject: 19,
     },
     
     ClassName: {
@@ -53,7 +58,7 @@ var Enum = {
             PlayerAnimationSheet: newImage("Images/Player/imgpsh_fullsize.png"),
             
             //pickups
-            InvulnableSpriteSheet: newImage("Images/Pickups/invulnable_spritesheet.png"),
+            InvulnableSpriteSheet: newImage("Images/Pickups/invulnerable_spritesheet.png"),
             
             //platforms
             Platforms_40x40: [
