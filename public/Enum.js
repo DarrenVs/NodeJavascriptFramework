@@ -51,7 +51,9 @@ var Enum = {
             
             //player
             PlayerRunSpriteSheet: newImage("Images/Player/player_run_spritesheet.png"),
-            PlayerJumpSpriteSheet: newImage("Images/Player/player_jump_spritesheet.png"),
+            PlayerJumpStartSpriteSheet: newImage("Images/Player/player_jumpstart_spritesheet.png"),
+            PlayerJumpIdleSpriteSheet: newImage("Images/Player/player_jumpidle_spritesheet.png"),
+            PlayerJumpEndSpriteSheet: newImage("Images/Player/player_jumpend_spritesheet.png"),
             
             //pickups
             InvulnableSpriteSheet: newImage("Images/Pickups/invulnable_spritesheet.png"),
@@ -60,13 +62,9 @@ var Enum = {
             Platforms_40x40: [
                 newImage("Images/Platforms/Platforms_40x40/platform_1_40x40.png"),
                 newImage("Images/Platforms/Platforms_40x40/platform_2_40x40.png"),
-                newImage("Images/Platforms/Platforms_40x40/platform_3_40x40.png"),
-                newImage("Images/Platforms/Platforms_40x40/platform_4_40x40.png"),
             ],
             
             Platforms_120x120: [
-                //newImage("Images/Platforms/Platforms_120x120/platform_1_120x120.png"),
-                //newImage("Images/Platforms/Platforms_120x120/platform_2_120x120.png"),
                 newImage("Images/Platforms/Platforms_120x120/platform_3_120x120.png"),
                 newImage("Images/Platforms/Platforms_120x120/platform_4_120x120.png"),
             ],
