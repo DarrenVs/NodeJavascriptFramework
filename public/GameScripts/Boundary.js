@@ -22,8 +22,6 @@ function Boundary(properties) {
     }
     
     this.collisionStay["outOfBounds"] = function(Obj) {
-        //console.log(Obj.ID + " died, Out of Bounds");
-        
         if(Obj.manualDestroy != undefined) {
             Obj.manualDestroy();
         } else {

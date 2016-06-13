@@ -11,9 +11,11 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.startLobbyChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
     
-    var barrier = [];
-    
+    //spawn parallax
     stage.addChild(new Parallax());
+    
+    //spawn barrier
+    var barrier = [];
     
     for(x = 0; x < ChunkProperties.tilesXCount; x++) {
         var newObject = new Enum.ClassName[Enum.ClassType.Wall]({
@@ -26,17 +28,19 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
         stage.addChild( newObject );
     }
     
+    var player;
+    
     this.update["StartLobbyUpdate"] = function() {
         
-        if (PlayerProperties.player == undefined || PlayerProperties.player.health <= 0) {
+        if (player == undefined || player.health <= 0) {
             
-            PlayerProperties.player = new Player({
+            player = new Player({
                 position: new Vector2.new(canvas.width / 2, canvas.height / 1.3),
                 size: new Vector2.new(15, 30),
                 colour: "red",
             });
             
-            stage.addChild( PlayerProperties.player );
+            stage.addChild( player );
         }
                 
         stage.position.y = cameraController.cameraPosition();

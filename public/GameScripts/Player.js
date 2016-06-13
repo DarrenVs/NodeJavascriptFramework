@@ -2,19 +2,10 @@
 
 var PlayerProperties = {
     playerList: {},
-    player: undefined,
     
-    choosePlayer: function() {
-            var lowestIndex = this.player.creatorID;
-        
-        for (var index in this.playerList) {
-            if(this.playerList[index].creatorID < lowestIndex)
-                lowestIndex = this.playerList[index].creatorID;
-        }
-        
-        if(lowestIndex == this.player.creatorID) {
-            return true;
-        }
+    checkHosts: function() {
+        for (var index in connectionList)
+            return connectionList[index] == clientID;
     },   
 };
 
@@ -27,8 +18,6 @@ function Player(properties) {
     GameObject(this, properties);
     var self = this;
     
-    PlayerProperties.player = self;
-    
     this.extends = {
         physics:Physics(this),
         collision:Collision(this),
@@ -37,27 +26,29 @@ function Player(properties) {
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
             false),
-        pickupStates: new StateMachine(self, StatesEnum.idle),
+        //pickupStates: new StateMachine(self, StatesEnum.idle),
     };
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
     console.log("hard setted player position, dont forget");
     
     //-----Adding the states!!!-----\\
-    var navSM = this.extends.navigation;
-    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk());
-    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump());
-    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
-    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide());
-    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger());
-    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir());
+    var sm = this.extends.navigation;
+    sm.AddState(StatesEnum.wander, new PlayerStates.Walk());
+    sm.AddState(StatesEnum.jump, new PlayerStates.Jump());
+    sm.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
+    sm.AddState(StatesEnum.slide, new PlayerStates.Slide());
+    sm.AddState(StatesEnum.stun, new PlayerStates.Stagger());
+    sm.AddState(StatesEnum.inAir, new PlayerStates.InAir());
     
+    /*
     var pickupSM = this.extends.pickupStates;
     pickupSM.AddState(StatesEnum.idle, new PickupStates.idle);
     pickupSM.AddState(StatesEnum.invulnerability, new PickupStates.invulnerability);
     pickupSM.AddState(StatesEnum.mine, new PickupStates.mine);
     pickupSM.AddState(StatesEnum.ball, new PickupStates.ball);
     pickupSM.AddState(StatesEnum.throwAble, new PickupStates.throwAble);
+    */
     
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -133,7 +124,7 @@ function Player(properties) {
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {
         if (self.creatorID == clientID) {
-
+            sendObject(self, false, true);
         } else {
             self.health--;
         }

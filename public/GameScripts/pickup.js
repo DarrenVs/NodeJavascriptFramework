@@ -16,9 +16,7 @@ var PickupProperties = {
     },
     
     assignPickup: function(pickupValue) {
-        
         this.currentPickup.pickupValue = pickupValue;
-        console.log(this.currentPickup.pickupValue);
     },
     
 }
@@ -34,7 +32,7 @@ function Pickup(properties) {
     
     var pickupValue;
     
-    if(PlayerProperties.choosePlayer) {
+    if(PlayerProperties.checkHosts()) {
         PickupProperties.choosePickupValue();
     }
 }
