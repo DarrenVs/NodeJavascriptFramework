@@ -2,18 +2,12 @@
 
 var PlayerProperties = {
     playerList: {},
-    player: undefined,
     
-    choosePlayer: function() {
-            var lowestIndex = this.player.creatorID;
-        
-        for (var index in this.playerList) {
-            if(this.playerList[index].creatorID < lowestIndex)
-                lowestIndex = this.playerList[index].creatorID;
-        }
-        
-        if(lowestIndex == this.player.creatorID) {
-            return true;
+    checkHosts: function() {
+        for (var index in connectionList) {
+            console.log(connectionList[index]);
+            console.log(clientID);
+            return index == clientID;
         }
     },   
 };
@@ -26,8 +20,6 @@ function Player(properties) {
     
     GameObject(this, properties);
     var self = this;
-    
-    PlayerProperties.player = self;
     
     this.extends = {
         physics:Physics(this),
@@ -44,13 +36,13 @@ function Player(properties) {
     console.log("hard setted player position, dont forget");
     
     //-----Adding the states!!!-----\\
-    var navSM = this.extends.navigation;
-    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk());
-    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump());
-    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
-    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide());
-    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger());
-    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir());
+    var sm = this.extends.navigation;
+    sm.AddState(StatesEnum.wander, new PlayerStates.Walk());
+    sm.AddState(StatesEnum.jump, new PlayerStates.Jump());
+    sm.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
+    sm.AddState(StatesEnum.slide, new PlayerStates.Slide());
+    sm.AddState(StatesEnum.stun, new PlayerStates.Stagger());
+    sm.AddState(StatesEnum.inAir, new PlayerStates.InAir());
     
     var pickupSM = this.extends.pickupStates;
     pickupSM.AddState(StatesEnum.idle, new PickupStates.idle);
@@ -135,7 +127,7 @@ function Player(properties) {
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {
         if (self.creatorID == clientID) {
-
+            sendObject(self, false, true);
         } else {
             self.health--;
         }

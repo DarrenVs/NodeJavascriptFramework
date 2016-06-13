@@ -14,18 +14,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     this.update["MainWorldUpdate"] = function() {
         
-        if (PlayerProperties.player == undefined || PlayerProperties.player.health <= 0) {
-            
-            PlayerProperties.player = new Player({
-                position: new Vector2.new(canvas.width / 2, canvas.height / 2),
-                size: new Vector2.new(15, 30),
-                colour: "red",
-            });
-            
-            stage.addChild( PlayerProperties.player );
-        }
-        
-        
         stage.position.y = cameraController.cameraPosition();
         
         //////////////////////////
@@ -35,7 +23,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         if(-stage.position.y <= ChunkProperties.totalLevelHeight) {
             spawnIntermediateChunk();
             
-            if(PlayerProperties.choosePlayer()) {
+            if(PlayerProperties.checkHosts()) {
                 
                 EventQue["sendChunk"] = {
                     chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
