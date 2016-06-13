@@ -16,7 +16,7 @@ function EnemyBase(_self, properties) {
     self.extends = {
         physics: Physics(self),
         collision:Collision(self),
-        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup, null, true)
+        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup(self), EnemyStates.AnyState(self), false)
     }
     
     self.anchored = false;
@@ -47,7 +47,7 @@ function EnemyBase(_self, properties) {
             self.triggered = true;
             self.target = Obj;
         } 
-            console.log("collinding with someting");
+           // console.log("collinding with someting");
     }
     trigger.collisionExit["notTriggered"] = function (Obj, direction, force, distance, canCollide ) {
         

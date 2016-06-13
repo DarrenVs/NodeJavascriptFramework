@@ -115,7 +115,7 @@ StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) {
                     currentState.Enter(parent);
                     defaultKeyActive = true;
                     states[id] = state;
-                    if (debug) console.log("setting state to default" + defaultStateKey);
+                    if (debug) console.log("setting state to default " + defaultStateKey);
 
                 } else states[id] = state;
             } else throw "State " + state + " is not extended from the type State";

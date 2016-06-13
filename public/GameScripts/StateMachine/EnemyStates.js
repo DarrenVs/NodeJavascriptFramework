@@ -1,3 +1,5 @@
+"use strict";
+
 //----------------------------\\
 /*
 --REFERENCE  STATE INTERFACE-- 
@@ -14,30 +16,35 @@ this.State = {
 */
 //----------------------------\\
 
-EnemyStates = {
-    AnyState: function () {
+var EnemyStates = {
+    AnyState: function (parent) {
         this.Act = function () {
             if (parent.oldWallHitDir != parent.wallHitDir) {
+            
+            console.log(parent.oldWallHitDir, parent.wallHitDir)
                 parent.oldWallHitDir = parent.wallHitDir;
-                if (wallHitDir > 0) parent.walkSpeed = -Math.abs(parent.walkSpeed);
-                else if (wallHitDir < 0) parent.walkSpeed = Math.abs(parent.walkSpeed);
-                else console.log("waklspeeed = 0");
+
+                parent.walkSpeed *= parent.wallHitDir;
             }
         };
         this.Return = function(){
             return false;
         };
+        return this;
     },
 
     Setup: function (parent) {
 
-        parent.wallHitDir = 0;
-        parent.oldWallHitDir = 1;
-        parent.walkSpeed = 0;
+        parent.wallHitDir = 1;
+        parent.oldWallHitDir = 0;
+        parent.walkSpeed = 3;
+
 
         parent.collisionEnter["hitWall"] = function (Obj, dir, force, distance, canCollide) {
             if (Obj.x) parent.wallHitDir = dir.x;
+            //console.log("change direction " ,  parent.wallHitDir, parent.oldWallHitDir);
         };
+
         /*
         parent.collisionEnter["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
             if (canCollide) {
@@ -84,12 +91,8 @@ EnemyStates = {
         }
         
             this.Act = function () {
-
-                if (base.parent.wallHitDir) {
-                    walkSpeed = base.parent.wallHitDir * _walkSpeed;
-                } 
-
-                base.parent.position.x += walkSpeed;
+                
+                base.parent.position.x += base.parent.walkSpeed;
             } 
         
             
@@ -107,7 +110,6 @@ EnemyStates = {
             base.Enter(_parent);
             _parent.colour = "red";
             
-            _parent.extends["Navigation"] = AutomaticWalk(_parent, _walkSpeed);
         }
         
         this.Reason = function () {
@@ -121,12 +123,12 @@ EnemyStates = {
         }
         
             this.Act = function () {
-                base.Act();
+
+                base.parent.position.x += base.walkSpeed;
             } 
         
             
         this.Leave = function() {
-            delete base.parent.update["NavigationUpdate"];  
             return base.Leave();
         }
     },
