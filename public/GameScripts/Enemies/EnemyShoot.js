@@ -7,6 +7,7 @@ function EnemyShoot (properties) {
     self.size = Vector2.new(20, 20);
     self.hitbox = self.size;
     self.colour = 'red';
+    self.ClassType = Enum.ClassType.EnemyShoot;
 
     var sm = self.extends.AI;
     sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(500));

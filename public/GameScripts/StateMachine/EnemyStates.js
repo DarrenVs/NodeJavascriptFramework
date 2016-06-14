@@ -20,11 +20,10 @@ var EnemyStates = {
     AnyState: function (parent) {
         this.Act = function () {
             if (parent.oldWallHitDir != parent.wallHitDir) {
-            
-            console.log(parent.oldWallHitDir, parent.wallHitDir)
                 parent.oldWallHitDir = parent.wallHitDir;
+                console.log("changing direction in " + parent.ClassType);
 
-                parent.walkSpeed *= parent.wallHitDir;
+                parent.walkSpeed = parent.wallHitDir * Math.abs(parent.walkSpeed);
             }
         };
         this.Return = function(){
@@ -35,37 +34,18 @@ var EnemyStates = {
 
     Setup: function (parent) {
 
-        parent.wallHitDir = 1;
-        parent.oldWallHitDir = 0;
-        parent.walkSpeed = 3;
+        parent.wallHitDir = -1;
+        parent.oldWallHitDir = 54;
+        parent.walkSpeed = -.5;
 
-
+/*
         parent.collisionEnter["hitWall"] = function (Obj, dir, force, distance, canCollide) {
+            console.log(dir);
             if (Obj.x) parent.wallHitDir = dir.x;
             //console.log("change direction " ,  parent.wallHitDir, parent.oldWallHitDir);
         };
-
-        /*
-        parent.collisionEnter["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
-            if (canCollide) {
-                if(collisionFrames >= 3 && Math.round(Dir.x) != 0) {
-                    console.log("chaning dir");
-                    parent.wallHitDir = Dir;
-                    parent.wall[Obj.ID] = true;
-                }
-            }
-        }
-
-        parent.collisionExit["turnAround"] = function (obj, dir, force, distance, canCollide, collisionFrames) {
-            if (canCollide) {
-                if (parent.wall[Obj.ID] != undefined)
-                    delete parent.wall[Obj.ID];
-                
-                if (Object.keys(parent.wall).length == 0)
-                    parent.wallHitDir = 0;
-            }
-        }
         */
+
     },
 
     NormalWander: function (_walkSpeed) {
