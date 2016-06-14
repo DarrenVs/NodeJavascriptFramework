@@ -40,6 +40,7 @@ function Player(properties) {
     navSM.AddState(StatesEnum.wander, new PlayerStates.Walk());
     navSM.AddState(StatesEnum.jump, new PlayerStates.Jump());
     navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
+    navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump());
     navSM.AddState(StatesEnum.slide, new PlayerStates.Slide());
     navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger());
     navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir());
@@ -60,37 +61,37 @@ function Player(properties) {
             
             walk: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(366, 406),
-                columns: 5,
-                rows: 4,
+                size: Vector2.new(393, 229),
+                columns: 7,
+                rows: 3,
             },
             jumpStart: {
-                position: Vector2.new(0, 406),
-                size: Vector2.new(247, 298),
-                columns: 3,
-                rows: 3, 
+                position: Vector2.new(0, 229),
+                size: Vector2.new(326, 175),
+                columns: 5,
+                rows: 2, 
             },
             inAir: {
-                position: Vector2.new(0, 406 + 298),
-                size: Vector2.new(481, 256),
+                position: Vector2.new(0, 229 + 175),
+                size: Vector2.new(343, 211),
                 columns: 6,
                 rows: 3,
             },
             backOnGround: {
-                position: Vector2.new(0, 406 + 298 + 256),
-                size: Vector2.new(523, 193),
+                position: Vector2.new(0, 229 + 175 + 211),
+                size: Vector2.new(403, 167),
                 columns: 6,
                 rows: 2,
             },
             doubleJump: {
-                position: Vector2.new(0, 406 + 298 + 256 + 193),
-                size: Vector2.new(),
+                position: Vector2.new(0, 229 + 175 + 211 + 167),
+                size: Vector2.new(357, 259),
                 columns: 4,
                 rows: 3
             },
             slide: {
-                position: Vector2.new(0, 406 + 298 + 256 + 193+ 409),
-                size: Vector2.new(40, 96),
+                position: Vector2.new(0, 229 + 175 + 211 + 167+ 259),
+                size: Vector2.new(33, 77),
                 columns: 1,
                 rows: 1
             },
@@ -107,7 +108,7 @@ function Player(properties) {
             jumpStart: {
                 sprite: "jumpStart",
                 speed: .3, //Per frame
-                keyFrames: [0,1,2,3,4,5,6], //AnimationFrame
+                keyFrames: [0,1,2,3,4,5,6, 7, 8], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },

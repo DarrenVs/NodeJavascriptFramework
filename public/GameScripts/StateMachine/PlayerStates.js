@@ -16,8 +16,10 @@ var PlayerStates = {
 
                 if (parent.wallHitDir < 0) {
                     parent.walkSpeed = -Math.abs(parent.walkSpeed);
+                    parent.scale.x = -Math.abs(parent.scale.x);                    
                 } else if (parent.wallHitDir > 0) {
-                    parent.walkSpeed = Math.abs(parent.walkSpeed);         
+                    parent.walkSpeed = Math.abs(parent.walkSpeed);   
+                    parent.scale.x = Math.abs(parent.scale.x);
                 } 
             }
             
@@ -134,6 +136,7 @@ var PlayerStates = {
         var walkSpeed = _walkSpeed || 120;
         var jumpButton = _jumpButton || "32";
         
+        var animLength = 8;
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
@@ -142,10 +145,13 @@ var PlayerStates = {
             base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;
             base.parent.autoWalk = true;
 
-            base.parent.DrawObject.currentAnimation = "walk";
+            base.parent.DrawObject.currentAnimation = "backOnGround";
         }
 
         this.Reason = function () {
+            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) 
+                base.parent.DrawObject.currentAnimation = "walk";
+
             if (base.parent.onGround === 0) {
                 base.returnState = StatesEnum.inAir;
                 return false;
@@ -165,6 +171,7 @@ var PlayerStates = {
         var base = this.__proto__;
 
         var jumpStrength = _jumpStrength || 500;
+        var animLength = 8;
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
@@ -172,11 +179,39 @@ var PlayerStates = {
             base.parent.autoWalk = true;
             base.parent.velocity = Vector2.new(base.parent.walkSpeed, -jumpStrength);
 
-            console.log(base.parent.DrawObject);
             base.parent.returnState = StatesEnum.inAir;
+        }
+
+        this.Reason = function () {
+            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
+            
+            return true;
         }
     },
     //-----End-Jump-----\\
+
+    ExtraJump: function (_extraJumpStrength) {
+        this.__proto__ = new State();
+        var base = this.__proto__;
+
+        var extraJumpsStrength = _extraJumpStrength || 500;
+        var animLength = 8;        
+
+        this.Enter = function (_parent) {
+            base.Enter(_parent);
+            base.parent.DrawObject.currentAnimation = "doubleJump";
+            base.parent.autoWalk = true;
+            base.parent.velocity = Vector2.new(base.parent.walkSpeed, -extraJumpsStrength);
+
+            base.parent.returnState = StatesEnum.inAir;
+        }
+
+        this.Reason = function () {
+            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
+            
+            return true;
+        }
+    } ,
 
     //-----WallJump-----\\
 
@@ -186,6 +221,7 @@ var PlayerStates = {
 
         var jumpUpStrength = _jumpUpStrength || 400;
         var jumpSideStrength = _jumpSideStrength || 400;
+        var animLength = 8;        
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
@@ -198,6 +234,12 @@ var PlayerStates = {
                 );
             base.returnState = StatesEnum.inAir;
         }
+        this.Reason = function () {
+            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
+            
+            return true;
+        }
+        
     },
 
     //-----End-WallJump-----\\
@@ -211,7 +253,7 @@ var PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.DrawObject.currentAnimation = "inAir";    
+            base.parent.DrawObject.currentAnimation = "inAir";
             base.parent.autoWalk = false;
         }
 
@@ -229,7 +271,7 @@ var PlayerStates = {
             } else if (INPUT_CLICK[jumpButton] && base.parent.extraJumpsLeft) {
 
                 base.parent.extraJumpsLeft--;
-                base.returnState = StatesEnum.jump;
+                base.returnState = StatesEnum.extraJump;
                 return false;
 
             }
