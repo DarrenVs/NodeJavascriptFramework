@@ -177,7 +177,11 @@ function getObjectRotation(Obj) {
 }
 function getObjectPosition(Obj) {
     
-    return ((Obj.Parent && Obj.Parent != Obj.stage) ? Vector2.add(Obj.position, getObjectPosition(Obj.Parent)) : Obj.position);
+    return ((Obj.Parent && Obj.Parent != Obj.stage) ? Vector2.add(Vector2.multiply(Obj.position, Obj.Parent.scale), getObjectPosition(Obj.Parent)) : Obj.position);
+}
+function getObjectScale(Obj) {
+    
+    return ((Obj.Parent && Obj.Parent != Obj.stage) ? Vector2.add(Obj.Parent.scale, getObjectScale(Obj.Parent)) : Obj.scale);
 }
 
 
@@ -247,6 +251,10 @@ function GameObject(Parent, properties, inheritances) {
         return getObjectPosition(Parent);
     })
     
+    Parent.__defineGetter__('globalScale', function() {
+        return getObjectScale(Parent);
+    })
+    
 
 
     //Property Index\\
@@ -258,7 +266,8 @@ function GameObject(Parent, properties, inheritances) {
     Parent.childs = {};
     Parent.position = new Vector2.new(0, 0);
     Parent.rotation = 0;
-    Parent.size = new Vector2.new(10, 10);
+    Parent.size = Vector2.new(10, 10);
+    Parent.scale = Vector2.new(1, 1);
     Parent.DrawObject = new DrawObject(Parent);
     Parent.colour = "#" + Math.round(Math.random() * 1000000);
     Parent.creatorID = clientID;
@@ -332,6 +341,7 @@ function transformObject(obj) {
     }
 
     ctx.rotate((obj.rotation / 180) * Math.PI);
+    ctx.transform(obj.scale.x, 0, 0, obj.scale.y, 0, 0);
 }
 
 
@@ -416,10 +426,12 @@ socketio.on("IDrequest_to_client", function (data) {
 
 socketio.on("event", function (data) {
     
-    var event = JSON.parse(data);
+    var sendEvents = JSON.parse(data);
     if (data) {
-        for (var i in event) {
-                events[i](event[i]);
+        for (var index in sendEvents) {
+            for (var eventName in sendEvents[index]) {
+                events[eventName](sendEvents[index][eventName]);
+            }
         }
     }
 })
@@ -508,6 +520,15 @@ FastSendSpeed = 30
 nextFastSend = 0;
 
 var EventQue = {};
+EventCount = 0;
+
+
+function sendEvent( eventName, properties ) {
+    
+    EventQue[EventCount++] = {
+        [eventName]: properties,
+    }
+}
 
 
 function sendObject(Obj, replicateChildren, FastSend) {
@@ -565,6 +586,7 @@ setInterval(function() {
         // emit the event to the server for broadcasting
         socketio.emit("event", JSON.stringify(EventQue));
         EventQue = {};
+        EventCount = 0;
     }
 }, 0)
 
