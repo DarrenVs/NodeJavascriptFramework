@@ -145,12 +145,12 @@ var PlayerStates = {
             base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;
             base.parent.autoWalk = true;
 
-            base.parent.DrawObject.currentAnimation = "backOnGround";
+            base.parent.DrawObject.currentAnimation = "walk";
         }
 
         this.Reason = function () {
-            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) 
-                base.parent.DrawObject.currentAnimation = "walk";
+            //if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) 
+                //base.parent.DrawObject.currentAnimation = "walk";
 
             if (base.parent.onGround === 0) {
                 base.returnState = StatesEnum.inAir;
@@ -183,9 +183,9 @@ var PlayerStates = {
         }
 
         this.Reason = function () {
-            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
-            
-            return true;
+            //if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
+            return false;
+            //return true;
         }
     },
     //-----End-Jump-----\\
@@ -207,9 +207,9 @@ var PlayerStates = {
         }
 
         this.Reason = function () {
-            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
-            
-            return true;
+            //if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
+            return false;
+            //return true;
         }
     } ,
 
@@ -235,9 +235,9 @@ var PlayerStates = {
             base.returnState = StatesEnum.inAir;
         }
         this.Reason = function () {
-            if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
-            
-            return true;
+            //if (base.parent.DrawObject.currentAnimation.currentKeyFrame == animLength) return false;
+            return false;
+           // return true;
         }
         
     },
