@@ -48,6 +48,8 @@ var PickupStates = {
             
             this.invulnerabilityCounter = 0;
             console.log("start invul");
+            
+            base.parent.walkSpeed *= 1.2;
         }
         
         this.Reason = function () { 
@@ -60,6 +62,9 @@ var PickupStates = {
         
         this.Leave =  function() {
             this.invulnerabilityAmin.destroy();
+            
+            base.parent.walkSpeed /= 1.2;
+            console.log(base.parent.walkSpeed);
             print("end invul");
             return base.Leave();
         }
