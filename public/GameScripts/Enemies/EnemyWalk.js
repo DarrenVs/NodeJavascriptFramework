@@ -7,6 +7,7 @@ function EnemyWalk(properties) {
     self.size = Vector2.new(20, 20);
     self.hitbox = self.size;
     self.colour = 'blue';
+    self.ClassType = Enum.ClassType.EnemyWalk;
 
     var sm = self.extends.AI;
     sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(500));

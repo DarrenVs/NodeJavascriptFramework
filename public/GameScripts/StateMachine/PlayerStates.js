@@ -142,7 +142,7 @@ var PlayerStates = {
             base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;
             base.parent.autoWalk = true;
 
-            base.parent.DrawObject.animation = "walk";
+            base.parent.DrawObject.currentAnimation = "walk";
         }
 
         this.Reason = function () {
@@ -189,7 +189,7 @@ var PlayerStates = {
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
-            base.parent.DrawObject.currentAnimation = "JumpStart";   
+            base.parent.DrawObject.currentAnimation = "jumpStart";   
             base.parent.autoWalk = true;
             
             base.parent.velocity = Vector2.new(

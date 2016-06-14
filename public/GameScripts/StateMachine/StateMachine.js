@@ -146,10 +146,10 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
 
     //!!!ONly use if really necessary!!!\\
     this.ChangeState = function (_newStateKey) {
-        var newStateKey = _newStateKey;
-        if (typeof(states[newStateKey]) != 'undefined') {
-            if (debug) console.log("changing to state: " + newStateKey);
-            currentState = states[newStateKey];
+        self.newStateKey = _newStateKey;
+        if (typeof(states[self.newStateKey]) != 'undefined') {
+            if (debug) console.log("changing to state: " + self.newStateKey);
+            currentState = states[self.newStateKey];
         } else {
             if (debug) console.log("switching to defualt: " + defaultStateKey);
             currentState = states[defaultStateKey];

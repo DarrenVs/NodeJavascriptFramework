@@ -1,8 +1,7 @@
 "use strict";
 
-Enum.ClassName[Enum.ClassType.Enemy] = EnemyBase;
 
-var enemyList = {};
+self.enemyList = {};
 
 function EnemyBase(_self, properties) {
     var self = _self;
@@ -21,35 +20,35 @@ function EnemyBase(_self, properties) {
     
     self.anchored = false;
     self.hitbox = self.size;
-    self.ClassType = Enum.ClassType.Enemy;
     
     //---Trigger-collider----\\
-    var trigger = new EmptyObject({
+    self.trigger = new EmptyObject({
        size: Vector2.new(600, 10),
        colour: "rgba(0, 0, 0, 0.2)", 
        ID: "Trigger",
     });
         
-    trigger.extends = {
-        collision:Collision(trigger),
+    self.trigger.extends = {
+        collision:Collision(self.trigger),
     }
     
-    trigger.hitbox = trigger.size;
-    trigger.collisionActive = false;
-    trigger.ignoreObjectType[Enum.ClassType.Player] = true;
+    self.trigger.hitbox = self.trigger.size;
+    self.trigger.collisionActive = false;
+    self.trigger.canCollide = false;
+    self.trigger.ignoreObjectType[Enum.ClassType.Player] = true;
 
-    trigger.update["test"] = function () {
-        trigger.position = trigger.position;
+    self.trigger.update["test"] = function () {
+        self.trigger.position = self.trigger.position;
     }
     
-    trigger.collisionEnter["Triggered"] = function (Obj, direction, force, distance, canCollide ) {
+    self.trigger.collisionEnter["self.triggered"] = function (Obj, direction, force, distance, canCollide ) {
         if (canCollide && Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
         } 
            // console.log("collinding with someting");
     }
-    trigger.collisionExit["notTriggered"] = function (Obj, direction, force, distance, canCollide ) {
+    self.trigger.collisionExit["notself.triggered"] = function (Obj, direction, force, distance, canCollide ) {
         
         if (canCollide && Obj.ClassType == Enum.ClassType.Enemy) {
             self.triggered = false;
@@ -58,54 +57,67 @@ function EnemyBase(_self, properties) {
             //console.log("exit triggre hitting!");
     }
     
-    self.addChild(trigger);
+    self.addChild(self.trigger);
     //---End-trigger-collider----\\
     
     //---Edge-checkers---\\
-    var EdgeRight = new EmptyObject({
+    self.EdgeRight = new EmptyObject({
         position: Vector2.new(self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
-        ID: "EdgeRight"
+        ID: Math.random() + "EdgeRight"
     });
-    var EdgeLeft = new EmptyObject({
+    self.EdgeLeft = new EmptyObject({
         position: Vector2.new(-self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
-        ID: "EdgeLeft"
+        ID: Math.random() + "EdgeLeft"
     });
     
-    EdgeRight.extends = {
-        collision: Collision(EdgeRight)
+    self.EdgeRight.extends = {
+        collision: Collision(self.EdgeRight)
     }
-    EdgeLeft.extends = {
-        collision: Collision(EdgeLeft)
+    self.EdgeLeft.extends = {
+        collision: Collision(self.EdgeLeft)
     }
     
-    EdgeRight.hitbox = EdgeRight.size;
-    EdgeLeft.hitbox = EdgeLeft.size;
+    self.EdgeRight.hitbox = self.EdgeRight.size;
+    self.EdgeLeft.hitbox = self.EdgeLeft.size;
     
-    EdgeRight.collisionActive = false;
-    EdgeLeft.collisionActive = false; 
+    self.EdgeRight.collisionActive = false;
+    self.EdgeLeft.collisionActive = false; 
     
-    //console.log(EdgeRight.extends);
-    //console.log(EdgeLeft.extends);
-    EdgeRight.collisionExit["exit"] = function (Obj, Dir) {
-        self.wallHitDir = -1;
-        //console.log("exit ", self.wallHitDir, self);        
+    self.groundsHitRight = 0;   
+
+    self.EdgeRight.collisionEnter["enter"] = function (Obj, dir, force, distance, canCollide) {
+        if (canCollide) self.groundsHitRight ++;
+
+    }
+    self.EdgeRight.collisionExit["exit"] = function (Obj, dir, force, distance, canCollide) {
+        if (canCollide) self.groundsHitRight--;
+        if (self.groundsHitRight == 0) self.wallHitDir = -1;
+        
     };
-    
-    EdgeLeft.collisionExit["exit"] = function (Obj, Dir) {
+
+    self.groundHitLeft = 0;
+
+    self.EdgeLeft.collisionEnter["enter"] = function (obj, dir, force, distance, canCollide) {
+        if (canCollide) self.groundHitLeft ++;
+    }
+
+    self.EdgeLeft.collisionExit["exit"] = function (Obj, dir, force, distance, canCollide) {
         //console.log("exit ", self.wallHitDir, self);
-        self.wallHitDir = 1;
+        if (canCollide)
+            self.groundHitLeft --;
+
+        if (self.groundHitLeft == 0) self.wallHitDir = 1;
     };    
     
-    self.addChild(EdgeRight);
-    self.addChild(EdgeLeft);
-    
+    self.addChild(self.EdgeRight);
+    self.addChild(self.EdgeLeft);
     /*
-    EdgeRight.onCollisionEnter["enter"] = function(Obj, Dir) {console.log("enter"); } 
-    EdgeRight.onCollisionStay["stay"] = function(Obj, Dir) {console.log("stay"); }
-    EdgeRight.onCollisionExit["Exitl"] = function(Obj, Dir) {console.log("Exit"); }
+    self.EdgeRight.onCollisionEnter["enter"] = function(Obj, Dir) {console.log("enter"); } 
+    self.EdgeRight.onCollisionStay["stay"] = function(Obj, Dir) {console.log("stay"); }
+    self.EdgeRight.onCollisionExit["Exitl"] = function(Obj, Dir) {console.log("Exit"); }
     */
 }

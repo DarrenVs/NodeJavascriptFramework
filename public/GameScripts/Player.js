@@ -60,51 +60,51 @@ function Player(properties) {
             
             walk: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(366, 397),
+                size: Vector2.new(366, 406),
                 columns: 5,
                 rows: 4,
             },
             jumpStart: {
-                position: Vector2.new(406, 0),
+                position: Vector2.new(0, 406),
                 size: Vector2.new(247, 298),
                 columns: 3,
                 rows: 3, 
             },
             inAir: {
-                position: Vector2.new(545, 0),
+                position: Vector2.new(0, 406 + 298),
                 size: Vector2.new(481, 256),
-                colmns: 6,
+                columns: 6,
                 rows: 3,
             },
             backOnGround: {
-                position: Vector2.new(960, 0),
+                position: Vector2.new(0, 406 + 298 + 256),
                 size: Vector2.new(523, 193),
-                colmns: 6,
+                columns: 6,
                 rows: 2,
             },
             doubleJump: {
-                position: Vector2.new(1153, 0),
+                position: Vector2.new(0, 406 + 298 + 256 + 193),
                 size: Vector2.new(),
-                colmns: 4,
+                columns: 4,
                 rows: 3
             },
             slide: {
-                position: Vector2.new(1562, 0),
+                position: Vector2.new(0, 406 + 298 + 256 + 193+ 409),
                 size: Vector2.new(40, 96),
-                colmns: 1,
+                columns: 1,
                 rows: 1
             },
         },
         
         {   //Animations
-            run: {
+            walk: {
                 sprite: "walk",
                 speed: .3, //Per frame
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
-            jump: {
+            jumpStart: {
                 sprite: "jumpStart",
                 speed: .3, //Per frame
                 keyFrames: [0,1,2,3,4,5,6], //AnimationFrame
