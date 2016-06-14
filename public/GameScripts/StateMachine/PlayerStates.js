@@ -4,9 +4,10 @@ var PlayerStates = {
         var self = this;
         parent.walkSpeed = 180;
         parent.doStagger = false;
+        parent.staggerAble = true;
 
         this.Return = function () {
-            if (parent.doStagger) {
+            if (parent.staggerAble && parent.doStagger) {
                 parent.returnState = StatesEnum.stun;
                 parent.doStagger = false;
                 return false;
