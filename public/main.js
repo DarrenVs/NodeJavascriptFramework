@@ -30,7 +30,8 @@ var events = events || {
     },
     
     sendPickup: function(parameters) {
-        PickupProperties.assignPickup(parameters.pickupValue);
+        console.log("pickup being send");
+        PickupProperties.assignPickup(parameters.pickupValue, parameters.pickupID);
     },
 };
 
@@ -395,6 +396,7 @@ var replicateProperties = {
     stageID: true,
     health: true,
     //mass: true,
+    pickupValue: true,
 }
 
 function PackageObject( Obj ) {

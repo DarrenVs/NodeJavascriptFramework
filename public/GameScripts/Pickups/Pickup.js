@@ -1,24 +1,28 @@
 var PickupProperties = {
     
-    currentPickup: undefined,
+    currentPickups: {},
     
-    checkSpawnAble: function() {
-        return true;  
-    },
+    pickupChoices: [
+        StatesEnum.invulnerabilityOnHold,
+        StatesEnum.ballOnHold,
+        StatesEnum.mineOnHold,
+        StatesEnum.throwAbleOnHold,
+    ],
     
-    choosePickupValue: function() {
-        var pickupValue = Math.floor(Math.random() * 4);
+    choosePickupValue: function(pickupID) {
+        var pickupValue = this.pickupChoices[Math.floor(Math.random() * this.pickupChoices.length)];
         
+        console.log("sendpickup");
         EventQue["sendPickup"] = {
             pickupValue: pickupValue,
+            pickupID: pickupID,
         }
-        
     },
     
-    assignPickup: function(pickupValue) {
-        this.currentPickup.pickupValue = pickupValue;
+    assignPickup: function(pickupValue, pickupID) {
+        console.log(pickupID);
+        this.currentPickups[pickupID].pickupValue = pickupValue;
     },
-    
 }
 
 Enum.ClassName[Enum.ClassType.Pickup] = Pickup;
@@ -28,11 +32,33 @@ function Pickup(properties) {
     var self = this;
     GameObject(this, properties);
     
-    PickupProperties.currentPickup = self; 
+    this.extends = {
+        collision:Collision(this),
+    }
     
     var pickupValue;
     
+    var pickupIndex = 0;
+    
+    self.collisionActive = false;
+    self.canCollide = false;
+    self.ClassType = Enum.ClassType.Pickup;
+    
+    for(var index in PickupProperties.currentPickups) {
+        pickupIndex++;
+    }
+    
+    PickupProperties.currentPickups[pickupIndex] = self;
+    
     if(PlayerProperties.checkHosts()) {
-        PickupProperties.choosePickupValue();
+        console.log("index = " + pickupIndex);
+        PickupProperties.choosePickupValue(pickupIndex);
+    }
+    
+    this.collisionEnter["destroyPickupOnCollision"] = function(Obj) {
+        if(Obj.ClassType == Enum.ClassType.Player) {
+            delete PickupProperties.currentPickups[pickupIndex];
+            self.destroy();
+        }
     }
 }
