@@ -76,6 +76,11 @@ var Enum = {
                 newImage("Images/Platforms/Platforms_120x200/platform_1_120x200.png"),
             ],
             
+            IntermediatePlatform: [
+                newImage("Images/Platforms/IntermediatePlatform/intermediatePlatform_1.png"),
+                newImage("Images/Platforms/IntermediatePlatform/intermediatePlatform_2.png"),
+            ],
+            
             //background
             Background: newImage("Images/Backgrounds/background.png"),
             

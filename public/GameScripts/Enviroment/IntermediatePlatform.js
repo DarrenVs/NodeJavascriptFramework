@@ -20,6 +20,28 @@ function IntermediatePlatform(properties) {
         self.ignoreObjectIDs[PlayerProperties.playerList[i].ID] = true;
     }
     
+    this.DrawObject = new Sprite(
+        this,   //Parent
+        Enum.Images.Sprites.IntermediatePlatform[Math.floor(Math.random() * Enum.Images.Sprites.IntermediatePlatform.length)],   //Image
+        {   //Sprites
+            intermediatePlatform: {
+                position: Vector2.new(0, 0),
+                size: Vector2.new(2501, 42),
+                columns: 1,
+                rows: 1,
+            },
+        },
+        {   //Animations
+            intermediatePlatform: {
+                sprite: "intermediatePlatform",
+                speed: 0, //Per frame
+                keyFrames: [0], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+        }
+    );
+    
     this.collisionStay["IntermediatePlatformStay"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
         
         if(self.ignoreObjectIDs[Obj.ID] != undefined && collisionFrames >= 2){
