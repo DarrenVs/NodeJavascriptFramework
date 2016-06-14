@@ -3,8 +3,14 @@ var PlayerStates = {
     AnyState: function (parent) {
         var self = this;
         parent.walkSpeed = 180;
+        parent.doStagger = false;
 
         this.Return = function () {
+            if (parent.doStagger) {
+                parent.returnState = StatesEnum.stun;
+                parent.doStagger = false;
+                return false;
+            }
             return false;
         }
 
@@ -136,7 +142,7 @@ var PlayerStates = {
         var walkSpeed = _walkSpeed || 120;
         var jumpButton = _jumpButton || "32";
         
-        var animLength = 8;
+        var animLength = 10;
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
@@ -195,7 +201,7 @@ var PlayerStates = {
         var base = this.__proto__;
 
         var extraJumpsStrength = _extraJumpStrength || 500;
-        var animLength = 8;        
+        var animLength = 11;        
 
         this.Enter = function (_parent) {
             base.Enter(_parent);
@@ -302,6 +308,7 @@ var PlayerStates = {
             base.parent.extraJumpsLeft = base.parent.amoundOfExtraJumps;                  
 
             base.parent.DrawObject.currentAnimation = "slide";    
+
         }
 
         this.Reason = function () {
