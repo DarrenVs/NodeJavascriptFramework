@@ -21,14 +21,12 @@ var PickupStates = {
         
         this.Reason = function () { 
             
-            console.log("inv");
-            
             if(!INPUT_CLICK["18"]) {
-                return false;
+                return true;
             }
             
             base.returnState = StatesEnum.invulnerabilityActivated;            
-            return true;
+            return false;
         }
     },
         
@@ -36,24 +34,33 @@ var PickupStates = {
     invulnerabilityActivated: function() {
         var base = this.__proto__ = new State();
         
-        var invulnerabilityAmin;
-        
+        this.invulnerabilityAmin;
+        this.maxInvulnerabilityTime = 400;
+        this.invulnerabilityCounter = 0;
+          
         this.Enter =  function(parent) {
             base.Enter(parent);
             
-            invulnerabilityAmin = new Enum.ClassName[Invulnerability]({
-                size: new Vector2.new(base.parent.size.x, base.parent.size.y),
-                position: new Vector2.new(0, 0),
+            this.invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Platform_120x200]({
+                size: new Vector2.new( 40,  40),
+                position: new Vector2.new(base.parent.position.x, base.parent.position.y),
             })
-                
-            base.parent.stage.addChild( newObject );
+            
+            this.invulnerabilityCounter = 0;
+            console.log("start invul");
+        }
+        
+        this.Reason = function () { 
+            this.invulnerabilityCounter++;
+            if(this.maxInvulnerabilityTime < this.invulnerabilityCounter)
+                return false;
+            else 
+                return true;
         }
         
         this.Leave =  function() {
-            base.parent
-            
-            invulnerabilityAmin.destroy();
-            
+            this.invulnerabilityAmin.destroy();
+            print("end invul");
             return base.Leave();
         }
     },
@@ -61,10 +68,12 @@ var PickupStates = {
     mineOnHold: function() {
         var base = this.__proto__ = new State();
         
+        this.mine;
+        
         this.Reason = function () { 
             console.log("mine");
             if(!INPUT_CLICK["18"]) {
-                return false;
+                return true;
             }
             
             mine = new Enum.ClassName[Mine]({
@@ -75,17 +84,19 @@ var PickupStates = {
             base.parent.stage.addChild( mine );
             
             base.returnState = undefined;            
-            return true;
+            return false;
         }
     },
         
     ballOnHold: function() {
         var base = this.__proto__ = new State();
         
+        this.ball;
+        
         this.Reason = function () { 
             console.log("ball");
             if(!INPUT_CLICK["18"]) {
-                return false;
+                return true;
             }
             
             ball = new Enum.ClassName[Ball]({
@@ -96,17 +107,19 @@ var PickupStates = {
             base.parent.stage.addChild( ball );
             
             base.returnState = undefined;            
-            return true;
+            return false;
         }
     },
     
     throwAbleOnHold: function() {
         var base = this.__proto__ = new State();
         
+        this.throwAble;
+        
         this.Reason = function () { 
             console.log("throw");
             if(!INPUT_CLICK["18"]) {
-                return false;
+                return true;
             }
             
             throwAble = new Enum.ClassName[ThrowAbleObject]({
@@ -117,7 +130,7 @@ var PickupStates = {
             base.parent.stage.addChild( throwAble );
             
             base.returnState = undefined;            
-            return true;
+            return false;
         }
     },
 }
