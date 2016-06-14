@@ -30,7 +30,6 @@ var events = events || {
     },
     
     sendPickup: function(parameters) {
-        console.log("pickup being send");
         PickupProperties.assignPickup(parameters.pickupValue, parameters.pickupID);
     },
 };

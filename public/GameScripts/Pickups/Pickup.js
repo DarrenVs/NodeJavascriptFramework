@@ -4,23 +4,21 @@ var PickupProperties = {
     
     pickupChoices: [
         StatesEnum.invulnerabilityOnHold,
-        StatesEnum.ballOnHold,
-        StatesEnum.mineOnHold,
-        StatesEnum.throwAbleOnHold,
+        //StatesEnum.ballOnHold,
+        //StatesEnum.mineOnHold,
+        //StatesEnum.throwAbleOnHold,
     ],
     
     choosePickupValue: function(pickupID) {
         var pickupValue = this.pickupChoices[Math.floor(Math.random() * this.pickupChoices.length)];
         
-        console.log("sendpickup");
-        EventQue["sendPickup"] = {
+        sendEvent("sendPickup", {
             pickupValue: pickupValue,
             pickupID: pickupID,
-        }
+        });
     },
     
     assignPickup: function(pickupValue, pickupID) {
-        console.log(pickupID);
         this.currentPickups[pickupID].pickupValue = pickupValue;
     },
 }
@@ -51,7 +49,6 @@ function Pickup(properties) {
     PickupProperties.currentPickups[pickupIndex] = self;
     
     if(PlayerProperties.checkHosts()) {
-        console.log("index = " + pickupIndex);
         PickupProperties.choosePickupValue(pickupIndex);
     }
     

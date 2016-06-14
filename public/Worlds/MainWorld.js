@@ -22,11 +22,10 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
             spawnIntermediateChunk();
             
             if(PlayerProperties.checkHosts()) {
-                
-                EventQue["sendChunk"] = {
+                sendEvent("sendChunk", {
                     chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
                     stageID: Game[0].ID.substr(Game[0].ID.indexOf(":")+1),
-                }
+                });
             }
         }
     }
