@@ -5,8 +5,6 @@ var PlayerProperties = {
     
     checkHosts: function() {
         for (var index in connectionList) {
-            console.log(connectionList[index]);
-            console.log(clientID);
             return index == clientID;
         }
     },   
@@ -21,6 +19,8 @@ function Player(properties) {
     GameObject(this, properties);
     var self = this;
     
+    self.ClassType = Enum.ClassType.Player;
+    
     this.extends = {
         physics:Physics(this),
         collision:Collision(this),
@@ -29,7 +29,7 @@ function Player(properties) {
             PlayerStates.Setup(self), 
             PlayerStates.AnyState(self), 
             false),
-        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, true),
+        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
     };
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
@@ -144,7 +144,8 @@ function Player(properties) {
     
     this.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
-            //pickupSM.currentState = Obj.pickupValue;
+            console.log(Obj.pickupValue);
+            pickupSM.SetState(Obj.pickupValue);
         }
     };
     
