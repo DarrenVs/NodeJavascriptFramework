@@ -18,31 +18,7 @@ function Player(properties) {
     
     GameObject(this, properties);
     var self = this;
-    
     self.ClassType = Enum.ClassType.Player;
-    
-    this.extends = {
-        physics:Physics(this),
-        collision:Collision(this),
-        tank:Tank(this),
-        navigation: new StateMachine(self, StatesEnum.inAir, 
-            PlayerStates.Setup(self), 
-            PlayerStates.AnyState(self), 
-            false),
-        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
-    };
-    
-    self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
-    console.log("hard setted player position, dont forget");
-    
-    //-----Adding the pickup states!!!-----\\
-    var pickupSM = this.extends.pickupStates;
-    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(this));
-    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(this));
-    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(this));
-    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(this));
-    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(this));
-    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(this));
     
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -134,6 +110,22 @@ function Player(properties) {
         }
     );
     if (clientID == self.creatorID) {
+
+         this.extends = {
+        physics:Physics(this),
+        collision:Collision(this),
+        tank:Tank(this),
+        navigation: new StateMachine(self, StatesEnum.inAir, 
+            PlayerStates.Setup(self), 
+            PlayerStates.AnyState(self), 
+            false),
+        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
+    };
+    
+    self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
+    console.log("hard setted player position, dont forget");
+
+
     //-----Adding the navigation states!!!-----\\
     var navSM = this.extends.navigation;
     navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
@@ -143,7 +135,15 @@ function Player(properties) {
     navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(this));
     navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(this));
     navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(this));
-    }
+
+    //-----Adding the pickup states!!!-----\\
+    var pickupSM = this.extends.pickupStates;
+    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(this));
+    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(this));
+    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(this));
+    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(this));
+    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(this));
+    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(this));
     
     this.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
@@ -200,5 +200,6 @@ function Player(properties) {
         self.Health = 0;
         sendObject(self);
         self.destroy();
+    }
     }
 }
