@@ -1,23 +1,19 @@
 var PickupStates = {
     
     defaultState: function() {
-        var base = this.__proto__ = new State();
+        CreateState(this);
     },
     
     idle: function() {
-        var base = this.__proto__ = new State();
+        CreateState(this);
 
-        this.Enter =  function(parent) {
-            base.Enter(parent);
-        }
-        
         this.Reason = function () {        
             return false;
         }
     },
     
     invulnerabilityOnHold: function() {
-        var base = this.__proto__ = new State();
+        CreateState(this);
         
         this.Reason = function () { 
             
