@@ -57,7 +57,7 @@ var Enum = {
         Sprites: {
             
             //player
-            PlayerAnimationSheet: newImage("Images/Player/imgpsh_fullsize.png"),
+            PlayerAnimationSheet: newImage("Images/Player/player_spritesheet.png"),
             
             //pickups
             InvulnableSpriteSheet: newImage("Images/Pickups/invulnerable_spritesheet.png"),

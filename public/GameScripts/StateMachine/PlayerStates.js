@@ -41,7 +41,7 @@ var PlayerStates = {
         parent.groundColl = new EmptyObject ({
             size: Vector2.new(20, 5),
             position: Vector2.new(0, parent.hitbox.y/1.5),
-            colour: "rgba(112, 112, 112, 0.3)"
+            color: "rgba(112, 112, 112, 0.3)"
         });
 
         parent.groundColl.extends = {
@@ -55,7 +55,7 @@ var PlayerStates = {
         parent.wallHitColl = new EmptyObject({
             position: Vector2.new(0, -5),
             size: Vector2.new(35, 25),
-            colour: "rgba(112, 112, 112, 0.3)"
+            color: "rgba(112, 112, 112, 0.3)"
         });
 
         parent.wallHitColl.extends = {
