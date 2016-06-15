@@ -59,31 +59,33 @@ var StatesEnum = {
 
 //----------------------------\\
 //STATE INTERFACE
-var State = function () {
-    this.parent = undefined;
-    this.returnState = undefined;
-    //Just to be able to check if it is a state
-    this.isState = true;
+var CreateState = function (child) {
 
-    this.Enter = function (_parent) { /* gives the start information */
-        this.parent = _parent;
-    };
-    this.Reason = function () { /* returns true if it can act and false if it should go to an 
-                                other state and what state is should go in*/ 
-       /* if (enemyInSight) {
-            returnState = StatesEnum.alert;
+        child.parent = undefined;
+        child.returnState = undefined;
+        //Just to be able to check if it is a state
+        child.isState = true;
+
+        child.Enter = function () { /* gives the start information */
+        
+        };
+        child.Reason = function () { /* returns true if it can act and false if it should go to an 
+                                    other state and what state is should go in*/ 
+        /* if (enemyInSight) {
+                returnState = StatesEnum.alert;
+                return false;
+            } else return true; */
+            
             return false;
-        } else return true; */
-        
-        return false;
-    };
-    this.Act = function () { /* do the things this state does */ 
-        
-    };
-    this.Leave = function () { /* returns new state key if you return nothing it will go to default */ 
-        //Rest the variables that you want to be "clean"for the next use
-        return this.returnState;
-    };
+        };
+        child.Act = function () { /* do the things this state does */ 
+            
+        };
+        child.Leave = function () { /* returns new state key if you return nothing it will go to default */ 
+            //Rest the variables that you want to be "clean"for the next use
+            return child.returnState;
+        };
+
 }
 //----------------------------\\
 
@@ -99,6 +101,7 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
     var defaultKeyActive = false;
     
     var parent = _parent;
+    var parentName = parent.constructor.name;
     var currentState;
 
     var self = this;
@@ -111,17 +114,17 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
     //Add the state if on a spot if it is extended from State (id is a StatesEnum state)
     this.AddState = function (id, state) {
         if (typeof(states[id]) != 'undefined') {        
-            if (state.__proto__.isState) {
+            if (state.isState) {
                 if (id == defaultStateKey) {
                     currentState = state;
                     currentState.Enter(parent);
                     defaultKeyActive = true;
                     states[id] = state;
-                    if (debug) console.log("setting state to default " + defaultStateKey);
+                    if (debug) console.log(parentName + ": setting state to default " + defaultStateKey);
 
                 } else states[id] = state;
-            } else throw "State " + state + " is not extended from the type State";
-        } else throw "Trying to add state " + state + " but the key is not a valid key";
+            } else throw parentName + ": State " + state + " is not extended from the type State";
+        } else throw parentName + ": Trying to add state " + state + " but the key is not a valid key";
     }
     
     //The core logic (should speak for itself)
@@ -132,7 +135,7 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
                 currentState.Act();
             } else {
                 self.ChangeState(currentState.Leave());
-                currentState.Enter(parent);
+                currentState.Enter();
             }
         }
 
@@ -148,10 +151,10 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
     this.ChangeState = function (_newStateKey) {
         self.newStateKey = _newStateKey;
         if (typeof(states[self.newStateKey]) != 'undefined') {
-            if (debug) console.log("changing to state: " + self.newStateKey);
+            if (debug) console.log(parentName + ":changing to state: " + self.newStateKey);
             currentState = states[self.newStateKey];
         } else {
-            if (debug) console.log("switching to defualt: " + defaultStateKey);
+            if (debug) console.log(parentName + ":switching to defualt: " + defaultStateKey);
             currentState = states[defaultStateKey];
         }
     }

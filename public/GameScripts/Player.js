@@ -35,23 +35,14 @@ function Player(properties) {
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
     console.log("hard setted player position, dont forget");
     
-    //-----Adding the states!!!-----\\
-    var navSM = this.extends.navigation;
-    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk());
-    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump());
-    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump());
-    navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump());
-    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide());
-    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger());
-    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir());
-    
+    //-----Adding the pickup states!!!-----\\
     var pickupSM = this.extends.pickupStates;
-    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle());
-    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold());
-    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated());
-    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold());
-    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold());
-    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold());
+    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(this));
+    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(this));
+    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(this));
+    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(this));
+    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(this));
+    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(this));
     
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -107,7 +98,7 @@ function Player(properties) {
             },
             jumpStart: {
                 sprite: "jumpStart",
-                speed: .3, //Per frame
+                speed: .8, //Per frame
                 keyFrames: [0,1,2,3,4,5,6, 7, 8], //AnimationFrame
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
@@ -121,14 +112,14 @@ function Player(properties) {
             },
             backOnGround: {
                 sprite: 'backOnGround',
-                speed: .3,
+                speed: .8,
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10],
                 currentKeyFrame: 0,
                 loop: true,
             },
             doubleJump: {
                 sprite: 'doubleJump',
-                speed: .3,
+                speed: .5,
                 keyFrames: [0,1,2,3,4,5,6,7,8,9,10, 11],
                 currentKeyFrame: 0,
                 loop: true,
@@ -142,12 +133,25 @@ function Player(properties) {
             },
         }
     );
+    if (clientID == self.creatorID) {
+    //-----Adding the navigation states!!!-----\\
+    var navSM = this.extends.navigation;
+    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
+    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(this));
+    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(this));
+    navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(this));
+    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(this));
+    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(this));
+    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(this));
+    }
     
     this.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
             pickupSM.ChangeState(Obj.pickupValue);
         }
     };
+
+    console.log(navSM);
     
     PlayerProperties.playerList[self.creatorID] = self;
     
