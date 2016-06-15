@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-CollisionLoop = {};
-
-var CollisionGrid = {
-    gridSize: Vector2.new(10000, 100),
-    grid:{
-        
-    },
-    
-    
-=======
 function updateObjectsGrid( Obj ) {
->>>>>>> refs/remotes/origin/master
     
     if (Obj.stage != undefined) {
         var newGrids = Obj.stage.CollisionGrid.new( Obj );

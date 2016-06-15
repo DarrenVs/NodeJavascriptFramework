@@ -187,9 +187,7 @@ function Stage(properties) {
     GameObject(this, properties);
 
     this.allChilds = {};
-<<<<<<< HEAD
-    this.stageID = 0;
-=======
+
     this.stageID = this.stageID || Object.keys(Game).length;
     
     
@@ -236,7 +234,6 @@ function Stage(properties) {
             return Grids;
         },
     }
->>>>>>> refs/remotes/origin/master
 }
 
 function updateStage(Obj) {
@@ -532,16 +529,8 @@ socketio.on("IDrequest_to_client", function (data) {
     clientID = data.socketID;
     clientRoom = data.socketRoom;
     
-<<<<<<< HEAD
-    //Game["BackgroundStage"] = new Stage();
-    Game["MainStage"] = new Stage({stageID:"MainStage"})
-    
-    
-    //LoadWorld( Game["BackgroundStage"], Enum.Worlds.BackgroundWorld );
-    LoadWorld( Game["MainStage"], Enum.Worlds.StartLobby );
-=======
-    LoadWorld( Game.addChild( "TankWorld", new Stage() ), Enum.Worlds.BattleArena );
->>>>>>> refs/remotes/origin/master
+    LoadWorld( Game.addChild( "BackgroundStage", new Stage() ), Enum.Worlds.BackgroundWorld );
+    LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
 });
 
 
