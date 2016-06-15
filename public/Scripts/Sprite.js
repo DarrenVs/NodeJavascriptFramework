@@ -5,39 +5,39 @@ function Sprite( Parent, Img, sprites, animations ) {
     
     var spriteImg = Img;
     var sprites = sprites;
-    var animations = animations || {};
+    Parent.animations = animations || {};
     
     for (var i in sprites)
         sprites[i].cellSize = Vector2.new( sprites[i].size.x / sprites[i].columns, sprites[i].size.y / sprites[i].rows );
     
     
-    var currentAnimation;
-    //this.currentAnimation = "";
+    
+    self.Parent.currentAnimation = "";
     this.__defineGetter__('currentAnimation', function() {
-        return currentAnimation;
+        return self.Parent.currentAnimation;
     });
     this.__defineSetter__('currentAnimation', function(val) {
-        if (animations[val] != undefined)
-            currentAnimation = val;
+        if (self.Parent.animations[val] != undefined)
+            self.Parent.currentAnimation = val;
         else console.log(val + " animation does not exist");
     });
     
     
     
     //Set the currentAnimation to the first animation in the animations list
-    for (var i in animations) {self.currentAnimation = i; break;}
+    for (var i in self.Parent.animations) {self.Parent.currentAnimation = i; break;}
     
     
 
     
     this.update = function() {
-        var currentFrame = animations[ currentAnimation ].keyFrames[ Math.floor(animations[ currentAnimation ].currentKeyFrame) ];
-        var currentSprite = sprites[ animations[ currentAnimation ].sprite ];
+        var currentFrame = self.Parent.animations[ self.Parent.currentAnimation ].keyFrames[ Math.floor(self.Parent.animations[ self.Parent.currentAnimation ].currentKeyFrame) ];
+        var currentSprite = sprites[ self.Parent.animations[ self.Parent.currentAnimation ].sprite ];
         
-        if (animations[ currentAnimation ].loop)
-            animations[ currentAnimation ].currentKeyFrame = (animations[ currentAnimation ].currentKeyFrame + animations[ currentAnimation ].speed ) % (animations[ currentAnimation ].keyFrames.length);
-        /*else if (animations[ currentAnimation ].currentKeyFrame < animations[ currentAnimation ].keyFrames.length)
-            animations[ currentAnimation ].currentKeyFrame = (animations[ currentAnimation ].currentKeyFrame + animations[ currentAnimation ].speed ) % (animations[ currentAnimation ].keyFrames.length);*/
+        if (self.Parent.animations[ self.Parent.currentAnimation ].loop)
+            self.Parent.animations[ self.Parent.currentAnimation ].currentKeyFrame = (self.Parent.animations[ self.Parent.currentAnimation ].currentKeyFrame + self.Parent.animations[ self.Parent.currentAnimation ].speed ) % (self.Parent.animations[ self.Parent.currentAnimation ].keyFrames.length);
+        /*else if (self.Parent.animations[ self.Parent.currentAnimation ].currentKeyFrame < self.Parent.animations[ self.Parent.currentAnimation ].keyFrames.length)
+            self.Parent.animations[ self.Parent.currentAnimation ].currentKeyFrame = (self.Parent.animations[ self.Parent.currentAnimation ].currentKeyFrame + self.Parent.animations[ self.Parent.currentAnimation ].speed ) % (self.Parent.animations[ self.Parent.currentAnimation ].keyFrames.length);*/
         
         transformObject(self.Parent);
         
