@@ -29,7 +29,7 @@ var Parallax = function() {
     for(var l in layers) {
         for(c = 0; c < layers[l].maxLayerCount; c++) {
             var newObject = new Enum.ClassName[Enum.ClassType.ParallaxObject]({
-                    size: new Vector2.new(size / l, size / l),
+                    size: new Vector2.new(0, 0),
                     position: new Vector2.new(Math.random() * canvas.width, canvas.height - spawnYPosition * Math.random()),
                 },
                 l

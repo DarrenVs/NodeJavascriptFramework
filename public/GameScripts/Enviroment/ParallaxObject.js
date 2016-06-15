@@ -23,6 +23,8 @@ function ParallaxObject(properties, layer) {
     
     var parallaxImage = Enum.Images.Sprites.ParallaxObjects[layer][Math.floor(Math.random() * Enum.Images.Sprites.ParallaxObjects[layer].length)];
     
+    self.size = new Vector2.new(parallaxImage.width / layer, parallaxImage.height / layer);
+    
     this.DrawObject = new Sprite(
         this,   //Parent
         parallaxImage,   //Image

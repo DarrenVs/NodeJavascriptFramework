@@ -25,7 +25,6 @@ var PickupStates = {
             return false;
         }
     },
-        
     
     invulnerabilityActivated: function() {
         CreateState(this);
