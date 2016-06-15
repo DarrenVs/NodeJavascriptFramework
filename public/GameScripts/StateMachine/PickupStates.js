@@ -2,142 +2,134 @@ var PickupStates = {
     
     defaultState: function() {
         CreateState(this);
-        var base = this;
     },
     
-    idle: function(_parent) {
-        
+    idle: function() {
         CreateState(this);
-    },
-    
-    invulnerabilityOnHold: function(_parent) {
-        CreateState(this);
-        var self = this;
-        var parent = _parent;
 
-        self.Reason = function () { 
+        this.Reason = function () {        
+            return false;
+        }
+    },
+    
+    invulnerabilityOnHold: function() {
+        CreateState(this);
+        
+        this.Reason = function () { 
             
             if(!INPUT_CLICK["18"]) {
                 return true;
             }
             
-            self.returnState = StatesEnum.invulnerabilityActivated;            
+            base.returnState = StatesEnum.invulnerabilityActivated;            
             return false;
         }
     },
-        
     
-    invulnerabilityActivated: function(_parent) {
+    invulnerabilityActivated: function() {
         CreateState(this);
-        var self = this;
-        var parent = _parent;
         
-        self.invulnerabilityAmin;
-        self.maxInvulnerabilityTime = 400;
-        self.invulnerabilityCounter = 0;
+        var invulnerabilityAmin;
+        var maxInvulnerabilityTime = 100;
+        var invulnerabilityCounter = 0;
           
-        self.Enter =  function() {
+        this.Enter =  function(parent) {
+            base.Enter(parent);
             
-            self.invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Platform_120x200]({
-                size: new Vector2.new( 40,  40),
-                position: new Vector2.new(self.parent.position.x, self.parent.position.y),
+            invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Platform_120x200]({
+                size: new Vector2.new( 120,  200),
+                position: new Vector2.new(base.parent.position.x, base.parent.position.y),
             })
             
-            self.invulnerabilityCounter = 0;
+            invulnerabilityCounter = 0;
             console.log("start invul");
             
-            self.parent.walkSpeed *= 1.2;
+            base.parent.walkSpeed *= 1.2;
         }
         
-        self.Reason = function () { 
-            self.invulnerabilityCounter++;
-            if(self.maxInvulnerabilityTime < self.invulnerabilityCounter)
+        this.Reason = function () { 
+            invulnerabilityCounter++;
+            if(maxInvulnerabilityTime < invulnerabilityCounter)
                 return false;
             else 
                 return true;
         }
         
-        self.Leave =  function(_parent) {
-            self.invulnerabilityAmin.destroy();
+        this.Leave =  function() {
+            invulnerabilityAmin.destroy();
             
-            self.parent.walkSpeed /= 1.2;
-            console.log(self.parent.walkSpeed);
+            base.parent.walkSpeed /= 1.2;
+            console.log(base.parent.walkSpeed);
             print("end invul");
-            return self.returnState;
+            return base.Leave();
         }
     },
     
-    mineOnHold: function(_parent) {
+    mineOnHold: function() {
         CreateState(this);
-        var self = this;
-        var parent = _parent;
         
-        self.mine;
+        var mine;
         
-        self.Reason = function () { 
+        this.Reason = function () { 
             console.log("mine");
             if(!INPUT_CLICK["18"]) {
                 return true;
             }
             
             mine = new Enum.ClassName[Mine]({
-                size: new Vector2.new(self.parent.size.x, self.parent.size.y),
+                size: new Vector2.new(base.parent.size.x, base.parent.size.y),
                 position: new Vector2.new(0, 0),
             })
                 
-            self.parent.stage.addChild( mine );
+            base.parent.stage.addChild( mine );
             
-            self.returnState = undefined;            
+            base.returnState = undefined;            
             return false;
         }
     },
         
-    ballOnHold: function(_parent) {
+    ballOnHold: function() {
         CreateState(this);
-        var self = this;
-        var parent = _parent;
         
-        self.ball;
+        var ball;
         
-        self.Reason = function () { 
+        this.Reason = function () { 
             console.log("ball");
             if(!INPUT_CLICK["18"]) {
                 return true;
             }
             
             ball = new Enum.ClassName[Ball]({
-                size: new Vector2.new(self.parent.size.x, self.parent.size.y),
+                size: new Vector2.new(base.parent.size.x, base.parent.size.y),
                 position: new Vector2.new(0, 0),
             })
                 
-            self.parent.stage.addChild( ball );
+            base.parent.stage.addChild( ball );
             
-            self.returnState = undefined;            
+            base.returnState = undefined;            
             return false;
         }
     },
     
-    throwAbleOnHold: function(_parent) {
+    throwAbleOnHold: function() {
         CreateState(this);
-        var self = this;
-        var parent = _parent;
         
-        self.throwAble;
+        var throwAble;
         
-        self.Reason = function () { 
+        this.Reason = function () { 
             console.log("throw");
             if(!INPUT_CLICK["18"]) {
                 return true;
             }
             
             throwAble = new Enum.ClassName[ThrowAbleObject]({
-                size: new Vector2.new(self.parent.size.x, self.parent.size.y),
+                size: new Vector2.new(base.parent.size.x, base.parent.size.y),
                 position: new Vector2.new(0, 0),
             })
                 
-            self.parent.stage.addChild( throwAble );
+            base.parent.stage.addChild( throwAble );
             
-            self.returnState = undefined;            
+            base.returnState = undefined;            
             return false;
         }
     },

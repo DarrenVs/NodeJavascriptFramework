@@ -14,9 +14,18 @@ var replicatedObjectCount = 0;
 var clientID = undefined;
 var clientRoom = undefined;
 var connectionList = {};
-var Game = {};
 
-var drawLoop = [];
+var Game = {
+    
+    addChild: function( name, Stage ) {
+        if (Stage != undefined) {
+            Stage.stageID = name;
+            Game[name] = Stage;
+        }
+        
+        return Stage;
+    }
+};
 
 
 var events = events || {
@@ -28,7 +37,7 @@ var events = events || {
     },
 
     sendChunk: function(parameters) {
-        ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
+ ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },
     
     sendPickup: function(parameters) {
@@ -37,40 +46,31 @@ var events = events || {
 };
 
 
-function print( arg ) {
-    console.log(arg);
-}
 
 
-function updateObject(obj) {
+function updateObject(Obj) {
 
-    if (obj.update) {
-        for (i in obj.update) {
-            if (obj.Parent)
-                obj.update[i]( obj, RENDERSETTINGS.deltaTime );
+    if (Obj.update) {
+        for (i in Obj.update) {
+            if (Obj.Parent)
+                Obj.update[i]( Obj, RENDERSETTINGS.deltaTime );
         }
     }
-    //if (RENDERSETTINGS.renderTime < 1 && obj.DrawObject)
     
-    if (obj.DrawObject)
-        updateDrawObject(obj);
 
-    //if (RENDERSETTINGS.renderTime > 1)
-    //    console.log(RENDERSETTINGS.FPS);
-
-    if (obj.childs) {
-        for (i in obj.childs)
-            updateObject(obj.childs[i]);
+    if (Obj.childs) {
+        for (i in Obj.childs)
+            updateObject(Obj.childs[i]);
     }
 
 }
-function updateDrawObject(obj) {
+function updateDrawObject(Obj) {
 
     while (true) {
-        lowwerObjectIndex = drawLoop.indexOf(obj) - 1;
+        lowwerObjectIndex = DrawLoop.indexOf(Obj) - 1;
 
-        if (drawLoop[lowwerObjectIndex] && drawLoop[lowwerObjectIndex].zIndex > obj.zIndex)
-            drawLoop.splice(lowwerObjectIndex, 2, obj, drawLoop[lowwerObjectIndex]);
+        if (DrawLoop[lowwerObjectIndex] && DrawLoop[lowwerObjectIndex].zIndex > Obj.zIndex)
+            DrawLoop.splice(lowwerObjectIndex, 2, Obj, DrawLoop[lowwerObjectIndex]);
         else break;
     }
 }
@@ -107,39 +107,43 @@ window.addEventListener("load", function () {
         RENDERSETTINGS.FPS = 1 / RENDERSETTINGS.renderTime;
         RENDERSETTINGS.frameCount++;
         
+        
+        //Clear canvas
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-        //ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-        //ctx.fillRect(0,0,canvas.width, canvas.height);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        
+        //Update stageObjects
         for (var stageIndex in Game) {
             
             updateObject(Game[stageIndex]);
-            //for (var i = 0; i < RENDERSETTINGS.renderTime; i+=1/60) {
-                
-                RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
-                
-                for (var ObjID in PhysicsLoop) {
-                    
-                    delete PhysicsLoop[ObjID];
-                    updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
-                }
-                
-                //if (!(RENDERSETTINGS.frameCount%2)) {
-                    CollisionGrid.testedObjects = {};
-                    for (var ObjID in CollisionLoop) {
+            RENDERSETTINGS.deltaTime = 1/60;//Math.min(RENDERSETTINGS.renderTime - i, 1/60);
 
-                        delete CollisionLoop[ObjID];
-                        updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
-                    }
-                //}
-            //}
-            
-            for (var ObjIndex in drawLoop) {
+
+            //Update Physics
+            for (var ObjID in Game[stageIndex].PhysicsLoop) {
                 
-                drawLoop[ObjIndex].DrawObject.update();
+                delete Game[stageIndex].PhysicsLoop[ObjID];
+                updatePhysics( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
+            }
+
+
+            //Update Collisions
+            for (var ObjID in Game[stageIndex].CollisionLoop) {
+                
+                delete Game[stageIndex].CollisionLoop[ObjID];
+                updateCollision( Game[stageIndex].allChilds[ObjID], RENDERSETTINGS.deltaTime );
+            }
+
+
+            //Draw Objects on canvas
+            for (var ObjIndex in Game[stageIndex].DrawLoop) {
+
+                Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
             }
         }
+        
+        
         
         
         MOUSE_CLICK = {};
@@ -183,10 +187,53 @@ function Stage(properties) {
     GameObject(this, properties);
 
     this.allChilds = {};
-    this.stageID = 0;
+
+    this.stageID = this.stageID || Object.keys(Game).length;
     
     
     this.addChild(new Background());
+    
+    
+    
+    
+    self.PhysicsLoop = {};
+    
+    self.CollisionLoop = {};
+
+    self.DrawLoop = [];
+
+    self.gridSize = Vector2.new(955, 955);
+    self.CollisionGrid = {
+        grid:{
+
+        },
+
+
+
+        new:function( Obj ) {
+
+            var Grids = {};
+
+            for (var index in Vector2.directions) {
+
+                var gridLocation = Vector2.new(
+                    Math.floor((Obj.globalPosition.x + Vector2.directions[index].x * Obj.hitbox.x) / self.gridSize.x) * self.gridSize.x,
+                    Math.floor((Obj.globalPosition.y + Vector2.directions[index].y * Obj.hitbox.y) / self.gridSize.y) * self.gridSize.y
+                );
+
+                if (self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] == undefined)
+                    self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] = {};
+
+                if (self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] == undefined)
+                    self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] = true;
+
+                if (Grids[gridLocation.x + "x" + gridLocation.y] == undefined)
+                    Grids[gridLocation.x + "x" + gridLocation.y] = true;
+            }
+
+            return Grids;
+        },
+    }
 }
 
 function updateStage(Obj) {
@@ -197,6 +244,9 @@ function updateStage(Obj) {
             delete Obj.stage.allChilds[Obj.ID];
         Obj.stageID = Obj.Parent.stageID
         Obj.stage.allChilds[Obj.ID] = Obj;
+        Obj.stage.DrawLoop.push(Obj.ID);
+        Obj.anchored = Obj.anchored;
+        Obj.position = Obj.position;
     }
 
     for (i in Obj.childs) {
@@ -304,7 +354,7 @@ function GameObject(Parent, properties, inheritances) {
     Parent.size = Vector2.new(10, 10);
     Parent.scale = Vector2.new(1, 1);
     Parent.DrawObject = new DrawObject(Parent);
-    Parent.colour = "#" + Math.round(Math.random() * 1000000);
+    Parent.color = "#" + Math.round(Math.random() * 1000000);
     Parent.creatorID = clientID;
     Parent.ID = Parent.ID || objectCount++;
     for (i in properties) Parent[i] = properties[i];
@@ -317,30 +367,36 @@ function GameObject(Parent, properties, inheritances) {
         for (i in Parent.childs) {
             Parent.childs[i].destroy();
         }
-
-        for (var oldGrid in Parent.oldGrids) {
-            
-            delete CollisionGrid.grid[ oldGrid ][ Parent.ID ];
-        }
         
-        if (PhysicsLoop[this.ID])
-            delete PhysicsLoop[this.ID];
-        
-        if (drawLoop.indexOf(Parent) >= 0)
-            drawLoop.splice(drawLoop.indexOf(Parent), 1);
         
         if (this.stage) {
-            
-            this.update["delete"] = function( Obj ) {
-                
-                if (Obj.stage) {
+            for (var oldGrid in Parent.oldGrids) {
 
-                    delete Obj.stage.childs[Obj.ID];
-                    delete Obj.stage.allChilds[Obj.ID];
-                    Obj.stage = undefined;
-                    Obj.stageID = undefined;
-                }
-                Obj.Parent = undefined;
+                delete Parent.stage.CollisionGrid.grid[ oldGrid ][ Parent.ID ];
+            }
+            
+            
+            if (Parent.stage.PhysicsLoop[this.ID])
+                delete Parent.stage.PhysicsLoop[this.ID];
+            if (Parent.stage.CollisionLoop[this.ID])
+                delete Parent.stage.CollisionLoop[this.ID];
+
+            if (Parent.stage.DrawLoop.indexOf(Parent.ID) >= 0)
+                Parent.stage.DrawLoop.splice(Parent.stage.DrawLoop.indexOf(Parent.ID), 1);
+            
+            
+            this.update = {
+                delete: function( Obj ) {
+
+                    if (Obj.stage) {
+
+                        delete Obj.stage.childs[Obj.ID];
+                        delete Obj.stage.allChilds[Obj.ID];
+                        Obj.stage = undefined;
+                        Obj.stageID = undefined;
+                    }
+                    Obj.Parent = undefined;
+                },
             }
         } else {
             
@@ -352,20 +408,18 @@ function GameObject(Parent, properties, inheritances) {
             Parent.childs[i].destroy();
         
     }
-    Parent.addChild = function (obj, claimOwnership) {
+    Parent.addChild = function (Obj, claimOwnership) {
         
-        this.childs[obj.ID] = obj;
+        if (Obj.stage != undefined && Obj.stage.DrawLoop.indexOf(Parent.ID) >= 0)
+            Obj.stage.DrawLoop.splice(Obj.stage.DrawLoop.indexOf(Obj.ID), 1);
+        this.childs[Obj.ID] = Obj;
         if (claimOwnership == undefined || claimOwnership)
-            obj.creatorID = Parent.creatorID;
-        obj.Parent = Parent
-        updateStage(obj);
+            Obj.creatorID = Parent.creatorID;
+        Obj.Parent = Parent
+        updateStage(Obj);
         
-        return obj;
+        return Obj;
     }
-    
-    
-    
-    drawLoop.push(Parent);
 }
 
 
@@ -373,17 +427,17 @@ function GameObject(Parent, properties, inheritances) {
 
 
 
-function transformObject(obj) {
+function transformObject(Obj) {
 
-    if (obj.Parent == undefined)
-        ctx.setTransform(1, 0, 0, 1, obj.position.x, obj.position.y);
+    if (Obj.Parent == undefined)
+        ctx.setTransform(1, 0, 0, 1, Obj.position.x, Obj.position.y);
     else {
-        transformObject(obj.Parent);
-        ctx.transform(1, 0, 0, 1, obj.position.x, obj.position.y);
+        transformObject(Obj.Parent);
+        ctx.transform(1, 0, 0, 1, Obj.position.x, Obj.position.y);
     }
 
-    ctx.rotate((obj.rotation / 180) * Math.PI);
-    ctx.transform(obj.scale.x, 0, 0, obj.scale.y, 0, 0);
+    ctx.rotate((Obj.rotation / 180) * Math.PI);
+    ctx.transform(Obj.scale.x, 0, 0, Obj.scale.y, 0, 0);
 }
 
 
@@ -400,17 +454,25 @@ function DrawObject(Parent) {
 
         transformObject(this.Parent)
 
-        ctx.fillStyle = self.Parent.colour;
+        ctx.fillStyle = self.Parent.color;
         ctx.fillRect(-self.Parent.size.x * 0.5, -self.Parent.size.y * 0.5, self.Parent.size.x, self.Parent.size.y);
         
-        /*if (self.Parent.colliderType == Enum.colliderType.circle) {
-            ctx.beginPath();
-            ctx.arc(0,0,self.Parent.hitbox.x/2,0,2*Math.PI);
-            ctx.closePath();
-            ctx.stroke();
-        } else if (self.Parent.colliderType == Enum.colliderType.box) {
-            ctx.strokeRect(-self.Parent.hitbox.x*.5, -self.Parent.hitbox.y*.5, self.Parent.hitbox.x, self.Parent.hitbox.y);
-        }*/
+        if (self.Parent.text) {
+            
+            ctx.textAlign = self.Parent.textAlign ? self.Parent.textAlign : "center";
+            ctx.strokeStyle = self.Parent.strokeColor ? self.Parent.strokeColor : "rgba(255, 255, 255, 0.72)";
+            if (self.textColor) ctx.fillStyle = self.textColor;
+            ctx.strokeText(
+                self.Parent.ID,
+                self.Parent.textOffset ? self.Parent.textOffset.x : 0,
+                self.Parent.textOffset ? self.Parent.textOffset.y : 0
+            );
+            ctx.fillText(
+                self.Parent.ID,
+                self.Parent.textOffset ? self.Parent.textOffset.x : 0,
+                self.Parent.textOffset ? self.Parent.textOffset.y : 0
+            );
+        }
     }
 }
 
@@ -433,6 +495,7 @@ var replicateProperties = {
     currentAnimation: true,
     scale: true,
     zIndex: true,
+    text: true,
     //mass: true,
     pickupValue: true,
 }
@@ -465,8 +528,9 @@ socketio.on("IDrequest_to_client", function (data) {
     
     clientID = data.socketID;
     clientRoom = data.socketRoom;
-    Game[0] = new Stage();
-    LoadWorld( Game[0], Enum.Worlds.StartLobby );
+    
+    LoadWorld( Game.addChild( "BackgroundStage", new Stage() ), Enum.Worlds.BackgroundWorld );
+    LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
 });
 
 

@@ -7,12 +7,12 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
 
     stage.gravity = Vector2.new(0, 22);
     
-    ChunkProperties.totalLevelHeight = canvas.height;
-    
-    ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.startLobbyChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
-    
     //spawn parallax
     stage.addChild(new Parallax());
+    
+    ChunkProperties.totalLevelHeight = canvas.height;
+    
+    ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.startLobbyChunk, stage.stageID);
     
     //spawn barrier
     var barrier = [];
@@ -23,7 +23,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             position: new Vector2.new(x * ChunkProperties.tileSize + ChunkProperties.tileSize * 1.5, ChunkProperties.totalLevelHeight),
         })
 
-        barrier.push(newObject);
+        barrier.push( newObject );
         
         stage.addChild( newObject );
     }

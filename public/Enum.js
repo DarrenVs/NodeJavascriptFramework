@@ -40,6 +40,8 @@ var Enum = {
         Mine: 17,
         Ball: 18,
         ThrowAbleObject: 19,
+        
+        Background: 20,
     },
     
     ClassName: {

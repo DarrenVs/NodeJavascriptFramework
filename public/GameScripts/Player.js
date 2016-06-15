@@ -159,7 +159,7 @@ function Player(properties) {
     
     this.anchored = false;
     
-    this.size = Vector2.new(50, 50);
+    this.size = Vector2.new(40, 45);
     
     this.colliderType = Enum.colliderType.box;
     

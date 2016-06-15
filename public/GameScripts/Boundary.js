@@ -15,10 +15,10 @@ function Boundary(properties) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    var yOffSet = 500;
+    var yOffSet = 75;
     
     this.update["boundaryUpdate"] = function() {
-        self.position = Vector2.new( self.position.x, -self.stage.getGlobalPos(self.stage).y + canvas.height + yOffSet );
+        self.position = Vector2.new( canvas.width / 2, -self.stage.getGlobalPos(self.stage).y + canvas.height + yOffSet );
     }
     
     this.collisionStay["outOfBounds"] = function(Obj) {
