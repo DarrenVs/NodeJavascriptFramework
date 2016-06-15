@@ -16,6 +16,8 @@ var clientRoom = undefined;
 var connectionList = {};
 var Game = {};
 
+var drawLoop = [];
+
 
 var events = events || {
     
@@ -42,8 +44,8 @@ function updateObject(obj) {
     }
     //if (RENDERSETTINGS.renderTime < 1 && obj.DrawObject)
     
-    if (obj.Parent)
-        obj.DrawObject.update();
+    if (obj.DrawObject)
+        updateDrawObject(obj);
 
     //if (RENDERSETTINGS.renderTime > 1)
     //    console.log(RENDERSETTINGS.FPS);
@@ -53,6 +55,16 @@ function updateObject(obj) {
             updateObject(obj.childs[i]);
     }
 
+}
+function updateDrawObject(obj) {
+
+    while (true) {
+        lowwerObjectIndex = drawLoop.indexOf(obj) - 1;
+
+        if (drawLoop[lowwerObjectIndex] && drawLoop[lowwerObjectIndex].zIndex > obj.zIndex)
+            drawLoop.splice(lowwerObjectIndex, 2, obj, drawLoop[lowwerObjectIndex]);
+        else break;
+    }
 }
 
 
@@ -114,6 +126,11 @@ window.addEventListener("load", function () {
                     }
                 //}
             //}
+            
+            for (var ObjIndex in drawLoop) {
+                
+                drawLoop[ObjIndex].DrawObject.update();
+            }
         }
         
         
@@ -258,6 +275,7 @@ function GameObject(Parent, properties, inheritances) {
 
 
     //Property Index\\
+    Parent.zIndex = 0;
     Parent.ClassType = Enum.ClassType.Unknown;
     Parent.anchored = false;
     Parent.update = {};
@@ -290,6 +308,9 @@ function GameObject(Parent, properties, inheritances) {
         
         if (PhysicsLoop[this.ID])
             delete PhysicsLoop[this.ID];
+        
+        if (drawLoop.indexOf(Parent) >= 0)
+            drawLoop.splice(drawLoop.indexOf(Parent), 1);
         
         if (this.stage) {
             
@@ -324,6 +345,10 @@ function GameObject(Parent, properties, inheritances) {
         
         return obj;
     }
+    
+    
+    
+    drawLoop.push(Parent);
 }
 
 
@@ -390,6 +415,7 @@ var replicateProperties = {
     animations: true,
     currentAnimation: true,
     scale: true,
+    zIndex: true,
     //mass: true,
 }
 
