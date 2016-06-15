@@ -387,6 +387,9 @@ var replicateProperties = {
     ignoreObjectType: true,
     stageID: true,
     health: true,
+    animations: true,
+    currentAnimation: true,
+    scale: true,
     //mass: true,
 }
 
