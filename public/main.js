@@ -464,11 +464,11 @@ socketio.on("IDrequest_to_client", function (data) {
     clientRoom = data.socketRoom;
     
     //Game["BackgroundStage"] = new Stage();
-    Game[0] = new Stage();
+    Game["MainStage"] = new Stage({stageID:"MainStage"})
     
     
     //LoadWorld( Game["BackgroundStage"], Enum.Worlds.BackgroundWorld );
-    LoadWorld( Game[0], Enum.Worlds.StartLobby );
+    LoadWorld( Game["MainStage"], Enum.Worlds.StartLobby );
 });
 
 
