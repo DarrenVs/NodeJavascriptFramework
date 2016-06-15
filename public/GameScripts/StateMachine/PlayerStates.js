@@ -144,7 +144,7 @@ var PlayerStates = {
         var walkSpeed = _walkSpeed || 120;
         var jumpButton = _jumpButton || "32";
         
-        var animObj = parent.DrawObject.animations.backOnGround;
+        var animObj = parent.animations.backOnGround;
         var animLength = animObj.keyFrames.length-1;
 
         self.Enter = function () {
@@ -183,7 +183,7 @@ var PlayerStates = {
 
         var jumpStrength = _jumpStrength || 500;
         
-        var animObj = parent.DrawObject.animations.jumpStart;
+        var animObj = parent.animations.jumpStart;
 
         self.Enter = function () {
             parent.DrawObject.currentAnimation = "jumpStart";
@@ -206,7 +206,7 @@ var PlayerStates = {
 
         var extraJumpsStrength = _extraJumpStrength || 600;
 
-        var animObj = parent.DrawObject.animations.doubleJump;
+        var animObj = parent.animations.doubleJump;
 
         self.Enter = function () {
 
@@ -231,7 +231,7 @@ var PlayerStates = {
         var jumpUpStrength = _jumpUpStrength || 400;
         var jumpSideStrength = _jumpSideStrength || 300;
 
-        var animObj = parent.DrawObject.animations.jumpStart;
+        var animObj = parent.animations.jumpStart;
 
         self.Enter = function () {
             parent.DrawObject.currentAnimation = "jumpStart";   
@@ -263,7 +263,7 @@ var PlayerStates = {
 
         self.Enter = function () {
             //parent.DrawObject.currentAnimation = "inAir";
-            currAnimObj = drawObject.animations[drawObject.currentAnimation];
+            currAnimObj = parent.animations[drawObject.currentAnimation];
             animLength = currAnimObj.keyFrames.length-1;
             parent.autoWalk = false;
         }
