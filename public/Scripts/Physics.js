@@ -1,16 +1,13 @@
-
-var PhysicsLoop = {};
-
-
-
 function addToPhysicsLoop( Obj ) {
     
-    PhysicsLoop[Obj.ID] = true;
-    
-    for (var i in Obj.childs) {
-        
-        if (Obj.childs[i].extends.physics)
-            addToPhysicsLoop(Obj.childs[i]);
+    if (Obj.stage) {
+        Obj.stage.PhysicsLoop[Obj.ID] = Obj;
+
+        for (var i in Obj.childs) {
+
+            if (Obj.childs[i].extends.physics)
+                addToPhysicsLoop(Obj.childs[i]);
+        }
     }
 }
 
@@ -38,8 +35,8 @@ function Physics(Parent) {
         if (val && PhysicsLoop[Parent.ID])
             delete PhysicsLoop[Parent.ID];
         
-        else if(!val && PhysicsLoop[Parent.ID] == undefined)
-            PhysicsLoop[Parent.ID] = updatePhysics;
+        else if(!val && Parent.stage != undefined && Parent.stage.PhysicsLoop[Parent.ID] == undefined)
+            Parent.stage.PhysicsLoop[Parent.ID] = updatePhysics;
     });
     Parent.anchored = Parent.anchored;
     
@@ -140,7 +137,7 @@ function Physics(Parent) {
 
 function updatePhysics( Obj, deltaTime ) {
 
-    if (Obj && !Obj.anchored) {
+    if (Obj && Obj.anchored == false) {
 
 
         Obj.position = Vector2.add(

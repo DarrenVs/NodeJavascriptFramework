@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CollisionLoop = {};
 
 var CollisionGrid = {
@@ -7,55 +8,28 @@ var CollisionGrid = {
     },
     
     
-    
-    new:function( Obj ) {
-        
-        var Grids = {};
-        
-        for (var index in Vector2.directions) {
-            
-            var gridLocation = Vector2.new(
-                Math.floor((Obj.globalPosition.x + Vector2.directions[index].x * Obj.hitbox.x) / CollisionGrid.gridSize.x) * CollisionGrid.gridSize.x,
-                Math.floor((Obj.globalPosition.y + Vector2.directions[index].y * Obj.hitbox.y) / CollisionGrid.gridSize.y) * CollisionGrid.gridSize.y
-            );
-
-            if (CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] == undefined)
-                CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] = {};
-
-            if (CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] == undefined)
-                CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] = true;
-
-            if (Grids[gridLocation.x + "x" + gridLocation.y] == undefined)
-                Grids[gridLocation.x + "x" + gridLocation.y] = true;
-        }
-        
-        return Grids;
-    },
-    
-    testedObjects: {
-        //to prevent objects from updating twice or more if they are child of more than one grid
-    }
-}
-
-
+=======
 function updateObjectsGrid( Obj ) {
+>>>>>>> refs/remotes/origin/master
     
-    var newGrids = CollisionGrid.new( Obj );
-    
-    for (var oldGrid in Obj.oldGrids) {
-        
-        if (newGrids[oldGrid] == undefined)
-            delete CollisionGrid.grid[oldGrid][Obj.ID];
-    }
-    
-    Obj.oldGrids = newGrids;
-    
-    CollisionLoop[Obj.ID] = true;
-    
-    for (var i in Obj.childs) {
-        
-        if (Obj.childs[i].extends.collision)
-            Obj.childs[i].position = Obj.childs[i].position;
+    if (Obj.stage != undefined) {
+        var newGrids = Obj.stage.CollisionGrid.new( Obj );
+
+        for (var oldGrid in Obj.oldGrids) {
+
+            if (newGrids[oldGrid] == undefined)
+                delete Obj.stage.CollisionGrid.grid[oldGrid][Obj.ID];
+        }
+
+        Obj.oldGrids = newGrids;
+
+        Obj.stage.CollisionLoop[Obj.ID] = Obj;
+
+        for (var i in Obj.childs) {
+
+            if (Obj.childs[i].extends.collision)
+                Obj.childs[i].position = Obj.childs[i].position;
+        }
     }
 }
 
@@ -181,18 +155,18 @@ function Collision(Parent) {
 
 function updateCollision( Obj1, deltaTime ) {
     
-    if (Obj1) {
+    if (Obj1 && Obj1.stage != undefined) {
         
         Obj1.priorityCollisionDirection = Vector2.new();
         Obj1.priorityCollisionDepth = 0;
         
         for (var grid in Obj1.oldGrids) {
-            for (var Obj2ID in CollisionGrid.grid[ grid ]) {
+            for (var Obj2ID in Obj1.stage.CollisionGrid.grid[ grid ]) {
 
                 var Obj2 = Obj1.stage.allChilds[ Obj2ID ];
 
                 if (Obj2 == undefined)
-                    delete CollisionGrid.grid[ grid ][ Obj2ID ];
+                    delete Obj1.stage.CollisionGrid.grid[ grid ][ Obj2ID ];
                 
                 else {
 
@@ -351,7 +325,7 @@ function CheckCollision( Obj1, Obj2, deltaTime ) {
                 Obj2.priorityCollisionDepth = Obj2.collisions[Obj1.ID].distance;
                 Obj2.priorityCollisionDirection = Obj2.collisions[Obj1.ID].direction;
             }
-            CollisionLoop[Obj2.ID] = true;
+            //CollisionLoop[Obj2.ID] = Obj2;
             
             
             
@@ -471,7 +445,7 @@ function CheckCollision( Obj1, Obj2, deltaTime ) {
                 Obj2.priorityCollisionDepth = Obj2.collisions[Obj1.ID].distance;
                 Obj2.priorityCollisionDirection = Obj2.collisions[Obj1.ID].direction;
             }
-            CollisionLoop[Obj2.ID] = true;
+            //CollisionLoop[Obj2.ID] = Obj2;
             
             
             return true;
