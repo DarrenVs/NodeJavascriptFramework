@@ -26,7 +26,7 @@ var events = events || {
     },
 
     sendChunk: function(parameters) {
-        ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
+ ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },
     
     sendPickup: function(parameters) {
@@ -167,9 +167,6 @@ function Stage(properties) {
 
     this.allChilds = {};
     this.stageID = 0;
-    
-    
-    this.addChild(new Background());
 }
 
 function updateStage(Obj) {
@@ -436,7 +433,12 @@ socketio.on("IDrequest_to_client", function (data) {
     
     clientID = data.socketID;
     clientRoom = data.socketRoom;
+    
+    //Game["BackgroundStage"] = new Stage();
     Game[0] = new Stage();
+    
+    
+    //LoadWorld( Game["BackgroundStage"], Enum.Worlds.BackgroundWorld );
     LoadWorld( Game[0], Enum.Worlds.StartLobby );
 });
 

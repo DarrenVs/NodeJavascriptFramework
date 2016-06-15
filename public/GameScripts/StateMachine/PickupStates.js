@@ -6,7 +6,7 @@ var PickupStates = {
     
     idle: function() {
         var base = this.__proto__ = new State();
-        var base 
+
         this.Enter =  function(parent) {
             base.Enter(parent);
         }
@@ -34,34 +34,34 @@ var PickupStates = {
     invulnerabilityActivated: function() {
         var base = this.__proto__ = new State();
         
-        this.invulnerabilityAmin;
-        this.maxInvulnerabilityTime = 400;
-        this.invulnerabilityCounter = 0;
+        var invulnerabilityAmin;
+        var maxInvulnerabilityTime = 100;
+        var invulnerabilityCounter = 0;
           
         this.Enter =  function(parent) {
             base.Enter(parent);
             
-            this.invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Platform_120x200]({
-                size: new Vector2.new( 40,  40),
+            invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Platform_120x200]({
+                size: new Vector2.new( 120,  200),
                 position: new Vector2.new(base.parent.position.x, base.parent.position.y),
             })
             
-            this.invulnerabilityCounter = 0;
+            invulnerabilityCounter = 0;
             console.log("start invul");
             
             base.parent.walkSpeed *= 1.2;
         }
         
         this.Reason = function () { 
-            this.invulnerabilityCounter++;
-            if(this.maxInvulnerabilityTime < this.invulnerabilityCounter)
+            invulnerabilityCounter++;
+            if(maxInvulnerabilityTime < invulnerabilityCounter)
                 return false;
             else 
                 return true;
         }
         
         this.Leave =  function() {
-            this.invulnerabilityAmin.destroy();
+            invulnerabilityAmin.destroy();
             
             base.parent.walkSpeed /= 1.2;
             console.log(base.parent.walkSpeed);
@@ -73,7 +73,7 @@ var PickupStates = {
     mineOnHold: function() {
         var base = this.__proto__ = new State();
         
-        this.mine;
+        var mine;
         
         this.Reason = function () { 
             console.log("mine");
@@ -96,7 +96,7 @@ var PickupStates = {
     ballOnHold: function() {
         var base = this.__proto__ = new State();
         
-        this.ball;
+        var ball;
         
         this.Reason = function () { 
             console.log("ball");
@@ -119,7 +119,7 @@ var PickupStates = {
     throwAbleOnHold: function() {
         var base = this.__proto__ = new State();
         
-        this.throwAble;
+        var throwAble;
         
         this.Reason = function () { 
             console.log("throw");

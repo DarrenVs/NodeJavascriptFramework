@@ -38,4 +38,8 @@ function Platform_120x200(properties) {
             },
         }
     );
+    
+    this.manualDestroy = function() {
+        console.log("im destroyed");
+    }
 }

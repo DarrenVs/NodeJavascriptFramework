@@ -24,7 +24,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
             if(PlayerProperties.checkHosts()) {
                 sendEvent("sendChunk", {
                     chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
-                    stageID: Game[0].ID.substr(Game[0].ID.indexOf(":")+1),
+                    stageID: stage.stageID,
                 });
             }
         }
@@ -59,6 +59,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
 
         stage.addChild( intermediatePlatform );
         
-        ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.intermediateChunk, Game[0].ID.substr(Game[0].ID.indexOf(":")+1));
+        ChunkProperties.spawnChunk(ChunkProperties.chunkLibary.intermediateChunk, stage.stageID);
     }
 }
