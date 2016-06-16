@@ -22,7 +22,7 @@ function IntermediatePlatform(properties) {
     
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.IntermediatePlatform[Math.floor(Math.random() * Enum.Images.Sprites.IntermediatePlatform.length)],   //Image
+        Enum.Images.Sprites.IntermediatePlatform,   //Image
         {   //Sprites
             intermediatePlatform: {
                 position: Vector2.new(0, 0),
@@ -42,14 +42,16 @@ function IntermediatePlatform(properties) {
         }
     );
     
-    this.collisionStay["IntermediatePlatformStay"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
-        
-        if(self.ignoreObjectIDs[Obj.ID] != undefined && collisionFrames >= 2){
-            
+    this.collisionExit["IntermediatePlatformExit"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
+       
+        console.log("Exiting player", self.ID);
+        if(self.ignoreObjectIDs[Obj.ID] != undefined){
+           
             if (Obj.position.y < self.position.y && !CheckCollision(Obj, self, RENDERSETTINGS.deltaTime)) {
-                
+               
                 delete self.ignoreObjectIDs[Obj.ID];
+                console.log("Accepted player");
             }
-        } 
+        }
     }
 }
