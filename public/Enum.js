@@ -59,14 +59,53 @@ var Enum = {
             //player
             PlayerAnimationSheet: newImage("Images/Player/player_spritesheet.png"),
             
-            //pickups
-            InvulnableSpriteSheet: newImage("Images/Pickups/invulnerable_spritesheet.png"),
+            //effects
+            InvulnableEffectSpriteSheet: newImage("Images/Pickups/invulnerable_effect_spritesheet.png"),
+            
+            InvulnableEffectSpriteSheet: newImage("Images/Pickups/mine_effect1_spritesheet.png"),
+            InvulnableEffectSpriteSheet: newImage("Images/Pickups/mine_effect2_spritesheet.png"),
+            
+            
+            Pickups: [
+                {//Invulnable
+                    SpriteSheet: newImage("Images/Pickups/invulnerable_pickup_spritesheet.png"),
+                    Size: new Vector2.new(1832, 1376),
+                    Columns: 10,
+                    Rows: 6,
+                    Speed: 0.3,
+                    Keyframes: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,55,56],
+                },
+                {//mine
+                    SpriteSheet: newImage("Images/Pickups/mine_pickup_spritesheet.png"),
+                    Size: new Vector2.new(1832, 1375),
+                    Columns: 10,
+                    Rows: 6,
+                    Speed: 0.3,
+                    Keyframes: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,55,56],
+                },
+                {//ball
+                    SpriteSheet: newImage("Images/Pickups/mine_pickup_spritesheet.png"),
+                    Size: new Vector2.new(1832, 1375),
+                    Columns: 10,
+                    Rows: 6,
+                    Speed: 0.3,
+                    Keyframes: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,55,56],
+                },
+                {//throwAbleObject
+                    SpriteSheet: newImage("Images/Pickups/mine_pickup_spritesheet.png"),
+                    Size: new Vector2.new(1832, 1375),
+                    Columns: 10,
+                    Rows: 6,
+                    Speed: 0.3,
+                    Keyframes: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,55,56],
+                },
+            ],
             
             //platforms
             Platforms_40x40: [
                 newImage("Images/Platforms/Platforms_40x40/platform_1_40x40.png"),
                 newImage("Images/Platforms/Platforms_40x40/platform_2_40x40.png"),
-                newImage("Images/Platforms/Platforms_40x40/platform_4_40x40.png"),
+                newImage("Images/Platforms/Platforms_40x40/platform_3_40x40.png"),
             ],
             
             Platforms_120x120: [

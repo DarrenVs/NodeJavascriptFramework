@@ -41,7 +41,7 @@ var events = events || {
     },
     
     sendPickup: function(parameters) {
-        PickupProperties.assignPickup(parameters.pickupValue, parameters.pickupID);
+        PickupProperties.assignPickup(parameters.pickupKey, parameters.pickupID);
     },
 };
 
