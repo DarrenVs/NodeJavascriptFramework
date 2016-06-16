@@ -118,7 +118,9 @@ Vector2 = {
     
     directions: {
         
-    }
+    },
+    
+    corners: {},
 }
 
 Vector2.directions.up = new Vector2.new(0, -1);
@@ -126,36 +128,7 @@ Vector2.directions.right = new Vector2.new(-1, 0);
 Vector2.directions.down = new Vector2.new(0, 1);
 Vector2.directions.left = new Vector2.new(1, 0);
 
-/* {Start} Game Element Functions {{
-
-//		 V2 ( x value, y value )  2D Array, vergelijkbaar met een AS3 :Point |		sample =	new Vector2 ( 10, 20 );  sample.x == 10		|
-function V2 ( X, Y ) {
-	
-	return { x: X, y: Y };
-}
-
-//		 distance( V2(0, 0), V2(10, 18) ) == 20.591260281974	|		distance( player.prop.position, enemy.prop.position ) <= 100
-function distance( pos1, pos2 ) {
-	
-	return Math.sqrt( Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2) )
-}
-
-function addVar( obj, propertie ) {
-	
-	console.log(propertie);
-}
-
-function getPosFromAngle( angle ) {
-	
-	return new V2(
-		Math.cos( angle * Math.PI / 180 ),
-		Math.sin( angle * Math.PI / 180 )
-	);
-}
-
-function getAngleFromPos( pos1, pos2 ) {
-	
-	return Math.abs((Math.atan2( pos1.x - pos2.x, pos1.y - pos2.y ) * 180 / Math.PI * -1) + 360)%360;
-}
-
-// {End} Game Element Functions }}*/
+Vector2.corners.topLeft = new Vector2.new(-1, -1);
+//Vector2.corners.topRight = new Vector2.new(1, -1);
+Vector2.corners.bottomRight = new Vector2.new(1, 1);
+//Vector2.corners.bottomLeft = new Vector2.new(-1, 1);
