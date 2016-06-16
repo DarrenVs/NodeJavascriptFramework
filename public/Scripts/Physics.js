@@ -32,8 +32,8 @@ function Physics(Parent) {
     Parent.__defineSetter__('anchored', function(val) {
         Parent.Anchored = val;
         
-        if (val && PhysicsLoop[Parent.ID])
-            delete PhysicsLoop[Parent.ID];
+        if (val && Parent.stage && Parent.stage.PhysicsLoop[Parent.ID])
+            delete Parent.stage.PhysicsLoop[Parent.ID];
         
         else if(!val && Parent.stage != undefined && Parent.stage.PhysicsLoop[Parent.ID] == undefined)
             Parent.stage.PhysicsLoop[Parent.ID] = updatePhysics;

@@ -121,6 +121,7 @@ window.addEventListener("load", function () {
 
 
             //Update Collisions
+            self.testedObjects = {};
             for (var ObjID in Game[stageIndex].CollisionLoop) {
                 
                 delete Game[stageIndex].CollisionLoop[ObjID];
@@ -181,6 +182,7 @@ function Stage(properties) {
     self.PhysicsLoop = {};
     
     self.CollisionLoop = {};
+    self.testedObjects = {};
 
     self.DrawLoop = [];
 
@@ -196,6 +198,9 @@ function Stage(properties) {
 
             var Grids = {};
 
+            var min = Vector2.new(Infinity, Infinity);
+            var max = Vector2.new(0, 0);
+            
             for (var index in Vector2.directions) {
 
                 var gridLocation = Vector2.new(
@@ -206,11 +211,72 @@ function Stage(properties) {
                 if (self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] == undefined)
                     self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y] = {};
 
-                if (self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] == undefined)
-                    self.CollisionGrid.grid[gridLocation.x + "x" + gridLocation.y][Obj.ID] = true;
-
                 if (Grids[gridLocation.x + "x" + gridLocation.y] == undefined)
                     Grids[gridLocation.x + "x" + gridLocation.y] = true;
+                
+                if (gridLocation.x < min.x)
+                    min.x = gridLocation.x;
+                if (gridLocation.y < min.y)
+                    min.y = gridLocation.y;
+
+                if (gridLocation.x > max.x)
+                    max.x = gridLocation.x;
+                if (gridLocation.y > max.y)
+                    max.y = gridLocation.y;
+            }
+            
+            
+            var x = min.x
+			for (var y = min.y; y <= max.y; y += self.gridSize.y) {
+				
+				if (self.CollisionGrid.grid[x + "x" + y] == undefined)
+					self.CollisionGrid.grid[x + "x" + y] = {};
+				
+				if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
+					self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
+					self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
+				
+				if (Grids[x + "x" + y] == undefined)
+					Grids[x + "x" + y] = true;
+			}
+			
+			var x = max.x
+			for (var y = min.y; y <= max.y; y += self.gridSize.y) {
+				
+				if (self.CollisionGrid.grid[x + "x" + y] == undefined)
+					self.CollisionGrid.grid[x + "x" + y] = {};
+				
+				if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
+					self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
+				
+				if (Grids[x + "x" + y] == undefined)
+					Grids[x + "x" + y] = true;
+			}
+			
+			
+			var y = min.y
+			for (var x = min.x; x <= max.x; x += self.gridSize.x) {
+				
+				if (self.CollisionGrid.grid[x + "x" + y] == undefined)
+					self.CollisionGrid.grid[x + "x" + y] = {};
+				
+				if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
+					self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
+				
+				if (Grids[x + "x" + y] == undefined)
+					Grids[x + "x" + y] = true;
+			}
+			var y = max.y
+			for (var x = min.x; x <= max.x; x += self.gridSize.x) {
+				
+				if (self.CollisionGrid.grid[x + "x" + y] == undefined)
+					self.CollisionGrid.grid[x + "x" + y] = {};
+				
+				if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
+					self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
+				
+				if (Grids[x + "x" + y] == undefined)
+					Grids[x + "x" + y] = true;
             }
 
             return Grids;
