@@ -199,11 +199,11 @@ function Stage(properties) {
             var min = Vector2.new(Infinity, Infinity);
             var max = Vector2.new(0, 0);
 
-            for (var index in Vector2.edges) {
+            for (var index in Vector2.directions) {
 
                 var gridLocation = Vector2.new(
-                    Math.floor((Obj.globalPosition.x + Vector2.edges[index].x * Obj.hitbox.x) / self.gridSize.x) * self.gridSize.x,
-                    Math.floor((Obj.globalPosition.y + Vector2.edges[index].y * Obj.hitbox.y) / self.gridSize.y) * self.gridSize.y
+                    Math.floor((Obj.globalPosition.x + Vector2.directions[index].x * Obj.hitbox.x) / self.gridSize.x) * self.gridSize.x,
+                    Math.floor((Obj.globalPosition.y + Vector2.directions[index].y * Obj.hitbox.y) / self.gridSize.y) * self.gridSize.y
                 );
                 
                 
