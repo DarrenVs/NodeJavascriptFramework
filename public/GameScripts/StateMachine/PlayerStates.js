@@ -22,17 +22,19 @@ var PlayerStates = {
 
             if (parent.lastWallHit != parent.wallHitDir) {
                 parent.lastWallHit = parent.wallHitDir;
+                console.log("turninng around");
 
                 if (parent.wallHitDir < 0) {
                     parent.walkSpeed = -Math.abs(parent.walkSpeed);
                     parent.scale.x = -Math.abs(parent.scale.x);                    
+
                 } else if (parent.wallHitDir > 0) {
                     parent.walkSpeed = Math.abs(parent.walkSpeed);   
                     parent.scale.x = Math.abs(parent.scale.x);
                 } 
             }
             
-            if (parent.autoWalk && parent.turnAround) parent.velocity.x = parent.walkSpeed;
+            if (parent.autoWalk) parent.velocity.x = parent.walkSpeed;
         }
         return self;
     },
@@ -54,44 +56,43 @@ var PlayerStates = {
         //-----\\
 
         //-----\\
-        parent.wallHitCollLeft = new EmptyObject({
-            position: Vector2.new(-20, 3),
-            size: Vector2.new(5, 30),
-            color: "rgba(112, 112, 112, 0.3)"
-        });
-
         parent.wallHitCollRight = new EmptyObject({
-            position: Vector2.new(20, 3),
-            size: Vector2.new(5, 30),
-            color: "rgba(112, 112, 112, 0.3)"
+            position: Vector2.new(15, 3),
+            size: Vector2.new(5, 40),
+            color: "rgba(225, 225, 166, 0.3)"
         });
 
-        parent.wallHitCollLeft.extends = {
-            collision: Collision(parent.wallHitCollLeft)
-        }
+        parent.slideColl = new EmptyObject({
+            position: Vector2.new(-15, 3),
+            size: Vector2.new(1, 30),
+            color: "red"
+        })
 
         parent.wallHitCollRight.extends = {
             collision: Collision(parent.wallHitCollRight)
         }
 
-        parent.wallHitCollLeft.hitbox = parent.wallHitCollLeft.size;
-        parent.wallHitCollLeft.collisionActive = false;
-        parent.wallHitCollLeft.ignoreObjectType[Enum.ClassType.Player] = true;
-        parent.wallHitCollLeft.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
+        parent.slideColl.extends = {
+            collision: Collision(parent.slideColl)
+        }
 
-        parent.wallHitCollRight.hitbox = parent.wallHitCollLeft.size;
+        parent.wallHitCollRight.hitbox = parent.wallHitCollRight.size;
         parent.wallHitCollRight.collisionActive = false;
         parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.Player] = true;
         parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
+
+        parent.slideColl.hitbox = parent.slideColl.size;
+        parent.slideColl.collisionActive = false;
+        parent.slideColl.ignoreObjectType[Enum.ClassType.Player] = true;
+        parent.slideColl.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
         //-----\\
 
         //-----\\
         parent.onGround = 0;
-        parent.wallHitDir = 0;
+        parent.wallHitDir = 1;
         parent.lastWallHit = 0;
         parent.wallsHit = 0;
 
-        parent.turnAround = true;
         parent.stopWalking = false;
 
         parent.amoundOfExtraJumps = 1;
@@ -114,26 +115,14 @@ var PlayerStates = {
         }
         //-----\\
 
-       //left//
-        parent.wallHitCollLeft.collisionEnter["hitWallLeft"] = function (obj, dir, force, distance, canCollide) {
-            if (canCollide) {
-                console.log("hit left");
-                if (dir.x) parent.wallHitDir = 1;
-                parent.wallsHit ++;
-            }
-        }
-
-        parent.wallHitCollLeft.collisionExit["exitWallLeft"] = function (obj, dir, force, distance, canCollide) {
-            if (canCollide) {
-                parent.wallsHit --;
-            }
-        }
-
         //right\\
+        parent.rightCollisions = 0;
         parent.wallHitCollRight.collisionEnter["hitWallRight"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
-                console.log("hit right");
-                if (dir.x) parent.wallHitDir = -1;
+                console.log("right has collision");
+
+                if (dir.x && parent.rightCollisions <=0) parent.wallHitDir *= -1;
+                parent.rightCollisions ++;
                 parent.wallsHit ++;
             }
         }
@@ -141,12 +130,26 @@ var PlayerStates = {
         parent.wallHitCollRight.collisionExit["exitWallRight"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
                 parent.wallsHit --;
+                parent.rightCollisions --;
+            }
+        }
+
+        //slideColl\\
+        parent.slideColl.collisionEnter["hitWallRight"] = function (obj, dir, force, distance, canCollide) {
+            if (canCollide) {
+                parent.wallsHit ++;
+            }
+        }
+
+        parent.slideColl.collisionExit["exitWallRight"] = function (obj, dir, force, distance, canCollide) {
+            if (canCollide) {
+                parent.wallsHit --;
             }
         }
 
         parent.addChild(parent.groundColl);
-        parent.addChild(parent.wallHitCollLeft);
         parent.addChild(parent.wallHitCollRight);
+        parent.addChild(parent.slideColl);
         //-----\\
 
     },

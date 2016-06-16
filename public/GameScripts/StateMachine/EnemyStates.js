@@ -21,10 +21,11 @@ var EnemyStates = {
         this.Act = function () {
             if (parent.oldWallHitDir != parent.wallHitDir) {
                 parent.oldWallHitDir = parent.wallHitDir;
-                console.log("changing direction in " + parent.ClassType);
+                //console.log("changing direction in " + parent.ClassType);
 
                 parent.walkSpeed = parent.wallHitDir * Math.abs(parent.walkSpeed);
             }
+
         };
         this.Return = function(){
             return false;
@@ -73,7 +74,7 @@ var EnemyStates = {
         
             this.Act = function () {
                 
-                parent.position.x += parent.walkSpeed;
+                parent.velocity.x = parent.walkSpeed;
             } 
         
             
@@ -106,7 +107,7 @@ var EnemyStates = {
         
             this.Act = function () {
 
-                parent.position.x += self.walkSpeed;
+                parent.velocity.x += self.walkSpeed;
             } 
         
             
