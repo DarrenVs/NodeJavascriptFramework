@@ -217,11 +217,11 @@ function Stage(properties) {
             var min = Vector2.new(Infinity, Infinity);
             var max = Vector2.new(0, 0);
 
-            for (var index in Vector2.edges) {
+            for (var index in Vector2.directions) {
 
                 var gridLocation = Vector2.new(
-                    Math.floor((Obj.globalPosition.x + Vector2.edges[index].x * Obj.hitbox.x) / self.gridSize.x) * self.gridSize.x,
-                    Math.floor((Obj.globalPosition.y + Vector2.edges[index].y * Obj.hitbox.y) / self.gridSize.y) * self.gridSize.y
+                    Math.floor((Obj.globalPosition.x + Vector2.directions[index].x * Obj.hitbox.x) / self.gridSize.x) * self.gridSize.x,
+                    Math.floor((Obj.globalPosition.y + Vector2.directions[index].y * Obj.hitbox.y) / self.gridSize.y) * self.gridSize.y
                 );
                 
                 
@@ -236,56 +236,18 @@ function Stage(properties) {
                     max.y = gridLocation.y;
             }
             
-            var x = min.x
             for (var y = min.y; y <= max.y; y += self.gridSize.y) {
-                
-                if (self.CollisionGrid.grid[x + "x" + y] == undefined)
-                self.CollisionGrid.grid[x + "x" + y] = {};
-                
-                if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
-                    self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
-                
-                if (Grids[x + "x" + y] == undefined)
-                    Grids[x + "x" + y] = true;
-            }
-            
-            var x = max.x
-            for (var y = min.y; y <= max.y; y += self.gridSize.y) {
-                
-                if (self.CollisionGrid.grid[x + "x" + y] == undefined)
-                self.CollisionGrid.grid[x + "x" + y] = {};
-                
-                if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
-                    self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
-                
-                if (Grids[x + "x" + y] == undefined)
-                    Grids[x + "x" + y] = true;
-            }
-            
-            
-            var y = min.y
-            for (var x = min.x; x <= max.x; x += self.gridSize.x) {
-                
-                if (self.CollisionGrid.grid[x + "x" + y] == undefined)
-                self.CollisionGrid.grid[x + "x" + y] = {};
-                
-                if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
-                    self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
-                
-                if (Grids[x + "x" + y] == undefined)
-                    Grids[x + "x" + y] = true;
-            }
-            var y = max.y
-            for (var x = min.x; x <= max.x; x += self.gridSize.x) {
-                
-                if (self.CollisionGrid.grid[x + "x" + y] == undefined)
-                self.CollisionGrid.grid[x + "x" + y] = {};
-                
-                if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
-                    self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
-                
-                if (Grids[x + "x" + y] == undefined)
-                    Grids[x + "x" + y] = true;
+                for (var x = min.x; x <= max.x; x += self.gridSize.x) {
+                    
+                    if (self.CollisionGrid.grid[x + "x" + y] == undefined)
+                    self.CollisionGrid.grid[x + "x" + y] = {};
+                    
+                    if (self.CollisionGrid.grid[x + "x" + y][Obj.ID] == undefined)
+                        self.CollisionGrid.grid[x + "x" + y][Obj.ID] = true;
+                    
+                    if (Grids[x + "x" + y] == undefined)
+                        Grids[x + "x" + y] = true;
+                }
             }
 
             return Grids;
