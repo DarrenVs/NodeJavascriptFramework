@@ -118,13 +118,19 @@ Vector2 = {
     
     directions: {
         
-    }
+    },
+    edges: {},
 }
 
 Vector2.directions.up = new Vector2.new(0, -1);
 Vector2.directions.right = new Vector2.new(-1, 0);
 Vector2.directions.down = new Vector2.new(0, 1);
 Vector2.directions.left = new Vector2.new(1, 0);
+
+Vector2.edges.a = new Vector2.new(-1, -1);
+Vector2.edges.b = new Vector2.new(1, -1);
+Vector2.edges.c = new Vector2.new(1, 1);
+Vector2.edges.d = new Vector2.new(-1, 1);
 
 /* {Start} Game Element Functions {{
 
