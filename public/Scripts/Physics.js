@@ -112,7 +112,7 @@ function Physics(Parent) {
                 )
             )
             
-            if (Obj.velocity) {
+            if (Obj.velocity && Obj.anchored == false) {
                 
                 Obj.velocity = Vector2.add(
                     Obj.velocity,

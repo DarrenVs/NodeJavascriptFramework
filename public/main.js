@@ -199,7 +199,7 @@ function Stage(properties) {
             var Grids = {};
 
             var min = Vector2.new(Infinity, Infinity);
-            var max = Vector2.new(0, 0);
+            var max = Vector2.new(-Infinity, -Infinity);
             
             for (var index in Vector2.directions) {
 
