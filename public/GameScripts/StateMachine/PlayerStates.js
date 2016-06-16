@@ -57,8 +57,8 @@ var PlayerStates = {
 
         //-----\\
         parent.wallHitCollRight = new EmptyObject({
-            position: Vector2.new(15, 3),
-            size: Vector2.new(5, 40),
+            position: Vector2.new(15, 5),
+            size: Vector2.new(5, 35),
             color: "rgba(225, 225, 166, 0.3)"
         });
 
@@ -119,7 +119,6 @@ var PlayerStates = {
         parent.rightCollisions = 0;
         parent.wallHitCollRight.collisionEnter["hitWallRight"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
-                console.log("right has collision");
 
                 if (dir.x && parent.rightCollisions <=0) parent.wallHitDir *= -1;
                 parent.rightCollisions ++;
