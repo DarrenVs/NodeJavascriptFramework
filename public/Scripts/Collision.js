@@ -145,6 +145,8 @@ function updateCollision( Obj1, deltaTime ) {
     
     if (Obj1 && Obj1.stage != undefined) {
         
+        Obj1.stage.testedObjects[ Obj1.ID ] = true;
+        
         Obj1.priorityCollisionDirection = Vector2.new();
         Obj1.priorityCollisionDepth = 0;
         
@@ -157,11 +159,11 @@ function updateCollision( Obj1, deltaTime ) {
                     delete Obj1.stage.CollisionGrid.grid[ grid ][ Obj2ID ];
                 
                 else {
-
                     if (Obj1.ID != Obj2ID && Obj2.extends.collision != undefined) {
 
-                        if (CheckCollision(Obj1, Obj2, deltaTime)) {
-                            //CheckCollision(Obj2, Obj1, deltaTime);
+                        if (CheckCollision(Obj1, Obj2, deltaTime) && !Obj1.stage.testedObjects[ Obj2.ID ]) {
+                            //CheckCollision(Obj1, Obj2, deltaTime);
+                            updateCollision(Obj2, deltaTime);
                         }
                     }
                 }
@@ -170,6 +172,10 @@ function updateCollision( Obj1, deltaTime ) {
         
         Obj1.collisionUpdates = 0;
         for (var Obj2ID in Obj1.collisions) {
+            
+            if (Obj1.collisions[Obj2ID].Obj.anchored == false)
+                Obj1.stage.CollisionLoop[ Obj1.ID ] = Obj1;
+            
             if (Obj1.collisions[Obj2ID].lifeTime == 3) {
 
                  for (i in Obj1.collisionEnter)
@@ -198,7 +204,7 @@ function updateCollision( Obj1, deltaTime ) {
              }
 
 
-             if (Obj1.collisions[Obj2ID].lifeTime-- <= 0) {
+             if (Obj1.collisions[Obj2ID].Obj.Parent == undefined || Obj1.collisions[Obj2ID].lifeTime-- <= 0 && CheckCollision( Obj1, Obj1.collisions[Obj2ID].Obj, deltaTime ) == false) {
 
                  for (i in Obj1.collisionExit)
                      Obj1.collisionExit[i](
