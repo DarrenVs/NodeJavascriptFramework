@@ -128,22 +128,22 @@ function Player(properties) {
 
     //-----Adding the navigation states!!!-----\\
     var navSM = this.extends.navigation;
-    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
-    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(this));
-    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(this));
-    navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(this));
-    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(this));
-    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(this));
-    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(this));
+    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(self));
+    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(self));
+    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(self));
+    navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(self));
+    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(self));
+    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(self));
+    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(self));
 
     //-----Adding the pickup states!!!-----\\
     var pickupSM = this.extends.pickupStates;
-    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(this));
-    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(this));
-    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(this));
-    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(this));
-    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(this));
-    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(this));
+    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(self));
+    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(self));
+    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(self));
+    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(self));
+    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(self));
+    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(self));
     
     this.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {

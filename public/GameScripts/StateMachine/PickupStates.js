@@ -4,16 +4,20 @@ var PickupStates = {
         CreateState(this);
     },
     
-    idle: function() {
+    idle: function(_parent) {
         CreateState(this);
+        var parent = _parent;
+        var self = this;
 
         this.Reason = function () {        
             return false;
         }
     },
     
-    invulnerabilityOnHold: function() {
+    invulnerabilityOnHold: function(_parent) {
         CreateState(this);
+        var parent = _parent;
+        var self = this;
         
         this.Reason = function () { 
             
@@ -26,15 +30,16 @@ var PickupStates = {
         }
     },
     
-    invulnerabilityActivated: function() {
+    invulnerabilityActivated: function(_parent) {
         CreateState(this);
+        var parent = _parent;
+        var self = this;
         
         var invulnerabilityAmin;
         var maxInvulnerabilityTime = 100;
         var invulnerabilityCounter = 0;
           
-        this.Enter =  function(parent) {
-            self.Enter(parent);
+        this.Enter =  function() {
             
             invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Platform_120x200]({
                 size: new Vector2.new( 120,  200),
@@ -65,8 +70,10 @@ var PickupStates = {
         }
     },
     
-    mineOnHold: function() {
+    mineOnHold: function(_parent) {
         CreateState(this);
+        var parent = _parent;
+        var self = this;
         
         var mine;
         
@@ -81,15 +88,17 @@ var PickupStates = {
                 position: new Vector2.new(0, 0),
             })
                 
-            self.parent.stage.addChild( mine );
+            parent.stage.addChild( mine );
             
             self.returnState = undefined;            
             return false;
         }
     },
         
-    ballOnHold: function() {
+    ballOnHold: function(_parent) {
         CreateState(this);
+        var parent = _parent;
+        var self = this;
         
         var ball;
         
@@ -111,8 +120,10 @@ var PickupStates = {
         }
     },
     
-    throwAbleOnHold: function() {
+    throwAbleOnHold: function(_parent) {
         CreateState(this);
+        var parent = _parent;
+        var self = this;
         
         var throwAble;
         
