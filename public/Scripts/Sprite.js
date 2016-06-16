@@ -6,6 +6,8 @@ function Sprite( Parent, Img, sprites, animations ) {
     var spriteImg = Img;
     var sprites = sprites;
     self.Parent.animations = animations || {};
+    self.spriteOffset = Vector2.new();
+    self.spriteSize = self.Parent.size;
     
     for (var i in sprites)
         sprites[i].cellSize = Vector2.new( sprites[i].size.x / sprites[i].columns, sprites[i].size.y / sprites[i].rows );
@@ -49,9 +51,11 @@ function Sprite( Parent, Img, sprites, animations ) {
             
             currentSprite.cellSize.x - 2, currentSprite.cellSize.y - 2, // Crop size
             
-            -Parent.size.x*.5, -Parent.size.y*.5, // Image Position
+            -(self.spriteSize != undefined ? self.spriteSize.x : currentSprite.cellSize.x) * .5 + self.spriteOffset.x, // Image PositionX
+            -(self.spriteSize != undefined ? self.spriteSize.y : currentSprite.cellSize.y) * .5 + self.spriteOffset.y, // Image PositionY
             
-            Parent.size.x, Parent.size.y // Sprite size
+            self.spriteSize != undefined ? self.spriteSize.x : currentSprite.cellSize.x, //Sprite sizeX
+            self.spriteSize != undefined ? self.spriteSize.y : currentSprite.cellSize.y // Sprite sizeY
         );
     }
 }
