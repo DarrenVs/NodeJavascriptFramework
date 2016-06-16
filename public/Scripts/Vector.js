@@ -126,11 +126,6 @@ Vector2.directions.right = new Vector2.new(-1, 0);
 Vector2.directions.down = new Vector2.new(0, 1);
 Vector2.directions.left = new Vector2.new(1, 0);
 
-Vector2.directions.a = new Vector2.new(-1, -1);
-Vector2.directions.b = new Vector2.new(1, -1);
-Vector2.directions.c = new Vector2.new(1, 1);
-Vector2.directions.d = new Vector2.new(-1, 1);
-
 /* {Start} Game Element Functions {{
 
 //		 V2 ( x value, y value )  2D Array, vergelijkbaar met een AS3 :Point |		sample =	new Vector2 ( 10, 20 );  sample.x == 10		|
