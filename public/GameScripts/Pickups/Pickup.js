@@ -59,7 +59,6 @@ function Pickup(properties) {
     }
     
     this.collisionEnter["destroyPickupOnCollision"] = function(Obj) {
-        console.log(Obj);
         if(Obj.ClassType == Enum.ClassType.Player) {
             delete PickupProperties.currentPickups[pickupIndex];
             self.destroy();

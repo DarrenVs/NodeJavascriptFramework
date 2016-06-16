@@ -36,13 +36,24 @@ var events = events || {
         console.log(arguments);
     },
 
-    sendChunk: function(parameters) {
- ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
-    },
-    
     sendPickup: function(parameters) {
         PickupProperties.assignPickup(parameters.pickupKey, parameters.pickupID);
     },
+    
+    sendChunk: function(parameters) {
+        ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
+    },
+    
+    updatePlayerList: function(parameters) {
+        
+        //console.log(Game[parameters.stageID].allChilds);
+        //console.log(parameters.playerID)
+        //PlayerProperties.playerList[parameters.playerID] = Game[parameters.stageID].allChilds[parameters.playerID];
+        //console.log(Game[parameters.stageID].allChilds[parameters.playerID]);
+        //console.log(PlayerProperties.playerList);
+    },
+    
+    
 };
 
 
@@ -190,9 +201,6 @@ function Stage(properties) {
     this.allChilds = {};
 
     this.stageID = this.stageID || Object.keys(Game).length;
-    
-    
-    this.addChild(new Background());
     
     
     

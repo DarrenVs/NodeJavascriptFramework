@@ -150,9 +150,7 @@ function Player(properties) {
             pickupSM.ChangeState(Obj.pickupValue);
         }
     };
-
-    PlayerProperties.playerList[self.creatorID] = self;
-    
+        
     this.DrawObject.currentAnimation = "run";
     
     this.anchored = false;
@@ -201,6 +199,6 @@ function Player(properties) {
         self.Health = 0;
         sendObject(self);
         self.destroy();
-    }
+        }
     }
 }

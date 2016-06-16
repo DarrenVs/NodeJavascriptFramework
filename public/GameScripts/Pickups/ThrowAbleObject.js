@@ -5,4 +5,6 @@ function ThrowAbleObject(properties) {
     var self = this;
     GameObject(this, properties);
     
+    
+    
 }

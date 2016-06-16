@@ -41,6 +41,11 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             });
             
             stage.addChild( player );
+            
+            sendEvent("updatePlayerList", {
+                playerID: player.ID,
+                stageID: stage.stageID,
+            });
         }
                 
         stage.position.y = cameraController.cameraPosition();
@@ -49,7 +54,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             for(i = 0; i < barrier.length; i++) {
                 barrier[i].destroy();
             }
-            
+
             LoadWorld(stage, Enum.Worlds.MainWorld);
             delete self.update["StartLobbyUpdate"];
         }
