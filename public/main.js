@@ -129,7 +129,7 @@ window.addEventListener("load", function () {
 
 
             //Update Collisions
-            self.testedObjects = {};
+            Game[stageIndex].testedObjects = {};
             for (var ObjID in Game[stageIndex].CollisionLoop) {
                 
                 delete Game[stageIndex].CollisionLoop[ObjID];
