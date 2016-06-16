@@ -53,8 +53,8 @@ var PlayerStates = {
 
         //-----\\
         parent.wallHitColl = new EmptyObject({
-            position: Vector2.new(0, -5),
-            size: Vector2.new(35, 25),
+            position: Vector2.new(0, 3),
+            size: Vector2.new(40, 30),
             color: "rgba(112, 112, 112, 0.3)"
         });
 
@@ -309,7 +309,7 @@ var PlayerStates = {
         var self = this;
         var parent = _parent;
 
-        var slideSpeed = _slideSpeed || 3;
+        var slideSpeed = _slideSpeed || 5;
         var wallJumpButton = _wallJumpButton || "32";
 
         self.Enter = function () {
