@@ -4,7 +4,7 @@ Enum.ClassName[Enum.ClassType.Background] = Background;
 function Background(properties) {
     var self = this;
     GameObject(this, properties);
-    
+    console.log(canvas);
     self.size = new Vector2.new(canvas.width, canvas.height);
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 2);
