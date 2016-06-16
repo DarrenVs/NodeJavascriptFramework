@@ -151,8 +151,6 @@ function Player(properties) {
         }
     };
 
-    console.log(navSM);
-    
     PlayerProperties.playerList[self.creatorID] = self;
     
     this.DrawObject.currentAnimation = "run";
@@ -161,9 +159,9 @@ function Player(properties) {
     
     this.size = Vector2.new(40, 45);
     
-    this.colliderType = Enum.colliderType.box;
-    
     this.hitbox = Vector2.new(self.size.x * 0.5, self.size.y + 5);
+        
+    this.colliderType = Enum.colliderType.box;
     
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;

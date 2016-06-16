@@ -28,8 +28,6 @@ var Parallax = function() {
         },
     };
     
-    console.log(borderOffset + Math.random() * (canvas.width - (borderOffset * 2)));
-    
     for(var l in layers) {
         for(c = 0; c < layers[l].maxLayerCount; c++) {
             var newObject = new Enum.ClassName[Enum.ClassType.ParallaxObject]({

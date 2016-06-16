@@ -62,9 +62,7 @@ var Enum = {
             //effects
             InvulnableEffectSpriteSheet: newImage("Images/Pickups/invulnerable_effect_spritesheet.png"),
             
-            InvulnableEffectSpriteSheet: newImage("Images/Pickups/mine_effect1_spritesheet.png"),
-            InvulnableEffectSpriteSheet: newImage("Images/Pickups/mine_effect2_spritesheet.png"),
-            
+            MineEffectSpriteSheet: newImage("Images/Pickups/mine_effect_spritesheet.png"),      
             
             Pickups: [
                 {//Invulnable
