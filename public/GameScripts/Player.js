@@ -128,7 +128,7 @@ function Player(properties) {
 
     //-----Adding the navigation states!!!-----\\
     var navSM = this.extends.navigation;
-    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(self));
+    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
     navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(self));
     navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(self));
     navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(self));
@@ -151,8 +151,6 @@ function Player(properties) {
         }
     };
 
-    console.log(navSM);
-    
     PlayerProperties.playerList[self.creatorID] = self;
     
     this.DrawObject.currentAnimation = "run";
@@ -162,8 +160,11 @@ function Player(properties) {
     this.size = Vector2.new(40, 45);
     
     this.colliderType = Enum.colliderType.box;
-    
+
+    this.mass = 1;
+
     this.hitbox = Vector2.new(self.size.x * 0.5, self.size.y + 5);
+    //this.DrawObject.spriteSize = undefined;
     
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;

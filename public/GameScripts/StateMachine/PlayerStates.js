@@ -1,3 +1,5 @@
+"use strict";
+
 var PlayerStates = {
 
     AnyState: function (parent) {
@@ -52,19 +54,35 @@ var PlayerStates = {
         //-----\\
 
         //-----\\
-        parent.wallHitColl = new EmptyObject({
-            position: Vector2.new(0, 3),
-            size: Vector2.new(40, 30),
+        parent.wallHitCollLeft = new EmptyObject({
+            position: Vector2.new(-20, 3),
+            size: Vector2.new(5, 30),
             color: "rgba(112, 112, 112, 0.3)"
         });
 
-        parent.wallHitColl.extends = {
-            collision: Collision(parent.wallHitColl)
+        parent.wallHitCollRight = new EmptyObject({
+            position: Vector2.new(20, 3),
+            size: Vector2.new(5, 30),
+            color: "rgba(112, 112, 112, 0.3)"
+        });
+
+        parent.wallHitCollLeft.extends = {
+            collision: Collision(parent.wallHitCollLeft)
         }
-        parent.wallHitColl.hitbox = parent.wallHitColl.size;
-        parent.wallHitColl.collisionActive = false;
-        parent.wallHitColl.ignoreObjectType[Enum.ClassType.Player] = true;
-        parent.wallHitColl.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
+
+        parent.wallHitCollRight.extends = {
+            collision: Collision(parent.wallHitCollRight)
+        }
+
+        parent.wallHitCollLeft.hitbox = parent.wallHitCollLeft.size;
+        parent.wallHitCollLeft.collisionActive = false;
+        parent.wallHitCollLeft.ignoreObjectType[Enum.ClassType.Player] = true;
+        parent.wallHitCollLeft.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
+
+        parent.wallHitCollRight.hitbox = parent.wallHitCollLeft.size;
+        parent.wallHitCollRight.collisionActive = false;
+        parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.Player] = true;
+        parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
         //-----\\
 
         //-----\\
@@ -96,22 +114,39 @@ var PlayerStates = {
         }
         //-----\\
 
-       //-----\\
-        parent.wallHitColl.collisionEnter["hitWall"] = function (obj, dir, force, distance, canCollide) {
+       //left//
+        parent.wallHitCollLeft.collisionEnter["hitWallLeft"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
-                if (dir.x) parent.wallHitDir = dir.x;
+                console.log("hit left");
+                if (dir.x) parent.wallHitDir = 1;
                 parent.wallsHit ++;
             }
         }
 
-        parent.wallHitColl.collisionExit["hitWall"] = function (obj, dir, force, distance, canCollide) {
+        parent.wallHitCollLeft.collisionExit["exitWallLeft"] = function (obj, dir, force, distance, canCollide) {
+            if (canCollide) {
+                parent.wallsHit --;
+            }
+        }
+
+        //right\\
+        parent.wallHitCollRight.collisionEnter["hitWallRight"] = function (obj, dir, force, distance, canCollide) {
+            if (canCollide) {
+                console.log("hit right");
+                if (dir.x) parent.wallHitDir = -1;
+                parent.wallsHit ++;
+            }
+        }
+
+        parent.wallHitCollRight.collisionExit["exitWallRight"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
                 parent.wallsHit --;
             }
         }
 
         parent.addChild(parent.groundColl);
-        parent.addChild(parent.wallHitColl);
+        parent.addChild(parent.wallHitCollLeft);
+        parent.addChild(parent.wallHitCollRight);
         //-----\\
 
     },
@@ -278,7 +313,7 @@ var PlayerStates = {
                 self.returnState = StatesEnum.wander;
                 return false;
 
-            } else if (parent.wallsHit > 0 && parent.velocity.y > 0) {
+            } else if (parent.wallsHit > 0) {
                 parent.stopWalking = true;
                 self.returnState = StatesEnum.slide;
                 return false;
@@ -336,8 +371,9 @@ var PlayerStates = {
         }
 
         self.Act = function () {
-            parent.velocity = Vector2.new(80 * -parent.wallHitDir,
-            parent.stage.gravity.y * slideSpeed);
+            parent.velocity.x = 80 * -parent.wallHitDir;
+            if (parent.velocity.y > 0)
+                parent.velocity.y = parent.stage.gravity.y * slideSpeed;
         }
 
         self.Leave = function () {

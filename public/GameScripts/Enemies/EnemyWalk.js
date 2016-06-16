@@ -10,10 +10,10 @@ function EnemyWalk(properties) {
     self.ClassType = Enum.ClassType.EnemyWalk;
 
     var sm = self.extends.AI;
-    sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(500));
-    sm.AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(500));
-    sm.AddState(StatesEnum.alert, new EnemyStates.Enrage(15, 15));
-    sm.AddState(StatesEnum.charge, new EnemyStates.Charge(2800, 5, 5));
-    sm.AddState(StatesEnum.interact, new EnemyStates.Attack());
+    sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(this, 500));
+    sm.AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(this, 500));
+    sm.AddState(StatesEnum.alert, new EnemyStates.Enrage(this, 15, 15));
+    sm.AddState(StatesEnum.charge, new EnemyStates.Charge(this, 2800, 5, 5));
+    sm.AddState(StatesEnum.interact, new EnemyStates.Attack(this));
     
 }

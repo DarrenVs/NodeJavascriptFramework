@@ -66,7 +66,7 @@ var PickupStates = {
             self.parent.walkSpeed /= 1.2;
             console.log(self.parent.walkSpeed);
             print("end invul");
-            return self.Leave();
+            return self.returnState;
         }
     },
     

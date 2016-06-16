@@ -48,22 +48,23 @@ var EnemyStates = {
 
     },
 
-    NormalWander: function (_walkSpeed) {
-        this.__proto__ = new State();
-        var base = this.__proto__;
+    NormalWander: function (_parent,_walkSpeed) {
+        CreateState(this);
+        var parent = _parent;
+
+        var self = this;
         
         var enemies = [];
         var walkSpeed = _walkSpeed || 1;
 
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
+        this.Enter = function () {
             _parent.colour = "blue";
             parent.walkSpeed = walkSpeed;
         }
         
         this.Reason = function () {
-            if (base.parent.triggered) {
-                base.returnState = StatesEnum.alert;
+            if (parent.triggered) {
+                self.returnState = StatesEnum.alert;
                 return false;
             }
                      
@@ -72,29 +73,30 @@ var EnemyStates = {
         
             this.Act = function () {
                 
-                base.parent.position.x += base.parent.walkSpeed;
+                parent.position.x += parent.walkSpeed;
             } 
         
             
         this.Leave = function() {
-            return base.Leave();
+            return self.returnState;
         }
     },
     
-    AngryWander: function (_walkSpeed) {
-        this.__proto__ = new State();
-        var base = this.__proto__;
+    AngryWander: function (_parent,_walkSpeed) {
+        CreateState(this);
+        var parent = _parent;
+
+        var self = this;
         
         var enemies = [];
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
+        this.Enter = function () {
             _parent.colour = "red";
             
         }
         
         this.Reason = function () {
-            if (base.parent.triggered) {
-                base.returnState = StatesEnum.alert;
+            if (parent.triggered) {
+                self.returnState = StatesEnum.alert;
                 return false;
             }
                 
@@ -104,27 +106,28 @@ var EnemyStates = {
         
             this.Act = function () {
 
-                base.parent.position.x += base.walkSpeed;
+                parent.position.x += self.walkSpeed;
             } 
         
             
         this.Leave = function() {
-            return base.Leave();
+            return self.returnState;
         }
     },
 
     //__alert__
-    Enrage: function (_responseTime, _rageIntencity) {
-        this.__proto__ = new State();
-        var base = this.__proto__;
+    Enrage: function (_parent,_responseTime, _rageIntencity) {
+        CreateState(this);
+        var parent = _parent;
+
+        var self = this;
         
         var responseTime = _responseTime || 20;
         var rageIntencity = _rageIntencity;
          
         var timeLeft = responseTime;   
                 
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
+        this.Enter = function () {
             _parent.colour = "red";
             _parent.velocity = Vector2.new();
             timeLeft = responseTime;            
@@ -132,7 +135,7 @@ var EnemyStates = {
         
         this.Reason = function () {
             if (timeLeft < 0) {
-                base.returnState = StatesEnum.charge;
+                self.returnState = StatesEnum.charge;
                 return false;
             }
                        
@@ -140,22 +143,24 @@ var EnemyStates = {
         }
         
         this.Act = function () {
-                base.parent.position = Vector2.new(
-                    base.parent.position.x + Math.random() * rageIntencity - rageIntencity/2,
-                    base.parent.position.y + Math.random() * rageIntencity - rageIntencity/2);
+                parent.position = Vector2.new(
+                    parent.position.x + Math.random() * rageIntencity - rageIntencity/2,
+                    parent.position.y + Math.random() * rageIntencity - rageIntencity/2);
                     
             timeLeft -= 1;
         }
         
         this.Leave = function() {
-            return base.Leave();
+            return self.returnState
         }
     },
     
     //____Idle____
-    ChargeGun: function (_attackRange, _chargeSpeed, _chargeCoolDown) {
-        this.__proto__ = new State();
-        var base = this.__proto__;
+    ChargeGun: function (_parent,_attackRange, _chargeSpeed, _chargeCoolDown) {
+        CreateState(this);
+        var parent = _parent;
+
+        var self = this;
         
         var attackRange = _attackRange || 20;
         var chargeSpeed = _chargeSpeed || 5;
@@ -163,21 +168,20 @@ var EnemyStates = {
         var resetCharge = undefined;
         var STOP = false;
         
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
+        this.Enter = function () {
             parent.colour = "red";
         }
         
         this.Reason = function () {
-            console.log(base.parent.target.position);
-            var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
+            console.log(parent.target.position);
+            var magnitude = Vector2.magnitude(this.parent.position, parent.target.position);
             
             if (STOP) {
-                base.returnState = StatesEnum.specialWander;
+                self.returnState = StatesEnum.specialWander;
                 return false;
             }
             
-            if (!base.parent.triggered) {  
+            if (!parent.triggered) {  
                 if (typeof(resetCharge) != 'undefined') {
                     setTimeout(cancleCharge, chargeCooldown);
                 }
@@ -186,7 +190,7 @@ var EnemyStates = {
             }
             
             if (magnitude < attackRange) {
-                base.returnState = StatesEnum.interact;
+                self.returnState = StatesEnum.interact;
                 return false;
             }
             
@@ -195,10 +199,10 @@ var EnemyStates = {
         
         this.Act = function () {
             
-            base.parent.position = Vector2.subtract(
-                base.parent.position,
+            parent.position = Vector2.subtract(
+                parent.position,
                 Vector2.multiply(
-                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.target.position)), 
+                    Vector2.unit (Vector2.subtract(parent.position, parent.target.position)), 
                 chargeSpeed)
             );
             
@@ -207,19 +211,20 @@ var EnemyStates = {
         this.Leave = function() {
             STOP = false;
             resetCharge = undefined;
-            return base.Leave();
+            return self.returnState;
         }
         
         this.cancleCharge = function () {
             STOP = true;
-            base.parent.target = undefined;
+            parent.target = undefined;
         }
     },
 
-    Charge: function (_attackRange, _chargeSpeed, _chargeCoolDown) {
-        
-        this.__proto__ = new State();
-        var base = this.__proto__;
+    Charge: function (_parent,_attackRange, _chargeSpeed, _chargeCoolDown) {
+        CreateState(this);
+        var parent = _parent;
+
+        var self = this;
         
         var attackRange = _attackRange || 200;
         var chargeSpeed = _chargeSpeed || 5;
@@ -227,20 +232,19 @@ var EnemyStates = {
         var resetCharge = undefined;
         var STOP = false;
         
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
+        this.Enter = function () {
             parent.colour = "red";
         }
         
         this.Reason = function () {
-            var magnitude = Vector2.magnitude(this.parent.position, base.parent.target.position);
+            var magnitude = Vector2.magnitude(this.parent.position, parent.target.position);
             console.log(magnitude, attackRange);
             if (STOP) {
-                base.returnState = StatesEnum.specialWander;
+                self.returnState = StatesEnum.specialWander;
                 return false;
             }
             
-            if (!base.parent.triggered) {  
+            if (!parent.triggered) {  
                 if (typeof(resetCharge) != 'undefined') {
                     setTimeout(cancleCharge, chargeCooldown);
                 }
@@ -249,7 +253,7 @@ var EnemyStates = {
             }
             
             if (magnitude < attackRange) {
-                base.returnState = StatesEnum.interact;
+                self.returnState = StatesEnum.interact;
                 return false;
             }
             
@@ -258,10 +262,10 @@ var EnemyStates = {
         
         this.Act = function () {
             
-            base.parent.position = Vector2.subtract(
-                base.parent.position,
+            parent.position = Vector2.subtract(
+                parent.position,
                 Vector2.multiply(
-                    Vector2.unit (Vector2.subtract(base.parent.position, base.parent.target.position)), 
+                    Vector2.unit (Vector2.subtract(parent.position, parent.target.position)), 
                 chargeSpeed)
             );
             
@@ -271,22 +275,24 @@ var EnemyStates = {
             STOP = false;
             resetCharge = undefined;
 
-            return base.Leave();
+            return self.returnState
         }
         
         this.cancleCharge = function () {
             STOP = true;
-            base.parent.target = undefined;
+            parent.target = undefined;
         }
     },
     
-    Shoot: function () {
-        this.__proto__ = new State();
-        var base = this.__proto__;
+    Shoot: function (_parent) {
+        CreateState(this);
+        var parent = _parent;
+
+        var self = this;
+
         var deltDamage = false;
         
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
+        this.Enter = function () {
             _parent.colour = "black";
             deltDamage = false;
         }
@@ -294,43 +300,44 @@ var EnemyStates = {
         this.Reason = function () {
             if (deltDamage) {    
                 //!if hit 
-                base.returnState = StatesEnum.charge;
+                self.returnState = StatesEnum.charge;
                 //else
-                base.returnState = StatesEnum.AngryWander; 
+                self.returnState = StatesEnum.AngryWander; 
                                     
                 return false;
             } return true;
         }
         
-        this.Act = function () {
+        this.Act = function (_parent) {
             var bullet = new Bullet({
-                    position: Vector2.add(base.parent.position, Vector2.multiply(base.parent.forward, 1)),
+                    position: Vector2.add(parent.position, Vector2.multiply(parent.forward, 1)),
                     size: new Vector2.new(3, 10),
-                    rotation: Vector2.toAngle(Vector2.unit (Vector2.subtract(base.parent.position, base.parent.target.position))), 
+                    rotation: Vector2.toAngle(Vector2.unit (Vector2.subtract(parent.position, parent.target.position))), 
                 });
-                base.parent.ignoreObjectIDs[bullet.ID] = true;
-                base.parent.stage.addChild(bullet);
+                parent.ignoreObjectIDs[bullet.ID] = true;
+                parent.stage.addChild(bullet);
             deltDamage = true;
         }
         
         this.Leave = function() {
-            return base.Leave();
+            return self.returnState;
         }
         
         this.cancleCharge = function () {
             STOP = true;
-            base.parent.target = undefined;
+            parent.target = undefined;
         }
     },
 
     //__attack__
-    Attack: function () {
-        this.__proto__ = new State();
-        var base = this.__proto__;
+    Attack: function (_parent) {
+        CreateState(this);
+        var parent = _parent;
+
+        var self = this;
         var deltDamage = false;
         
-        this.Enter = function (_parent) {
-            base.Enter(_parent);
+        this.Enter = function () {
             _parent.colour = "black";
             deltDamage = false;
         }
@@ -344,10 +351,6 @@ var EnemyStates = {
         this.Act = function () {
             console.log("YOU GOT HIT BY A SPOOK (get rekt)");
             deltDamage = true;
-        }
-        
-        this.Leave = function() {
-            return base.Leave();
         }
     },
 }
