@@ -7,6 +7,7 @@ function Sprite( Parent, Img, sprites, animations ) {
     var sprites = sprites;
     self.Parent.animations = animations || {};
     self.spriteOffset = Vector2.new();
+    self.spriteSize = self.Parent.size;
     
     for (var i in sprites)
         sprites[i].cellSize = Vector2.new( sprites[i].size.x / sprites[i].columns, sprites[i].size.y / sprites[i].rows );
