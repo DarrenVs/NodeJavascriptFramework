@@ -45,7 +45,7 @@ function Pickup(properties) {
     var pickupValue;
     
     self.collisionActive = false;
-    self.canCollide = true;
+    self.canCollide = false;
     self.ClassType = Enum.ClassType.Pickup;
     
     for(var index in PickupProperties.currentPickups) {
@@ -59,6 +59,7 @@ function Pickup(properties) {
     }
     
     this.collisionEnter["destroyPickupOnCollision"] = function(Obj) {
+        console.log(Obj);
         if(Obj.ClassType == Enum.ClassType.Player) {
             delete PickupProperties.currentPickups[pickupIndex];
             self.destroy();
@@ -88,10 +89,4 @@ function Pickup(properties) {
             }
         );
     }
-    
-    this.collisionEnter["mineCollision"] = function(Obj) {
-        if(Obj.ClassType == Enum.ClassType.Player) {
-            Obj.doStagger = true;
-        }
-    };
 }
