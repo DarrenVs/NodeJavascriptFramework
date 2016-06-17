@@ -110,22 +110,18 @@ function Player(properties) {
         }
     );
     
+    this.extends = {
+        physics:Physics(this),
+        collision:Collision(this),
+        tank:Tank(this),
+        navigation: new StateMachine(self, StatesEnum.inAir, 
+            PlayerStates.Setup(self), 
+            PlayerStates.AnyState(self), 
+            false),
+        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
+    };
+    
     if (clientID == self.creatorID) {
-
-        this.extends = {
-            physics:Physics(this),
-            collision:Collision(this),
-            tank:Tank(this),
-            navigation: new StateMachine(self, StatesEnum.inAir, 
-                PlayerStates.Setup(self), 
-                PlayerStates.AnyState(self), 
-                false),
-            pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
-        };
-
-        self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
-        console.log("hard setted player position, dont forget");
-
 
         //-----Adding the navigation states!!!-----\\
         var navSM = this.extends.navigation;
@@ -148,9 +144,11 @@ function Player(properties) {
     
     }
     
+    self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
+    
     PlayerProperties.playerList[self.creatorID] = self;
     
-    this.collisionEnter["pickupCollision"] = function(Obj) {
+    self.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
             pickupSM.ChangeState(Obj.pickupValue);
         }
