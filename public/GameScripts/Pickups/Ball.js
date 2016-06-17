@@ -40,10 +40,20 @@ function Ball(properties) {
             self.destroy();
     }
     
-    this.collisionEnter["ballCollision"] = function(Obj) {
+    self.rotation = 270;
+    
+    self.velocity = Vector2.multiply(Vector2.fromAngle(self.rotation), -1000);
+    console.log(self.velocity);
+    
+    self.collisionStay["ballPhysics"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
+        
+        if(!self.anchored && canCollide && collisionFrames >= 5) {
+            self.velocity = Vector2.multiply(direction, new Vector2.new(1000,1000));
+        }
+        
         if(Obj.ClassType == Enum.ClassType.Player) {
             Obj.doStagger = true;
             self.destroy();
         }
-    };
+    }
 }
