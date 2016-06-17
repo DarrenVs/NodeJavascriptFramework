@@ -571,7 +571,7 @@ var replicateProperties = {
 function PackageObject( Obj ) {
     
     var returnPackage = {
-        parentID: Obj.Parent != undefined Obj.Parent != Obj.stage &&  ? Obj.Parent.ID : false,
+        parentID: Obj.Parent != undefined && Obj.Parent != Obj.stage ? Obj.Parent.ID : false,
     };
         
     returnPackage.constructorName = Obj.ClassType;

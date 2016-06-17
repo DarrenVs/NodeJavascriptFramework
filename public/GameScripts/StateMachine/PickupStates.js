@@ -1,5 +1,7 @@
 var PickupStates = {
     
+    pickupActivateInput: "18",
+    
     defaultState: function() {
         CreateState(this);
     },
@@ -46,6 +48,7 @@ var PickupStates = {
                 position: new Vector2.new(parent.position.x, parent.position.y),
             })
             
+            invulnerabilityAmin.playerToFollow = parent;
             invulnerabilityCounter = 0;
             console.log("start invul");
             
@@ -75,19 +78,17 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        var mine;
-        
         this.Reason = function () { 
             console.log("mine");
             if(!INPUT_CLICK["18"]) {
                 return true;
             }
             
-            mine = new Enum.ClassName[Enum.ClassType.Mine]({
+            var mine = new Enum.ClassName[Enum.ClassType.Mine]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(0, 0),
+                position: new Vector2.new(parent.position.x, parent.position.y),
             })
-                
+            parent.ignoreObjectIDs[mine.ID] = true; 
             parent.stage.addChild( mine );
             
             self.returnState = undefined;            
@@ -100,19 +101,17 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        var ball;
-        
         this.Reason = function () { 
             console.log("ball");
             if(!INPUT_CLICK["18"]) {
                 return true;
             }
             
-            ball = new Enum.ClassName[Enum.ClassType.Ball]({
+            var ball = new Enum.ClassName[Enum.ClassType.Ball]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(0, 0),
+                position: new Vector2.new(parent.position.x, parent.position.y),
             })
-                
+            parent.ignoreObjectIDs[ball.ID] = true;  
             parent.stage.addChild( ball );
             
             self.returnState = undefined;            
@@ -125,7 +124,7 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        var throwAble;
+        var ammo = 6;
         
         this.Reason = function () { 
             console.log("throw");
@@ -133,13 +132,19 @@ var PickupStates = {
                 return true;
             }
             
-            throwAble = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
+            ammo--;
+
+            var throwAble = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(0, 0),
+                position: new Vector2.new(parent.position.x, parent.position.y),
             })
-                
+            
+            parent.ignoreObjectIDs[throwAble.ID] = true;
             parent.stage.addChild( throwAble );
             
+            if(ammo > 0) {
+                return true;
+            }
             self.returnState = undefined;            
             return false;
         }

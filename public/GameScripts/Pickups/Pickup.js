@@ -24,7 +24,7 @@ var PickupProperties = {
     },
     
     assignPickup: function(pickupKey, pickupID) {
-        if(!this.currentPickups[pickupID] == undefined) {
+        if(this.currentPickups[pickupID] != undefined) {
             this.currentPickups[pickupID].pickupValue = this.pickupChoices[pickupKey];
             this.currentPickups[pickupID].startAnimation(pickupKey); 
         }

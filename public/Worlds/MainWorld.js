@@ -35,7 +35,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     /////////////////////////////////
     
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["easyChunks"]);
-    
+    /*
     //Level Boundary
     var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
         size: new Vector2.new(canvas.width, 10),
@@ -56,7 +56,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         size: new Vector2.new(40, 40),
         position: new Vector2.new(200, canvas.height /2)
     })
-                
+    invulnerability.playerToFollow = PlayerProperties.playerList[]
     stage.addChild( invulnerability );
     
     
@@ -75,7 +75,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
                 
     stage.addChild( ball );
     ///////////////////////////////////////
-    
+    */
     //the offset of the platforms from mid
     var intermediatePlatformChunkHeight= (ChunkProperties.chunkLibary.intermediateChunk.length * ChunkProperties.chunkLibary.intermediateChunk[0].length) / ChunkProperties.tilesXCount;
     
