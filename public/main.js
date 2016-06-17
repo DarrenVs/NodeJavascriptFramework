@@ -147,8 +147,16 @@ window.addEventListener("load", function () {
 
             //Draw Objects on canvas
             for (var ObjIndex in Game[stageIndex].DrawLoop) {
+<<<<<<< HEAD
                 if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
                     Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
+=======
+                
+                if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]] != undefined)
+                    Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
+                //else
+                    //Game[stageIndex].DrawLoop.splice(ObjIndex, 1);
+>>>>>>> refs/remotes/origin/master
             }
         }
         
@@ -199,6 +207,10 @@ function Stage(properties) {
 
     this.stageID = this.stageID || Object.keys(Game).length;
     
+<<<<<<< HEAD
+=======
+    
+>>>>>>> refs/remotes/origin/master
     self.PhysicsLoop = {};
     
     self.CollisionLoop = {};
@@ -308,15 +320,18 @@ function updateStage(Obj) {
     
     //Delete object from old stage childrens list
     if (Obj.Parent && Obj.Parent.stage != undefined) {
-        if (Obj.stageID != undefined)
-            delete Obj.stage.allChilds[Obj.ID];
+        
+        /*if (Obj.stageID != undefined)
+            delete Obj.stage.allChilds[Obj.ID];*/
+        
         Obj.stageID = Obj.Parent.stageID
-        Obj.stage.allChilds[Obj.ID] = Obj;
+        //Obj.stage.allChilds[Obj.ID] = Obj;
         Obj.stage.DrawLoop.push(Obj.ID);
         Obj.anchored = Obj.anchored;
         Obj.position = Obj.position;
     }
-
+    Obj.ID = Obj.IDc;
+    
     for (i in Obj.childs) {
         updateStage(Obj.childs[i]);
     }
@@ -334,6 +349,10 @@ function getObjectPosition(Obj) {
 function getObjectScale(Obj) {
     
     return ((Obj.Parent && Obj.Parent != Obj.stage) ? Vector2.add(Obj.Parent.scale, getObjectScale(Obj.Parent)) : Obj.scale);
+}
+function getFullName(Obj) {
+    
+    return ((Obj.Parent && Obj.Parent != Obj.stage) ? getFullName(Obj.Parent) + ":" + Obj.IDc : Obj.IDc);
 }
 
 
@@ -357,44 +376,36 @@ function GameObject(Parent, properties, inheritances) {
     
     
     Parent.__defineGetter__('ID', function() {
-        return Parent.IDc;
+        return Parent.creatorID + "x" + getFullName( Parent );
+        //Parent.creatorID + "x" + (Parent.Parent != undefined ? Parent.Parent.IDc + ":" : "") + Parent.IDc//(Parent.Parent != undefined ? "x" + Parent.Parent.ID : "") + ":" + Parent.IDc;
     })
     Parent.__defineSetter__('ID', function(val) {
         
-        if (Parent.Parent != undefined && Parent.Parent.childs[Parent.IDc] != undefined)
-            delete Parent.Parent.childs[Parent.IDc];
+        if (Parent.Parent != undefined && Parent.Parent.childs[Parent.ID] != undefined)
+            delete Parent.Parent.childs[Parent.ID];
         
-        if (Parent.stage != undefined && Parent.stage.allChilds[Parent.IDc] != undefined)
-            delete Parent.stage.allChilds[Parent.IDc];
+        if (Parent.stage != undefined && Parent.stage.allChilds[Parent.ID] != undefined)
+            delete Parent.stage.allChilds[Parent.ID];
         
         
-        if (val.toString().indexOf(":") == -1)
-            Parent.IDc = Parent.creatorID + ":" + val;
-        else
-            Parent.IDc = val;
-        
-        //if (typeof(Obj.ID) != "string" || Obj.ID.indexOf(":") == -1)
-            //Obj.ID = Obj.creatorID + ":" + Obj.ID;
+        Parent.IDc = val;
         
         
         if (Parent.Parent != undefined)
-            Parent.Parent.childs[Parent.IDc] = this;
+            Parent.Parent.childs[Parent.ID] = Parent;
         
         if (Parent.stage != undefined)
-            Parent.stage.allChilds[Parent.IDc] = this;
+            Parent.stage.allChilds[Parent.ID] = Parent;
     })
+    
+    
     Parent.__defineGetter__('creatorID', function() {
         return Parent.CreatorID;
     })
     Parent.__defineSetter__('creatorID', function(val) {
         Parent.CreatorID = val;
         
-        
-        if (Parent.ID != undefined)
-            Parent.ID = Parent.ID.toString().substr( Math.max(Parent.ID.toString().indexOf(":")+1, 0) )
-    })
-    Parent.__defineGetter__('classType', function() {
-        return Parent.CreatorID;
+        Parent.ID = Parent.IDc;
     })
     
 
@@ -423,8 +434,8 @@ function GameObject(Parent, properties, inheritances) {
     Parent.scale = Vector2.new(1, 1);
     Parent.DrawObject = new DrawObject(Parent);
     Parent.color = "#" + Math.round(Math.random() * 1000000);
-    Parent.creatorID = clientID;
-    Parent.ID = Parent.ID || objectCount++;
+    Parent.creatorID = properties != undefined && properties["creatorID"] || clientID;
+    Parent.ID = objectCount++;
     for (i in properties) Parent[i] = properties[i];
     for (i in inheritances) Parent.extends[i] = inheritances[i];
     
@@ -480,11 +491,11 @@ function GameObject(Parent, properties, inheritances) {
         
         if (Obj.stage != undefined && Obj.stage.DrawLoop.indexOf(Parent.ID) >= 0)
             Obj.stage.DrawLoop.splice(Obj.stage.DrawLoop.indexOf(Obj.ID), 1);
-        this.childs[Obj.ID] = Obj;
         if (claimOwnership == undefined || claimOwnership)
             Obj.creatorID = Parent.creatorID;
         Obj.Parent = Parent
         updateStage(Obj);
+        this.childs[Obj.ID] = Obj;
         
         return Obj;
     }
@@ -547,7 +558,7 @@ function DrawObject(Parent) {
 
 //The name of the properties of a class that are suitable/allowed to be replicated
 var replicateProperties = {
-    ID: true,
+    IDc: true,
     creatorID: true,
     position: true,
     rotation: true,
@@ -557,7 +568,6 @@ var replicateProperties = {
     rotateVelocity: true,
     ignoreObjectIDs: true,
     ignoreObjectType: true,
-    stageID: true,
     health: true,
     animations: true,
     currentAnimation: true,
@@ -571,7 +581,14 @@ var replicateProperties = {
 function PackageObject( Obj ) {
     
     var returnPackage = {
+<<<<<<< HEAD
         parentID: Obj.Parent != undefined && Obj.Parent != Obj.stage ? Obj.Parent.ID : false,
+=======
+        parentID: Obj.Parent != undefined ? Obj.Parent.ID : false,
+        parentIDc: Obj.Parent != undefined ? Obj.Parent.IDc : false,
+        replicatedStageID: Obj.stageID,
+        replicatedID: Obj.ID,
+>>>>>>> refs/remotes/origin/master
     };
         
     returnPackage.constructorName = Obj.ClassType;
@@ -629,14 +646,14 @@ socketio.on("object_from_broadcaster", function (data) {
             var ReplicatedObject = ReplicatedObjectPackage[ ObjID ];
 
             //Check if the client owns the stage or if the sender is the same person as the recever
-            if (ReplicatedObject.stageID != undefined && ReplicatedObject.creatorID != clientID)// && Game[ReplicatedObject.stageID])
+            if (Game[ReplicatedObject.replicatedStageID] != undefined && ReplicatedObject.creatorID != clientID)// && Game[ReplicatedObject.stageID])
             {
 
-                if (!Game[ReplicatedObject.stageID])
-                    Game[ReplicatedObject.stageID] = new Stage();
+                //if (!Game[ReplicatedObject.stageID])
+                //    Game[ReplicatedObject.stageID] = new Stage();
 
 
-                var stage = Game[ReplicatedObject.stageID];
+                var stage = Game[ReplicatedObject.replicatedStageID];
 
 
                 /*if (stage.allChilds[ ReplicatedObject.ID ]) {
@@ -651,15 +668,15 @@ socketio.on("object_from_broadcaster", function (data) {
                 }*/
 
                 // [1]>Check if the object already exists in the scene
-                if (stage.allChilds[ReplicatedObject.ID]) {
+                if (stage.allChilds[ReplicatedObject.replicatedID]) {
 
 
                     // Update the object with the new properties
                     for (var i in ReplicatedObject) {
-                        stage.allChilds[ReplicatedObject.ID][i] = ReplicatedObject[i];
+                        stage.allChilds[ReplicatedObject.replicatedID][i] = ReplicatedObject[i];
                     }
 
-                } else { // [1]<Otherwise, create the object
+                } else if (stage.IDc == ReplicatedObject.parentIDc) { // [1]<Otherwise, create the object
 
                     /* Check if the object's constructor fits the client's classes,                              *
                      * otherwise create an empty object with the properties                                      *
