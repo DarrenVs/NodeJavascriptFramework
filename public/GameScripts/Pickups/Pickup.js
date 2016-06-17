@@ -3,10 +3,10 @@ var PickupProperties = {
     currentPickups: {},
     
     pickupChoices: {
-        1: StatesEnum.invulnerabilityOnHold,
-        2: StatesEnum.mineOnHold,
-        3: StatesEnum.ballOnHold,
-        4: StatesEnum.throwAbleOnHold,
+        0: StatesEnum.invulnerabilityOnHold,
+        1: StatesEnum.mineOnHold,
+        2: StatesEnum.ballOnHold,
+        3: StatesEnum.throwAbleOnHold,
     },
     
     choosePickupKey: function(pickupID) {
