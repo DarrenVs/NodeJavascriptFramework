@@ -12,7 +12,7 @@ var PickupStates = {
         var self = this;
 
         this.Reason = function () {        
-            return false;
+            return true;
         }
     },
     
@@ -83,7 +83,7 @@ var PickupStates = {
             if(!INPUT_CLICK["18"]) {
                 return true;
             }
-            
+            console.log("activated mine");
             var mine = new Enum.ClassName[Enum.ClassType.Mine]({
                 size: new Vector2.new(40, 40),
                 position: new Vector2.new(parent.position.x, parent.position.y),
