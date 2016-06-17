@@ -9,6 +9,8 @@ function Mine(properties) {
         collision:Collision(this),
         physics:Physics(this),
     };
+
+    self.ClassType = Enum.ClassType.Mine;
     
     self.physicalAppearanceSize = new Vector2.new(0,0);
     

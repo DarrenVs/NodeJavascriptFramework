@@ -142,7 +142,7 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
         if (anyState) {
             anyState.Act();
             if (anyState.Return()) {
-                self.ChangeState(anyState.Return());
+                self.ChangeState(anyState.Leave());
             }
         }
     }

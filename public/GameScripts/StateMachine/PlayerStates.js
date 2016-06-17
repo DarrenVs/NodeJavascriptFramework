@@ -7,18 +7,19 @@ var PlayerStates = {
         parent.walkSpeed = 200;
         parent.doStagger = false;
         parent.staggerAble = true;
+        parent.anyReturnState = undefined;
 
         self.Return = function () {
-            if (parent.staggerAble && parent.doStagger) {
-                parent.returnState = StatesEnum.stun;
+
+            if (parent.doStagger) {
+                parent.anyReturnState = StatesEnum.stun;
                 parent.doStagger = false;
-                return false;
+                return true;
             }
             return false;
         }
 
         self.Act = function () {
-
             if (parent.lastWallHit != parent.wallHitDir) {
                 parent.lastWallHit = parent.wallHitDir;
 
@@ -33,6 +34,10 @@ var PlayerStates = {
             }
             
             if (parent.autoWalk) parent.velocity.x = parent.walkSpeed;
+        }
+
+        self.Leave = function () {
+            return parent.anyReturnState;
         }
         return self;
     },
@@ -388,8 +393,8 @@ var PlayerStates = {
         var self = this;
         var parent = _parent;
 
-        var staggerUp = _staggerUp || 4;
-        var staggerSide = _staggerSide || 2.5;
+        var staggerUp = _staggerUp || 400;
+        var staggerSide = _staggerSide || 205;
         
         self.Enter = function () {
 

@@ -45,7 +45,7 @@ var PickupStates = {
             
             invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Invulnerability]({
                 size: new Vector2.new( 120,  200),
-                position: new Vector2.new(parent.position.x, parent.position.y),
+                position: new Vector2.new(parent.position.x, parent.position.y- 50),
             })
             
             invulnerabilityAmin.playerToFollow = parent;
@@ -67,8 +67,7 @@ var PickupStates = {
             invulnerabilityAmin.destroy();
             
             parent.walkSpeed /= 1.2;
-            console.log(self.parent.walkSpeed);
-            print("end invul");
+            //console.log(self.parent.walkSpeed);
             return self.returnState;
         }
     },
@@ -86,9 +85,10 @@ var PickupStates = {
             console.log("activated mine");
             var mine = new Enum.ClassName[Enum.ClassType.Mine]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(parent.position.x, parent.position.y),
+                position: new Vector2.new(parent.position.x , parent.position.y - 80),
             })
-            parent.ignoreObjectIDs[mine.ID] = true; 
+            console.log(mine.ClassType);
+            parent.ignoreObjectType[mine.ClassType] = true;  
             parent.stage.addChild( mine );
             
             self.returnState = undefined;            
@@ -109,9 +109,9 @@ var PickupStates = {
             
             var ball = new Enum.ClassName[Enum.ClassType.Ball]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(parent.position.x, parent.position.y),
+                position: new Vector2.new(parent.position.x, parent.position.y- 50),
             })
-            parent.ignoreObjectIDs[ball.ID] = true;  
+            parent.ignoreObjectType[ball.ClassType] = true;  
             parent.stage.addChild( ball );
             
             self.returnState = undefined;            
@@ -136,10 +136,10 @@ var PickupStates = {
 
             var throwAble = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(parent.position.x, parent.position.y),
+                position: new Vector2.new(parent.position.x, parent.position.y- 50),
             })
             
-            parent.ignoreObjectIDs[throwAble.ID] = true;
+            parent.ignoreObjectType[throwAble.ClassType] = true;  
             parent.stage.addChild( throwAble );
             
             if(ammo > 0) {
