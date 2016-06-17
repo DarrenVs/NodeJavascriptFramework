@@ -44,13 +44,11 @@ function IntermediatePlatform(properties) {
     
     this.collisionExit["IntermediatePlatformExit"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
        
-        console.log("Exiting player", self.ID);
         if(self.ignoreObjectIDs[Obj.ID] != undefined){
            
             if (Obj.position.y < self.position.y && !CheckCollision(Obj, self, RENDERSETTINGS.deltaTime)) {
                
                 delete self.ignoreObjectIDs[Obj.ID];
-                console.log("Accepted player");
             }
         }
     }

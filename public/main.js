@@ -42,6 +42,7 @@ var events = events || {
     },
     
     sendChunk: function(parameters) {
+        console.log("sendchunk mian");
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },  
 };

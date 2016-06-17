@@ -10,6 +10,11 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     stage.gravity = Vector2.new(0, 22);
     stage.airDenicty = 0;
     
+    var spawnedChunk = false;
+    
+    spawnIntermediateChunk();
+    
+    
     this.update["MainWorldUpdate"] = function() {
         
         stage.position.y = cameraController.cameraPosition();
@@ -19,14 +24,16 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         //////////////////////////
         
         if(-stage.position.y <= ChunkProperties.totalLevelHeight) {
-            spawnIntermediateChunk();
-            
             if(PlayerProperties.checkHosts()) {
+                spawnedChunk = true;
+                
+                
                 sendEvent("sendChunk", {
                     chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
                     stageID: stage.stageID,
                 });
             }
+            spawnIntermediateChunk();
         }
     }
     
@@ -44,6 +51,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
                 
     stage.addChild( boundary );
     
+    /*
     ////////////////////////////////////TEST PICKUPS
     var mine = new Enum.ClassName[Enum.ClassType.Mine]({
         size: new Vector2.new(40, 40),
@@ -60,7 +68,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     invulnerability.playerToFollow = PlayerProperties.playerList[]
     stage.addChild( invulnerability );
     */
-    
+    /*
     var bullet = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
         size: new Vector2.new(40, 40),
         position: new Vector2.new(300, canvas.height /2)
@@ -76,12 +84,14 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
                 
     stage.addChild( ball );
     ///////////////////////////////////////
-    
+    */
     //the offset of the platforms from mid
     var intermediatePlatformChunkHeight= (ChunkProperties.chunkLibary.intermediateChunk.length * ChunkProperties.chunkLibary.intermediateChunk[0].length) / ChunkProperties.tilesXCount;
     
     function spawnIntermediateChunk() {
-        console.log("spawn intermedita");
+        
+        console.log("spawn intermediate");
+        
         var intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
             size: new Vector2.new(canvas.width, 10),
             position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight - (ChunkProperties.tileSize * intermediatePlatformChunkHeight) / 2 )

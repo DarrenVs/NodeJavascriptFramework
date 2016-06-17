@@ -150,6 +150,7 @@ function Player(properties) {
     
     self.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
+            console.log("PICKED UP: " + Obj.pickupValue);
             pickupSM.ChangeState(Obj.pickupValue);
         }
     };
