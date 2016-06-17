@@ -10,19 +10,19 @@ function Mine(properties) {
         physics:Physics(this),
     };
     
-    self.spriteOffset = Vector2.new(0,20);
-    self.spriteSize = Vector2.new(20,20);
+    self.physicalAppearanceSize = new Vector2.new(0,0);
     
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.MineEffectSpriteSheet,   //Image
         {   //Sprites
+            /*
             mineActivate: {
                 position: Vector2.new(0, 681),
                 size: Vector2.new(393, 361),
                 columns: 8,
                 rows: 12,
-            },
+            },*/
             mineIdle: {
                 position: Vector2.new(0, 0),
                 size: Vector2.new(427, 681),
@@ -31,6 +31,7 @@ function Mine(properties) {
             },
         },
         {   //Animations
+            /*
             mineActivate: {
                 sprite: "mineActivate",
                 speed: .3, //Per frame
@@ -38,6 +39,7 @@ function Mine(properties) {
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
+            */
             mineIdle: {
                 sprite: "mineIdle",
                 speed: .3, //Per frame
@@ -47,17 +49,14 @@ function Mine(properties) {
             },
         }
     );
-    
+    /*
     this.update["WaitForAnimationEndMine"] = function() {
         if(Math.round(self.animations.mineActivate.currentKeyFrame) == 89) {
             self.DrawObject.currentAnimation = "mineIdle";
-            
-            self.spriteOffset = Vector2.new(0,20);
-            self.spriteSize = self.Parent.size;
-            
+            self.physicalAppearanceSize = new Vector2.new(1000,10000);
             delete self.update["WaitForAnimationEnd"];
         }
-    }
+    }*/
     
     this.collisionEnter["mineCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Player) {

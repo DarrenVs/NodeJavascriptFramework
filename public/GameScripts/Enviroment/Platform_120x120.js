@@ -23,7 +23,7 @@ function Platform_120x120(properties) {
         {   //Sprites
             platform_120x120: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(334, 334),
+                size: Vector2.new(333, 333),
                 columns: 1,
                 rows: 1,
             },
