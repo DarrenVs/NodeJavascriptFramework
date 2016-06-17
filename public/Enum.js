@@ -58,6 +58,8 @@ var Enum = {
             
             //player
             PlayerAnimationSheet: newImage("Images/Player/player_blue_spritesheet.png"),
+
+            EnemyAnimationsSheet: newImage("Images/Enemy/enemy_spritesheet.png"),
             
             //effects
             InvulnableEffectSpriteSheet: newImage("Images/Pickups/invulnerable_effect_spritesheet.png"),

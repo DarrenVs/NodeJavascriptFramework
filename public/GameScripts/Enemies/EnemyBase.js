@@ -20,29 +20,54 @@ function EnemyBase(_self, properties) {
 /*
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.PlayerAnimationSheet,   //Image
+        Enum.Images.Sprites.EnemyAnimationsSheet,   //Image
         
         {   //Sprites
             
             walk: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(393, 229),
-                columns: 7,
-                rows: 3,
+                size: Vector2.new(471, 229),
+                columns: 5,
+                rows: 4,
             },
+            charge: {
+                position: Vector2.new(0, 229),
+                size: Vector2.new(486, 541),
+                columns: 5,
+                rows: 6
+            },
+            attack: {
+                position: Vector2.new(0, 229 + 541),
+                size: Vector2.new(471, 721),
+                columns: 5,
+                rows: 8
+            }
         },
         
         {   //Animations
             walk: {
                 sprite: "walk",
                 speed: .3, //Per frame
-                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], //AnimationFrame
+                keyFrames: [0,1,2,3,4,5,6,7,8], //AnimationFrame 
                 currentKeyFrame: 0, //Where to start
                 loop: true, //Should it loop? (WIP!)
             },
+            charge: {
+                sprite: "charge",
+                speed: .3,
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29],
+                currentKeyFrame: 0,
+                loop: true
+            },
+            attack: {
+                sprite: "attack",
+                speed: .3,
+                keyFrame: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39],
+                loop: true
+            }
         }
-    );*/
-    
+    );
+    */
     self.anchored = false;
     self.hitbox = self.size;
 
