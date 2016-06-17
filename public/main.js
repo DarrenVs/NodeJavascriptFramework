@@ -202,9 +202,6 @@ function Stage(properties) {
 
     this.stageID = this.stageID || Object.keys(Game).length;
     
-    
-    
-    
     self.PhysicsLoop = {};
     
     self.CollisionLoop = {};

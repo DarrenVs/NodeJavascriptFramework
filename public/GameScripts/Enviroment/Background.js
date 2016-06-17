@@ -26,9 +26,4 @@ function Background(properties) {
             },
         }
     );
-    
-    self.size = new Vector2.new(canvas.width, canvas.height);
-    
-    self.position = new Vector2.new(canvas.width / 2, canvas.height / 2);
-    
 }

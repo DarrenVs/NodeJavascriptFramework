@@ -4,7 +4,9 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     GameObject( this );
     
     var self = this;
-
+    
+    stage.addChild(new Enum.ClassName[Enum.ClassType.Background]);
+    
     stage.gravity = Vector2.new(0, 22);
     
     //spawn parallax

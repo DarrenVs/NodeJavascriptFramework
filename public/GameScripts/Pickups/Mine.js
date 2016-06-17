@@ -22,8 +22,8 @@ function Mine(properties) {
             },
             mineIdle: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(400, 817),
-                columns: 5,
+                size: Vector2.new(427, 681),
+                columns: 6,
                 rows: 12,
             },
         },
