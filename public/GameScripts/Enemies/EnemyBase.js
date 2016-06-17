@@ -15,7 +15,7 @@ function EnemyBase(_self, properties) {
     self.extends = {
         physics: Physics(self),
         collision:Collision(self),
-        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup(self), EnemyStates.AnyState(self), false)
+        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup(self), new EnemyStates.AnyState(self), false)
     }
     
     self.anchored = false;
@@ -44,6 +44,7 @@ function EnemyBase(_self, properties) {
         if (canCollide && Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
+            console.log("got triggered");
         } 
            // console.log("collinding with someting");
     }
@@ -92,7 +93,6 @@ function EnemyBase(_self, properties) {
     self.EdgeRight.collisionExit["exit"] = function (Obj, dir, force, distance, canCollide) {
         if (canCollide) self.groundsHitRight--;
         if (self.groundsHitRight == 0) self.wallHitDir = -1;
-        if (self.constructor.name == "EnemyShoot" )console.log(self.constructor.name + ": hit right" + self.wallHitDir);
         
     };
 
@@ -107,7 +107,6 @@ function EnemyBase(_self, properties) {
         if (canCollide) self.groundHitLeft --;
 
         if (self.groundHitLeft == 0) self.wallHitDir = 1;
-            if (self.constructor.name == "EnemyShoot" )console.log(self.constructor.name + ": hit left " + self.wallHitDir);;
     };    
     
     self.addChild(self.EdgeRight);

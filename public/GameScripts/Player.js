@@ -118,7 +118,7 @@ function Player(properties) {
             tank:Tank(this),
             navigation: new StateMachine(self, StatesEnum.inAir, 
                 PlayerStates.Setup(self), 
-                PlayerStates.AnyState(self), 
+                new PlayerStates.AnyState(self), 
                 false),
             pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
         };
