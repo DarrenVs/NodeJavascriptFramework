@@ -145,18 +145,11 @@ window.addEventListener("load", function () {
             }
 
 
+
             //Draw Objects on canvas
             for (var ObjIndex in Game[stageIndex].DrawLoop) {
-<<<<<<< HEAD
                 if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
                     Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
-=======
-                
-                if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]] != undefined)
-                    Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
-                //else
-                    //Game[stageIndex].DrawLoop.splice(ObjIndex, 1);
->>>>>>> refs/remotes/origin/master
             }
         }
         
@@ -207,10 +200,6 @@ function Stage(properties) {
 
     this.stageID = this.stageID || Object.keys(Game).length;
     
-<<<<<<< HEAD
-=======
-    
->>>>>>> refs/remotes/origin/master
     self.PhysicsLoop = {};
     
     self.CollisionLoop = {};
@@ -581,14 +570,10 @@ var replicateProperties = {
 function PackageObject( Obj ) {
     
     var returnPackage = {
-<<<<<<< HEAD
         parentID: Obj.Parent != undefined && Obj.Parent != Obj.stage ? Obj.Parent.ID : false,
-=======
         parentID: Obj.Parent != undefined ? Obj.Parent.ID : false,
         parentIDc: Obj.Parent != undefined ? Obj.Parent.IDc : false,
         replicatedStageID: Obj.stageID,
-        replicatedID: Obj.ID,
->>>>>>> refs/remotes/origin/master
     };
         
     returnPackage.constructorName = Obj.ClassType;
