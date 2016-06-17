@@ -27,38 +27,38 @@ function Player(properties) {
         {   //Sprites
             
             walk: {
-                position: Vector2.new(0, 0),
-                size: Vector2.new(393, 229),
+                position: Vector2.new(0, 147+190+229+321),
+                size: Vector2.new(351, 229),
                 columns: 7,
                 rows: 3,
             },
             jumpStart: {
-                position: Vector2.new(0, 229),
-                size: Vector2.new(326, 175),
+                position: Vector2.new(0, 0),
+                size: Vector2.new(286, 147),
                 columns: 5,
                 rows: 2, 
             },
             inAir: {
-                position: Vector2.new(0, 229 + 175),
-                size: Vector2.new(343, 211),
-                columns: 6,
+                position: Vector2.new(0, 147),
+                size: Vector2.new(276, 190),
+                columns: 5,
                 rows: 3,
             },
             backOnGround: {
-                position: Vector2.new(0, 229 + 175 + 211),
-                size: Vector2.new(403, 167),
-                columns: 6,
-                rows: 2,
+                position: Vector2.new(0, 147 + 190),
+                size: Vector2.new(237, 229),
+                columns: 4,
+                rows: 3,
             },
             doubleJump: {
-                position: Vector2.new(0, 229 + 175 + 211 + 167),
-                size: Vector2.new(357, 259),
+                position: Vector2.new(0, 147 + 190 + 229),
+                size: Vector2.new(329, 321),
                 columns: 4,
-                rows: 3
+                rows: 4
             },
             slide: {
-                position: Vector2.new(0, 229 + 175 + 211 + 167+ 259),
-                size: Vector2.new(33, 77),
+                position: Vector2.new(0, 229 + 147 + 190 + 229+ 321),
+                size: Vector2.new(29, 66),
                 columns: 1,
                 rows: 1
             },
@@ -82,7 +82,7 @@ function Player(properties) {
             inAir: {
                 sprite: 'inAir',
                 speed: .3,
-                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14, 15, 16],
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12],
                 currentKeyFrame: 0,
                 loop: true
             },
@@ -96,7 +96,7 @@ function Player(properties) {
             doubleJump: {
                 sprite: 'doubleJump',
                 speed: .5,
-                keyFrames: [0,1,2,3,4,5,6,7,8,9,10, 11],
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10, 11, 12, 13, 14],
                 currentKeyFrame: 0,
                 loop: true,
             },
