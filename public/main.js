@@ -11,6 +11,7 @@ var PHYSICSSETTINGS = {
 , }
 var objectCount = 0;
 var replicatedObjectCount = 0;
+var socketio = io.connect(window.location.host);
 var clientID = undefined;
 var clientRoom = undefined;
 var connectionList = {};
@@ -36,13 +37,24 @@ var events = events || {
         console.log(arguments);
     },
 
-    sendChunk: function(parameters) {
- ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
-    },
-    
     sendPickup: function(parameters) {
         PickupProperties.assignPickup(parameters.pickupKey, parameters.pickupID);
     },
+    
+    sendChunk: function(parameters) {
+        ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
+    },
+    
+    updatePlayerList: function(parameters) {
+        
+        //console.log(Game[parameters.stageID].allChilds);
+        //console.log(parameters.playerID)
+        //PlayerProperties.playerList[parameters.playerID] = Game[parameters.stageID].allChilds[parameters.playerID];
+        //console.log(Game[parameters.stageID].allChilds[parameters.playerID]);
+        //console.log(PlayerProperties.playerList);
+    },
+    
+    
 };
 
 
@@ -92,6 +104,13 @@ window.addEventListener("load", function () {
         canvas.width = 600;
         canvas.height = 955;
     })();
+    
+    
+    
+    
+    //Start the client
+    if (clientID == undefined)
+        socketio.emit("IDrequest_from_client");
     
     
     
@@ -190,12 +209,6 @@ function Stage(properties) {
     this.allChilds = {};
 
     this.stageID = this.stageID || Object.keys(Game).length;
-    
-    
-    this.addChild(new Background());
-    
-    
-    
     
     self.PhysicsLoop = {};
     
@@ -582,9 +595,6 @@ function PackageObject( Obj ) {
     return JSON.stringify(returnPackage);
 }
 
-
-var socketio = io.connect(window.location.host);
-
 socketio.on("UpdatePlayerlist", function (data) {
     
     connectionList = data;
@@ -598,6 +608,10 @@ socketio.on("IDrequest_to_client", function (data) {
     LoadWorld( Game.addChild( "BackgroundStage", new Stage() ), Enum.Worlds.BackgroundWorld );
     LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
 });
+
+setInterval(function() {
+    socketio.emit('onHeartbeat');
+}, 5000)
 
 
 

@@ -5,10 +5,6 @@ function Background(properties) {
     var self = this;
     GameObject(this, properties);
     
-    self.size = new Vector2.new(canvas.width, canvas.height);
-    
-    self.position = new Vector2.new(canvas.width / 2, canvas.height / 2);
-    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.Background,   //Image

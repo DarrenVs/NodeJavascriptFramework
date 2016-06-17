@@ -62,7 +62,11 @@ var Enum = {
             //effects
             InvulnableEffectSpriteSheet: newImage("Images/Pickups/invulnerable_effect_spritesheet.png"),
             
-            MineEffectSpriteSheet: newImage("Images/Pickups/mine_effect_spritesheet.png"),      
+            MineEffectSpriteSheet: newImage("Images/Pickups/mine_effect_spritesheet.png"),   
+            
+            BallImage: newImage("Images/Pickups/ball.png"), 
+            
+            ThrowAbleObjectImage: newImage("Images/Pickups/dart.png"), 
             
             Pickups: [
                 {//Invulnable
@@ -115,10 +119,7 @@ var Enum = {
                 newImage("Images/Platforms/Platforms_120x200/platform_1_120x200.png"),
             ],
             
-            IntermediatePlatform: [
-                newImage("Images/Platforms/IntermediatePlatform/intermediatePlatform_1.png"),
-                newImage("Images/Platforms/IntermediatePlatform/intermediatePlatform_2.png"),
-            ],
+            IntermediatePlatform: newImage("Images/Platforms/IntermediatePlatform/intermediatePlatform_1.png"),
             
             //background
             Background: newImage("Images/Backgrounds/background.png"),

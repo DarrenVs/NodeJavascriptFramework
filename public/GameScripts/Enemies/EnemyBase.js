@@ -15,7 +15,7 @@ function EnemyBase(_self, properties) {
     self.extends = {
         physics: Physics(self),
         collision:Collision(self),
-        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup(self), EnemyStates.AnyState(self), false)
+        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup(self), new EnemyStates.AnyState(self), false)
     }
     
     self.anchored = false;
@@ -25,7 +25,6 @@ function EnemyBase(_self, properties) {
     self.trigger = new EmptyObject({
        size: Vector2.new(600, 10),
        colour: "rgba(0, 0, 0, 0.2)", 
-       ID: "Trigger",
     });
         
     self.trigger.extends = {
@@ -45,12 +44,13 @@ function EnemyBase(_self, properties) {
         if (canCollide && Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
+            console.log("got triggered");
         } 
            // console.log("collinding with someting");
     }
     self.trigger.collisionExit["notself.triggered"] = function (Obj, direction, force, distance, canCollide ) {
         
-        if (canCollide && Obj.ClassType == Enum.ClassType.Enemy) {
+        if (canCollide && Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = false;
             //self.target = undefined;
         } 
@@ -65,13 +65,11 @@ function EnemyBase(_self, properties) {
         position: Vector2.new(self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
-        ID: Math.random() + "EdgeRight"
     });
     self.EdgeLeft = new EmptyObject({
         position: Vector2.new(-self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
         colour: "black",
-        ID: Math.random() + "EdgeLeft"
     });
     
     self.EdgeRight.extends = {
@@ -91,7 +89,6 @@ function EnemyBase(_self, properties) {
 
     self.EdgeRight.collisionEnter["enter"] = function (Obj, dir, force, distance, canCollide) {
         if (canCollide) self.groundsHitRight ++;
-
     }
     self.EdgeRight.collisionExit["exit"] = function (Obj, dir, force, distance, canCollide) {
         if (canCollide) self.groundsHitRight--;
@@ -107,14 +104,15 @@ function EnemyBase(_self, properties) {
 
     self.EdgeLeft.collisionExit["exit"] = function (Obj, dir, force, distance, canCollide) {
         //console.log("exit ", self.wallHitDir, self);
-        if (canCollide)
-            self.groundHitLeft --;
+        if (canCollide) self.groundHitLeft --;
 
         if (self.groundHitLeft == 0) self.wallHitDir = 1;
     };    
     
     self.addChild(self.EdgeRight);
     self.addChild(self.EdgeLeft);
+
+    console.log(self);
     /*
     self.EdgeRight.onCollisionEnter["enter"] = function(Obj, Dir) {console.log("enter"); } 
     self.EdgeRight.onCollisionStay["stay"] = function(Obj, Dir) {console.log("stay"); }

@@ -109,49 +109,50 @@ function Player(properties) {
             },
         }
     );
-    if (clientID == self.creatorID) {
-
-         this.extends = {
+    
+    this.extends = {
         physics:Physics(this),
         collision:Collision(this),
         tank:Tank(this),
         navigation: new StateMachine(self, StatesEnum.inAir, 
             PlayerStates.Setup(self), 
-            PlayerStates.AnyState(self), 
+            new PlayerStates.AnyState(self), 
             false),
         pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
     };
     
-    self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
-    console.log("hard setted player position, dont forget");
+    if (clientID == self.creatorID) {
 
+        //-----Adding the navigation states!!!-----\\
+        var navSM = this.extends.navigation;
+        navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
+        navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(self));
+        navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(self));
+        navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(self));
+        navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(self));
+        navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(self));
+        navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(self));
 
-    //-----Adding the navigation states!!!-----\\
-    var navSM = this.extends.navigation;
-    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(self));
-    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(self));
-    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(self));
-    navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(self));
-    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(self));
-    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(self));
-    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(self));
-
-    //-----Adding the pickup states!!!-----\\
-    var pickupSM = this.extends.pickupStates;
-    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(self));
-    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(self));
-    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(self));
-    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(self));
-    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(self));
-    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(self));
+        //-----Adding the pickup states!!!-----\\
+        var pickupSM = this.extends.pickupStates;
+        pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(self));
+        pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(self));
+        pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(self));
+        pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(self));
+        pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(self));
+        pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(self));
     
-    this.collisionEnter["pickupCollision"] = function(Obj) {
+    }
+    
+    self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
+    
+    PlayerProperties.playerList[self.creatorID] = self;
+    
+    self.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
             pickupSM.ChangeState(Obj.pickupValue);
         }
     };
-
-    PlayerProperties.playerList[self.creatorID] = self;
     
     this.DrawObject.currentAnimation = "run";
     
@@ -159,9 +160,12 @@ function Player(properties) {
     
     this.size = Vector2.new(40, 45);
     
-    this.hitbox = Vector2.new(self.size.x * 0.5, self.size.y + 5);
-        
     this.colliderType = Enum.colliderType.box;
+
+    this.mass = 1;
+
+    this.hitbox = Vector2.new(self.size.x * 0.5, self.size.y + 5);
+    this.DrawObject.spriteSize =  self.size;
     
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
@@ -198,6 +202,5 @@ function Player(properties) {
         self.Health = 0;
         sendObject(self);
         self.destroy();
-    }
     }
 }

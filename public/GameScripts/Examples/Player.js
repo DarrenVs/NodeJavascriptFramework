@@ -12,6 +12,8 @@ function Player(properties) {
     };
     
     var self = this;
+
+    self.colliderType = Enum.colliderType.box;
     
     
     this.DrawObject = new Sprite(

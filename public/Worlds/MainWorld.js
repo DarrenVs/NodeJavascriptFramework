@@ -51,23 +51,23 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     })
                 
     stage.addChild( mine );
-   /*
+   
     var invulnerability = new Enum.ClassName[Enum.ClassType.Invulnerability]({
         size: new Vector2.new(40, 40),
         position: new Vector2.new(200, canvas.height /2)
     })
                 
     stage.addChild( invulnerability );
-    */
-    /*
+    
+    
     var bullet = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
         size: new Vector2.new(40, 40),
         position: new Vector2.new(300, canvas.height /2)
     })
                 
     stage.addChild( bullet );
-    */
-    /*
+    
+    
     var ball = new Enum.ClassName[Enum.ClassType.Ball]({
         size: new Vector2.new(40, 40),
         position: new Vector2.new(400, canvas.height /2)
@@ -75,7 +75,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
                 
     stage.addChild( ball );
     ///////////////////////////////////////
-    */
+    
     //the offset of the platforms from mid
     var intermediatePlatformChunkHeight= (ChunkProperties.chunkLibary.intermediateChunk.length * ChunkProperties.chunkLibary.intermediateChunk[0].length) / ChunkProperties.tilesXCount;
     
