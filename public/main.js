@@ -11,6 +11,7 @@ var PHYSICSSETTINGS = {
 , }
 var objectCount = 0;
 var replicatedObjectCount = 0;
+var socketio = io.connect(window.location.host);
 var clientID = undefined;
 var clientRoom = undefined;
 var connectionList = {};
@@ -84,6 +85,13 @@ window.addEventListener("load", function () {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     })();
+    
+    
+    
+    
+    //Start the client
+    if (clientID == undefined)
+        socketio.emit("IDrequest_from_client");
     
     
     
@@ -562,9 +570,6 @@ function PackageObject( Obj ) {
     
     return JSON.stringify(returnPackage);
 }
-
-
-var socketio = io.connect(window.location.host);
 
 socketio.on("UpdatePlayerlist", function (data) {
     

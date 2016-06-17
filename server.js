@@ -54,7 +54,7 @@ io.sockets.on('connection', function(socket) {
 	for (var i in rooms) {
 		if (Object.keys(rooms[i].Players).length < 2) {
 			
-			rooms[i].Players[socketID] = true;
+			rooms[i].Players[socketID] = 10000;
 			currentRoom = i;
 		}
 	}
@@ -65,7 +65,7 @@ io.sockets.on('connection', function(socket) {
 		rooms[Object.keys(rooms).length] = {
 			objectPackages: "",
 			Players: {
-				[socketID]: true,
+				[socketID]: 10000,
 			},
 		}
 	}
@@ -77,7 +77,10 @@ io.sockets.on('connection', function(socket) {
 	}
 	
 	//Give the client's information
-	socket.emit("IDrequest_to_client", {socketID:socketID, socketRoom:currentRoom});
+	socket.on('IDrequest_from_client', function() {
+		
+		socket.emit("IDrequest_to_client", {socketID:socketID, socketRoom:currentRoom});
+	});
 	
 	
 	socket.on('disconnect', function() {
@@ -95,6 +98,15 @@ io.sockets.on('connection', function(socket) {
 		rooms[currentRoom].objectPackages += (rooms[currentRoom].objectPackages ? ',' : '{' ) + '"' + objectCounter++ + '":' + data["stringifyedObject"];
 	});
 	
+	
+	
+	//To check if the client is still connected
+	socket.on('onHeartbeat', function() {
+		
+		//rooms[currentRoom].objectPackages += (rooms[currentRoom].objectPackages ? ',' : '{' ) + '"' + objectCounter++ + '":' + data["stringifyedObject"];
+	});
+	
+	//Broadcast events to other clients
 	socket.on('event', function( data ) {
 		io.sockets.in(currentRoom).emit("event", data);
 	});
@@ -109,6 +121,8 @@ setInterval(function(){
 			io.sockets.in(i).emit("object_from_broadcaster", rooms[i].objectPackages + "}");
 			rooms[i].objectPackages = "";
 		}
+		//for (var playerID in rooms[i].Players)
+		//	rooms[i].Players[playerID].
 	}
 }, 10)
 
