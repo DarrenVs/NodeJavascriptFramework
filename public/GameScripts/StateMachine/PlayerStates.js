@@ -19,10 +19,8 @@ var PlayerStates = {
 
         self.Act = function () {
 
-
             if (parent.lastWallHit != parent.wallHitDir) {
                 parent.lastWallHit = parent.wallHitDir;
-                console.log("turninng around");
 
                 if (parent.wallHitDir < 0) {
                     parent.walkSpeed = -Math.abs(parent.walkSpeed);
@@ -43,7 +41,7 @@ var PlayerStates = {
         //if (!parent.extends.collision) parent.extends.collision = Collision(parent);
         //-----\\
         parent.groundColl = new EmptyObject ({
-            size: Vector2.new(20, 5),
+            size: Vector2.new(parent.size.x, 5),
             position: Vector2.new(0, parent.hitbox.y/1.5),
             color: "rgba(112, 112, 112, 0.3)"
         });
@@ -57,14 +55,14 @@ var PlayerStates = {
 
         //-----\\
         parent.wallHitCollRight = new EmptyObject({
-            position: Vector2.new(15, 5),
-            size: Vector2.new(5, 35),
+            position: Vector2.new(parent.size.x, 0),
+            size: Vector2.new(5, parent.size.y),
             color: "rgba(225, 225, 166, 0.3)"
         });
 
         parent.slideColl = new EmptyObject({
-            position: Vector2.new(-15, 3),
-            size: Vector2.new(1, 30),
+            position: Vector2.new(-parent.size.x, 0),
+            size: Vector2.new(1, parent.size.y),
             color: "red"
         })
 
@@ -119,8 +117,9 @@ var PlayerStates = {
         parent.rightCollisions = 0;
         parent.wallHitCollRight.collisionEnter["hitWallRight"] = function (obj, dir, force, distance, canCollide) {
             if (canCollide) {
-
-                if (dir.x && parent.rightCollisions <=0) parent.wallHitDir *= -1;
+                if (parent.rightCollisions <=0) {
+                    parent.wallHitDir *= -1;
+                }
                 parent.rightCollisions ++;
                 parent.wallsHit ++;
             }
