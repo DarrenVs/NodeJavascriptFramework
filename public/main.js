@@ -11,6 +11,7 @@ var PHYSICSSETTINGS = {
 , }
 var objectCount = 0;
 var replicatedObjectCount = 0;
+var socketio = io.connect(window.location.host);
 var clientID = undefined;
 var clientRoom = undefined;
 var connectionList = {};
@@ -103,6 +104,13 @@ window.addEventListener("load", function () {
         canvas.width = 600;
         canvas.height = 955;
     })();
+    
+    
+    
+    
+    //Start the client
+    if (clientID == undefined)
+        socketio.emit("IDrequest_from_client");
     
     
     
@@ -587,9 +595,6 @@ function PackageObject( Obj ) {
     return JSON.stringify(returnPackage);
 }
 
-
-var socketio = io.connect(window.location.host);
-
 socketio.on("UpdatePlayerlist", function (data) {
     
     connectionList = data;
@@ -603,6 +608,10 @@ socketio.on("IDrequest_to_client", function (data) {
     LoadWorld( Game.addChild( "BackgroundStage", new Stage() ), Enum.Worlds.BackgroundWorld );
     LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
 });
+
+setInterval(function() {
+    socketio.emit('onHeartbeat');
+}, 5000)
 
 
 
