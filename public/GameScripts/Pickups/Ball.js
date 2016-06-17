@@ -5,6 +5,13 @@ function Ball(properties) {
     var self = this;
     GameObject(this, properties);
     
+    this.extends = {
+        collision:Collision(this),
+        physics:Physics(this),
+    };
+    
+    self.liveTime = 1000;
+    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.BallImage,   //Image
@@ -26,4 +33,17 @@ function Ball(properties) {
             },
         }
     );
+    
+    this.update["ballLifeTime"] = function() {
+        self.lifeTime -= RENDERSETTINGS.renderTime;
+        if (self.lifeTime <= 0)
+            self.destroy();
+    }
+    
+    this.collisionEnter["ballCollision"] = function(Obj) {
+        if(Obj.ClassType == Enum.ClassType.Player) {
+            Obj.doStagger = true;
+            self.destroy();
+        }
+    };
 }

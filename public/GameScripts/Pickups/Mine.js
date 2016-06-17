@@ -7,6 +7,7 @@ function Mine(properties) {
     
     this.extends = {
         collision:Collision(this),
+        physics:Physics(this),
     };
     
     
@@ -55,6 +56,7 @@ function Mine(properties) {
     this.collisionEnter["mineCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Player) {
             Obj.doStagger = true;
+            self.destroy();
         }
     };
 }
