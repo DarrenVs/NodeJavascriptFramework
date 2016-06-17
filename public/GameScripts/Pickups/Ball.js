@@ -11,6 +11,7 @@ function Ball(properties) {
     };
     
     self.liveTime = 1000;
+    self.ClassType = Enum.ClassType.Ball;
     
     this.DrawObject = new Sprite(
         this,   //Parent

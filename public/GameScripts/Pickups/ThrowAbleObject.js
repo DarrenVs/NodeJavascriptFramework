@@ -11,6 +11,7 @@ function ThrowAbleObject(properties) {
     };
     
     self.size = new Vector2.new(20,9);
+    self.ClassType = Enum.ClassType.ThrowAbleObject;
     
     this.DrawObject = new Sprite(
         this,   //Parent
