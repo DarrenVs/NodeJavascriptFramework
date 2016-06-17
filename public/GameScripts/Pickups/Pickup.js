@@ -24,8 +24,10 @@ var PickupProperties = {
     },
     
     assignPickup: function(pickupKey, pickupID) {
-        this.currentPickups[pickupID].pickupValue = this.pickupChoices[pickupKey];
-        this.currentPickups[pickupID].startAnimation(pickupKey); 
+        if(!this.currentPickups[pickupID] == undefined) {
+            this.currentPickups[pickupID].pickupValue = this.pickupChoices[pickupKey];
+            this.currentPickups[pickupID].startAnimation(pickupKey); 
+        }
     },
 }
 
