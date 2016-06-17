@@ -47,7 +47,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     ////////////////////////////////////TEST PICKUPS
     var mine = new Enum.ClassName[Enum.ClassType.Mine]({
         size: new Vector2.new(40, 40),
-        position: new Vector2.new(100, canvas.height /2)
+        position: new Vector2.new(100, 350)
     })
                 
     stage.addChild( mine );

@@ -40,15 +40,26 @@ function Ball(properties) {
             self.destroy();
     }
     
-    self.rotation = 270;
+    var direction = 1;
     
-    self.velocity = Vector2.multiply(Vector2.fromAngle(self.rotation), -1000);
-    console.log(self.velocity);
+    self.velocity = new Vector2.new(400 * direction, -600);
     
     self.collisionStay["ballPhysics"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
         
         if(!self.anchored && canCollide && collisionFrames >= 5) {
-            self.velocity = Vector2.multiply(direction, new Vector2.new(1000,1000));
+            self.velocity = Vector2.subtract(
+                self.velocity,
+                // +
+                Vector2.multiply(
+                    Vector2.multiply(
+                        direction,
+                        // *
+                        Vector2.new( Math.abs(self.velocity.x), Math.abs(self.velocity.y) )
+                    ),
+                    // *
+                    -1.5
+                )
+            )
         }
         
         if(Obj.ClassType == Enum.ClassType.Player) {

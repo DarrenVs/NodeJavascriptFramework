@@ -102,7 +102,7 @@ window.addEventListener("load", function () {
         
         console.log("resize");
         canvas.width = 600;
-        canvas.height = 955;
+        canvas.height = 935;
     })();
     
     
