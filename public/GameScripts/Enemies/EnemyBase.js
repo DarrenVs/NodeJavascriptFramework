@@ -15,16 +15,49 @@ function EnemyBase(_self, properties) {
     self.extends = {
         physics: Physics(self),
         collision:Collision(self),
-        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup(self), new EnemyStates.AnyState(self), false)
+        AI: new StateMachine(self, StatesEnum.wander, EnemyStates.Setup(self), new EnemyStates.AnyState(self), true)
     }
+/*
+    this.DrawObject = new Sprite(
+        this,   //Parent
+        Enum.Images.Sprites.PlayerAnimationSheet,   //Image
+        
+        {   //Sprites
+            
+            walk: {
+                position: Vector2.new(0, 0),
+                size: Vector2.new(393, 229),
+                columns: 7,
+                rows: 3,
+            },
+        },
+        
+        {   //Animations
+            walk: {
+                sprite: "walk",
+                speed: .3, //Per frame
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+        }
+    );*/
     
     self.anchored = false;
     self.hitbox = self.size;
+
+    self.hitFloor = true;
+    self.collisionEnter["collHit"] = function (Obj, dir, force, distance, canCollide) {
+        self.hitFloor = true;
+        if (Obj.ClassType == Enum.ClassType.Player) {
+            self.destroy();
+        }
+    } 
     
     //---Trigger-collider----\\
     self.trigger = new EmptyObject({
        size: Vector2.new(600, 10),
-       colour: "rgba(0, 0, 0, 0.2)", 
+       color: "rgba(0, 0, 0, 0.0)", 
     });
         
     self.trigger.extends = {
@@ -41,12 +74,12 @@ function EnemyBase(_self, properties) {
     }
     
     self.trigger.collisionEnter["self.triggered"] = function (Obj, direction, force, distance, canCollide ) {
-        if (canCollide && Obj.ClassType == Enum.ClassType.Player) {
+        if (Obj.ClassType == Enum.ClassType.Player) {
             self.triggered = true;
             self.target = Obj;
-            console.log("got triggered");
+            //console.log("got triggered " + Obj.ClassType);
         } 
-           // console.log("collinding with someting");
+           // console.log("collinding with someting"); 
     }
     self.trigger.collisionExit["notself.triggered"] = function (Obj, direction, force, distance, canCollide ) {
         
@@ -69,7 +102,7 @@ function EnemyBase(_self, properties) {
     self.EdgeLeft = new EmptyObject({
         position: Vector2.new(-self.size.x / 2, self.size.y / 2),
         size: Vector2.new(2, 5),
-        colour: "black",
+        color: "black",
     });
     
     self.EdgeRight.extends = {

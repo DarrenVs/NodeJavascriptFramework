@@ -143,10 +143,10 @@ var EnemyStates = {
         
         this.Act = function () {
                 parent.position = Vector2.new(
-                    parent.position.x + Math.random() * rageIntencity - rageIntencity/2,
+                    parent.position.x + Math.random() * rageIntencity - rageIntencity/2 - parent.walkSpeed/100,
                     parent.position.y + Math.random() * rageIntencity - rageIntencity/2);
                     
-            timeLeft -= 1;
+            timeLeft --;
         }
         
         this.Leave = function() {
@@ -163,59 +163,35 @@ var EnemyStates = {
         
         var attackRange = _attackRange || 20;
         var chargeSpeed = _chargeSpeed || 5;
-        var chargeCooldown = _chargeCoolDown || 5;
-        var resetCharge = undefined;
-        var STOP = false;
+
+        var timeLeft = 0;
         
         this.Enter = function () {
             parent.colour = "red";
+            timeLeft = chargeSpeed;
         }
         
         this.Reason = function () {
-            console.log(parent.target.position);
-            var magnitude = Vector2.magnitude(this.parent.position, parent.target.position);
-            
-            if (STOP) {
-                self.returnState = StatesEnum.specialWander;
-                return false;
-            }
-            
-            if (!parent.triggered) {  
-                if (typeof(resetCharge) != 'undefined') {
-                    setTimeout(cancleCharge, chargeCooldown);
-                }
-            } else if (typeof(resetCharge) == 'number') {
-                clearInterval(resetCharge);
-            }
-            
-            if (magnitude < attackRange) {
+            //console.log(parent.target.position);
+
+            if (timeLeft < 0) {
                 self.returnState = StatesEnum.interact;
                 return false;
             }
             
-            return true;
+            return true;        
         }
         
         this.Act = function () {
-            
-            parent.position = Vector2.subtract(
-                parent.position,
-                Vector2.multiply(
-                    Vector2.unit (Vector2.subtract(parent.position, parent.target.position)), 
-                chargeSpeed)
-            );
-            
+            parent.velocity = 0;
+            timeLeft --;
         }
         
         this.Leave = function() {
-            STOP = false;
-            resetCharge = undefined;
+            
+            //parent.target = undefined;
+            parent.triggered = false;
             return self.returnState;
-        }
-        
-        this.cancleCharge = function () {
-            STOP = true;
-            parent.target = undefined;
         }
     },
 
@@ -225,19 +201,25 @@ var EnemyStates = {
 
         var self = this;
         
-        var attackRange = _attackRange || 200;
+        var attackRange = _attackRange || 20;
         var chargeSpeed = _chargeSpeed || 5;
         var chargeCooldown = _chargeCoolDown || 5;
         var resetCharge = undefined;
         var STOP = false;
+
+    var atEdge = false;
+        var magnitude = 0;
         
         this.Enter = function () {
             parent.colour = "red";
         }
         
         this.Reason = function () {
-            var magnitude = Vector2.magnitude(this.parent.position, parent.target.position);
-            console.log(magnitude, attackRange);
+            
+            magnitude = Vector2.magnitude(
+                parent.position, 
+                parent.target.position);
+
             if (STOP) {
                 self.returnState = StatesEnum.specialWander;
                 return false;
@@ -260,26 +242,45 @@ var EnemyStates = {
         }
         
         this.Act = function () {
-            
+
+            //if (parent.position.x - target.position.x < )
+
+            if (Math.sign(parent.walkSpeed) != parent.wallHitDir) {
+                atEdge = true;
+            }
+            if(!atEdge) parent.velocity.x = magnitude / 1;
+            else {
+                parent.velocity.x = 0;
+                if( parent.hitFloor) {
+                    console.log("jump");
+                    parent.hitFloor = false;
+                    parent.velocity.y = -500;    
+                }
+            }
+
+/*
             parent.position = Vector2.subtract(
                 parent.position,
                 Vector2.multiply(
                     Vector2.unit (Vector2.subtract(parent.position, parent.target.position)), 
                 chargeSpeed)
             );
-            
+  */          
         }
         
         this.Leave = function() {
             STOP = false;
             resetCharge = undefined;
 
+            parent.target = undefined;
+            parent.triggered = false;
             return self.returnState
         }
         
         this.cancleCharge = function () {
             STOP = true;
             parent.target = undefined;
+            parent.triggered = false;
         }
     },
     
@@ -298,9 +299,6 @@ var EnemyStates = {
         
         this.Reason = function () {
             if (deltDamage) {    
-                //!if hit 
-                self.returnState = StatesEnum.charge;
-                //else
                 self.returnState = StatesEnum.AngryWander; 
                                     
                 return false;
@@ -309,12 +307,13 @@ var EnemyStates = {
         
         this.Act = function (_parent) {
             var bullet = new Bullet({
-                    position: Vector2.add(parent.position, Vector2.multiply(parent.forward, 1)),
-                    size: new Vector2.new(3, 10),
-                    rotation: Vector2.toAngle(Vector2.unit (Vector2.subtract(parent.position, parent.target.position))), 
-                });
-                parent.ignoreObjectIDs[bullet.ID] = true;
-                parent.stage.addChild(bullet);
+                position: Vector2.add(parent.position, Vector2.multiply(parent.forward, 1)),
+                size: new Vector2.new(3, 10),
+                rotation: Vector2.toAngle(Vector2.unit (Vector2.subtract(parent.position, parent.target.position))), 
+            });
+            Vector2.divide(bullet.velocity, 2); 
+            parent.ignoreObjectIDs[bullet.ID] = true;
+            parent.stage.addChild(bullet);
             deltDamage = true;
         }
         
@@ -325,6 +324,7 @@ var EnemyStates = {
         this.cancleCharge = function () {
             STOP = true;
             parent.target = undefined;
+            parent.triggered = false;
         }
     },
 

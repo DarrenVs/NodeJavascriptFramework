@@ -12,8 +12,8 @@ function EnemyWalk(properties) {
     var sm = self.extends.AI;
     sm.AddState(StatesEnum.wander, new EnemyStates.NormalWander(self, 200));
     sm.AddState(StatesEnum.specialWander, new EnemyStates.AngryWander(self, 500));
-    sm.AddState(StatesEnum.alert, new EnemyStates.Enrage(self, 15, 15));
-    sm.AddState(StatesEnum.charge, new EnemyStates.Charge(self, 2800, 5, 5));
+    sm.AddState(StatesEnum.alert, new EnemyStates.Enrage(self, 15, 5));
+    sm.AddState(StatesEnum.charge, new EnemyStates.Charge(self, 20, 5, 500));
     sm.AddState(StatesEnum.interact, new EnemyStates.Attack(self));
     
 }
