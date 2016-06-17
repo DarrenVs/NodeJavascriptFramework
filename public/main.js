@@ -11,6 +11,7 @@ var PHYSICSSETTINGS = {
 , }
 var objectCount = 0;
 var replicatedObjectCount = 0;
+var socketio = io.connect(window.location.host);
 var clientID = undefined;
 var clientRoom = undefined;
 var connectionList = {};
@@ -106,6 +107,13 @@ window.addEventListener("load", function () {
     
     
     
+    
+    //Start the client
+    if (clientID == undefined)
+        socketio.emit("IDrequest_from_client");
+    
+    
+    
 
 
     //  Values
@@ -140,7 +148,7 @@ window.addEventListener("load", function () {
 
 
             //Update Collisions
-            self.testedObjects = {};
+            Game[stageIndex].testedObjects = {};
             for (var ObjID in Game[stageIndex].CollisionLoop) {
                 
                 delete Game[stageIndex].CollisionLoop[ObjID];
@@ -201,9 +209,6 @@ function Stage(properties) {
     this.allChilds = {};
 
     this.stageID = this.stageID || Object.keys(Game).length;
-    
-    
-    
     
     self.PhysicsLoop = {};
     
@@ -590,9 +595,6 @@ function PackageObject( Obj ) {
     return JSON.stringify(returnPackage);
 }
 
-
-var socketio = io.connect(window.location.host);
-
 socketio.on("UpdatePlayerlist", function (data) {
     
     connectionList = data;
@@ -606,6 +608,10 @@ socketio.on("IDrequest_to_client", function (data) {
     LoadWorld( Game.addChild( "BackgroundStage", new Stage() ), Enum.Worlds.BackgroundWorld );
     LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
 });
+
+setInterval(function() {
+    socketio.emit('onHeartbeat');
+}, 5000)
 
 
 
