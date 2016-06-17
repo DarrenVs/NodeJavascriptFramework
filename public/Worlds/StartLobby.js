@@ -39,7 +39,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             player = new Player({
                 position: new Vector2.new(canvas.width / 2, canvas.height / 1.3),
                 size: new Vector2.new(15, 30),
-                colour: "red",
             });
             
             stage.addChild( player );

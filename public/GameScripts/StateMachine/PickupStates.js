@@ -43,13 +43,13 @@ var PickupStates = {
             
             invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Invulnerability]({
                 size: new Vector2.new( 120,  200),
-                position: new Vector2.new(self.parent.position.x, self.parent.position.y),
+                position: new Vector2.new(parent.position.x, parent.position.y),
             })
             
             invulnerabilityCounter = 0;
             console.log("start invul");
             
-            _parent.walkSpeed *= 1.2;
+            parent.walkSpeed *= 1.2;
         }
         
         this.Reason = function () { 
@@ -63,7 +63,7 @@ var PickupStates = {
         this.Leave =  function() {
             invulnerabilityAmin.destroy();
             
-            _parent.walkSpeed /= 1.2;
+            parent.walkSpeed /= 1.2;
             console.log(self.parent.walkSpeed);
             print("end invul");
             return self.returnState;
@@ -88,7 +88,7 @@ var PickupStates = {
                 position: new Vector2.new(0, 0),
             })
                 
-            _parent.stage.addChild( mine );
+            parent.stage.addChild( mine );
             
             self.returnState = undefined;            
             return false;
@@ -113,7 +113,7 @@ var PickupStates = {
                 position: new Vector2.new(0, 0),
             })
                 
-            _parent.stage.addChild( ball );
+            parent.stage.addChild( ball );
             
             self.returnState = undefined;            
             return false;
@@ -138,7 +138,7 @@ var PickupStates = {
                 position: new Vector2.new(0, 0),
             })
                 
-            _parent.stage.addChild( throwAble );
+            parent.stage.addChild( throwAble );
             
             self.returnState = undefined;            
             return false;

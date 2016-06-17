@@ -80,7 +80,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     var intermediatePlatformChunkHeight= (ChunkProperties.chunkLibary.intermediateChunk.length * ChunkProperties.chunkLibary.intermediateChunk[0].length) / ChunkProperties.tilesXCount;
     
     function spawnIntermediateChunk() {
-        
+        console.log("spawn intermedita");
         var intermediatePlatform = new Enum.ClassName[Enum.ClassType.IntermediatePlatform]({
             size: new Vector2.new(canvas.width, 10),
             position: new Vector2.new(canvas.width / 2, ChunkProperties.totalLevelHeight - (ChunkProperties.tileSize * intermediatePlatformChunkHeight) / 2 )

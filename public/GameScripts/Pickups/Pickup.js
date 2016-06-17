@@ -48,6 +48,8 @@ function Pickup(properties) {
     self.canCollide = false;
     self.ClassType = Enum.ClassType.Pickup;
     
+    self.size = new Vector2.new(60, 60);
+    
     for(var index in PickupProperties.currentPickups) {
         pickupIndex++;
     }
