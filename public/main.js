@@ -584,6 +584,10 @@ socketio.on("IDrequest_to_client", function (data) {
     LoadWorld( Game.addChild( "TankWorld", new Stage() ), Enum.Worlds.BattleArena );
 });
 
+setInterval(function() {
+    socketio.emit('onHeartbeat');
+}, 5000)
+
 
 
 socketio.on("event", function (data) {

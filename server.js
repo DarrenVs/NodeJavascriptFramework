@@ -14,11 +14,13 @@ app.get('/', function (req, res) {
 
 //Turn on the server
 server.listen(1337);
-var stages = {
-	
-}
-var connectionCounter = 0;
-var objectCounter = 0;
+
+var connectionCounter = 0; //Used to define the socket's ID
+var objectCounter = 0; //Used for a unique ID for the send objects
+var connectedSockets = {}; //Connected sockets (for access to the socket's methods for example: disconnecting the socket or for a private emit)
+var timeoutTime = 60000; //Ms seconds
+var serverRepsonseTime = 10; //Ms seconds
+var maxRoomConnectionCount = 4;
 
 
 var objectPackages = "";
@@ -48,13 +50,15 @@ io.sockets.on('connection', function(socket) {
 	
 	//Set the client's ID
 	var socketID = connectionCounter++;
+	connectedSockets[socketID] = socket;
+	console.log(socketID + " connected");
 	
 	//Set the client's room
 	var currentRoom = undefined;
 	for (var i in rooms) {
-		if (Object.keys(rooms[i].Players).length < 2) {
+		if (Object.keys(rooms[i].Players).length < maxRoomConnectionCount) {
 			
-			rooms[i].Players[socketID] = 10000;
+			rooms[i].Players[socketID] = timeoutTime;
 			currentRoom = i;
 		}
 	}
@@ -65,16 +69,16 @@ io.sockets.on('connection', function(socket) {
 		rooms[Object.keys(rooms).length] = {
 			objectPackages: "",
 			Players: {
-				[socketID]: 10000,
+				[socketID]: timeoutTime,
 			},
 		}
 	}
 	
 	//Join the current room
 	socket.join(currentRoom);
-	for (var i in rooms) {
-		console.log(i + " has a playercount of: " + Object.keys(rooms[i].Players).length);
-	}
+	
+	console.log("Room: " + currentRoom + " has a playercount of: " + Object.keys(rooms[currentRoom].Players).length);
+	
 	
 	//Give the client's information
 	socket.on('IDrequest_from_client', function() {
@@ -84,8 +88,12 @@ io.sockets.on('connection', function(socket) {
 	
 	
 	socket.on('disconnect', function() {
+		delete connectedSockets[socketID];
 		delete rooms[currentRoom].Players[socketID];
 		io.sockets.in(currentRoom).emit("UpdatePlayerlist", rooms[currentRoom].Players);
+		
+		console.log(socketID + " disconnected");
+		console.log("Room: " + currentRoom + " has a playercount of: " + Object.keys(rooms[currentRoom].Players).length);
 	});
 	
 	//On client request playerlist
@@ -103,7 +111,7 @@ io.sockets.on('connection', function(socket) {
 	//To check if the client is still connected
 	socket.on('onHeartbeat', function() {
 		
-		//rooms[currentRoom].objectPackages += (rooms[currentRoom].objectPackages ? ',' : '{' ) + '"' + objectCounter++ + '":' + data["stringifyedObject"];
+		rooms[currentRoom].Players[socketID] = timeoutTime;
 	});
 	
 	//Broadcast events to other clients
@@ -121,8 +129,13 @@ setInterval(function(){
 			io.sockets.in(i).emit("object_from_broadcaster", rooms[i].objectPackages + "}");
 			rooms[i].objectPackages = "";
 		}
-		//for (var playerID in rooms[i].Players)
-		//	rooms[i].Players[playerID].
+		for (var socketID in rooms[i].Players) {
+			rooms[i].Players[socketID] -= serverRepsonseTime;
+			
+			if (rooms[i].Players[socketID] <= 0) {
+				connectedSockets[socketID].disconnect( true );
+			}
+		}
 	}
-}, 10)
+}, serverRepsonseTime)
 
