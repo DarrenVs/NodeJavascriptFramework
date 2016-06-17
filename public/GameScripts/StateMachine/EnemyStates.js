@@ -55,12 +55,10 @@ var EnemyStates = {
 
         var self = this;
         
-        var enemies = [];
-        var walkSpeed = _walkSpeed || 1;
+        parent.walkSpeed = _walkSpeed || 1;
 
         this.Enter = function () {
-            _parent.colour = "blue";
-            parent.walkSpeed = walkSpeed;
+            parent.colour = "blue";
         }
         
         this.Reason = function () {
@@ -107,7 +105,7 @@ var EnemyStates = {
         
             this.Act = function () {
 
-                parent.velocity.x += self.walkSpeed;
+                parent.velocity.x = parent.walkSpeed;
             } 
         
             
