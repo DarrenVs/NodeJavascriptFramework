@@ -43,18 +43,7 @@ var events = events || {
     
     sendChunk: function(parameters) {
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
-    },
-    
-    updatePlayerList: function(parameters) {
-        
-        //console.log(Game[parameters.stageID].allChilds);
-        //console.log(parameters.playerID)
-        //PlayerProperties.playerList[parameters.playerID] = Game[parameters.stageID].allChilds[parameters.playerID];
-        //console.log(Game[parameters.stageID].allChilds[parameters.playerID]);
-        //console.log(PlayerProperties.playerList);
-    },
-    
-    
+    },  
 };
 
 

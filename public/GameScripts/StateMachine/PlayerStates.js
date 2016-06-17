@@ -4,7 +4,7 @@ var PlayerStates = {
 
     AnyState: function (parent) {
         var self = this;
-        parent.walkSpeed = 180;
+        parent.walkSpeed = 200;
         parent.doStagger = false;
         parent.staggerAble = true;
 
@@ -177,7 +177,7 @@ var PlayerStates = {
 
         var parent = _parent;
 
-        var walkSpeed = _walkSpeed || 120;
+        var walkSpeed = _walkSpeed || 130;
         var jumpButton = _jumpButton || "32";
         
         var animObj = parent.animations.backOnGround;
@@ -217,7 +217,7 @@ var PlayerStates = {
 
         var parent = _parent;
 
-        var jumpStrength = _jumpStrength || 500;
+        var jumpStrength = _jumpStrength || 600;
         
         var animObj = parent.animations.jumpStart;
 
@@ -240,7 +240,7 @@ var PlayerStates = {
         
         var parent = _parent;
 
-        var extraJumpsStrength = _extraJumpStrength || 600;
+        var extraJumpsStrength = _extraJumpStrength || 500;
 
         var animObj = parent.animations.doubleJump;
 

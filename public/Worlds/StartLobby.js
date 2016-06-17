@@ -7,7 +7,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     stage.addChild(new Enum.ClassName[Enum.ClassType.Background]);
     
-    stage.gravity = Vector2.new(0, 22);
+    stage.gravity = Vector2.new(0, 20);
     
     //spawn parallax
     stage.addChild(new Parallax());
