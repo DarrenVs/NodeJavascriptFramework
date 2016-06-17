@@ -41,7 +41,7 @@ var PickupStates = {
           
         this.Enter =  function() {
             
-            invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Platform_120x200]({
+            invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Invulnerability]({
                 size: new Vector2.new( 120,  200),
                 position: new Vector2.new(self.parent.position.x, self.parent.position.y),
             })
@@ -49,7 +49,7 @@ var PickupStates = {
             invulnerabilityCounter = 0;
             console.log("start invul");
             
-            self.parent.walkSpeed *= 1.2;
+            _parent.walkSpeed *= 1.2;
         }
         
         this.Reason = function () { 
@@ -63,7 +63,7 @@ var PickupStates = {
         this.Leave =  function() {
             invulnerabilityAmin.destroy();
             
-            self.parent.walkSpeed /= 1.2;
+            _parent.walkSpeed /= 1.2;
             console.log(self.parent.walkSpeed);
             print("end invul");
             return self.returnState;
@@ -83,12 +83,12 @@ var PickupStates = {
                 return true;
             }
             
-            mine = new Enum.ClassName[Mine]({
-                size: new Vector2.new(self.parent.size.x, self.parent.size.y),
+            mine = new Enum.ClassName[Enum.ClassType.Mine]({
+                size: new Vector2.new(40, 40),
                 position: new Vector2.new(0, 0),
             })
                 
-            parent.stage.addChild( mine );
+            _parent.stage.addChild( mine );
             
             self.returnState = undefined;            
             return false;
@@ -108,12 +108,12 @@ var PickupStates = {
                 return true;
             }
             
-            ball = new Enum.ClassName[Ball]({
-                size: new Vector2.new(self.parent.size.x, self.parent.size.y),
+            ball = new Enum.ClassName[Enum.ClassType.Ball]({
+                size: new Vector2.new(40, 40),
                 position: new Vector2.new(0, 0),
             })
                 
-            self.parent.stage.addChild( ball );
+            _parent.stage.addChild( ball );
             
             self.returnState = undefined;            
             return false;
@@ -133,12 +133,12 @@ var PickupStates = {
                 return true;
             }
             
-            throwAble = new Enum.ClassName[ThrowAbleObject]({
-                size: new Vector2.new(self.parent.size.x, self.parent.size.y),
+            throwAble = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
+                size: new Vector2.new(40, 40),
                 position: new Vector2.new(0, 0),
             })
                 
-            self.parent.stage.addChild( throwAble );
+            _parent.stage.addChild( throwAble );
             
             self.returnState = undefined;            
             return false;

@@ -44,20 +44,26 @@ function Ball(properties) {
     
     self.velocity = new Vector2.new(400 * direction, -600);
     
-    self.collisionStay["ballPhysics"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
-        
+    var bounceStrength = 250;
+    
+    self.collisionStay["physics"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
+       
         if(!self.anchored && canCollide && collisionFrames >= 5) {
             self.velocity = Vector2.subtract(
                 self.velocity,
                 // +
-                Vector2.multiply(
+                Vector2.add(
                     Vector2.multiply(
                         direction,
                         // *
-                        Vector2.new( Math.abs(self.velocity.x), Math.abs(self.velocity.y) )
+                        Vector2.new( -Math.abs(self.velocity.x), -Math.abs(self.velocity.y) )
                     ),
                     // *
-                    -1.5
+                    Vector2.multiply(
+                        direction,
+                        // *
+                        -bounceStrength
+                    )
                 )
             )
         }

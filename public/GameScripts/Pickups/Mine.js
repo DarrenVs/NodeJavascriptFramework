@@ -10,7 +10,8 @@ function Mine(properties) {
         physics:Physics(this),
     };
     
-    self.physicalAppearanceSize = new Vector2.new(0,0);
+    self.spriteOffset = Vector2.new(0,20);
+    self.spriteSize = Vector2.new(20,20);
     
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -50,7 +51,10 @@ function Mine(properties) {
     this.update["WaitForAnimationEndMine"] = function() {
         if(Math.round(self.animations.mineActivate.currentKeyFrame) == 89) {
             self.DrawObject.currentAnimation = "mineIdle";
-            self.physicalAppearanceSize = new Vector2.new(1000,10000);
+            
+            self.spriteOffset = Vector2.new(0,20);
+            self.spriteSize = self.Parent.size;
+            
             delete self.update["WaitForAnimationEnd"];
         }
     }

@@ -56,4 +56,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             delete self.update["StartLobbyUpdate"];
         }
     }
+    
+    stage.addChild(new StartInstructions());
 }
