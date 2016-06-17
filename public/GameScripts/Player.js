@@ -109,48 +109,53 @@ function Player(properties) {
             },
         }
     );
+    
     if (clientID == self.creatorID) {
 
-         this.extends = {
-        physics:Physics(this),
-        collision:Collision(this),
-        tank:Tank(this),
-        navigation: new StateMachine(self, StatesEnum.inAir, 
-            PlayerStates.Setup(self), 
-            PlayerStates.AnyState(self), 
-            false),
-        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
-    };
+        this.extends = {
+            physics:Physics(this),
+            collision:Collision(this),
+            tank:Tank(this),
+            navigation: new StateMachine(self, StatesEnum.inAir, 
+                PlayerStates.Setup(self), 
+                PlayerStates.AnyState(self), 
+                false),
+            pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
+        };
+
+        self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
+        console.log("hard setted player position, dont forget");
+
+
+        //-----Adding the navigation states!!!-----\\
+        var navSM = this.extends.navigation;
+        navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
+        navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(self));
+        navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(self));
+        navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(self));
+        navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(self));
+        navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(self));
+        navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(self));
+
+        //-----Adding the pickup states!!!-----\\
+        var pickupSM = this.extends.pickupStates;
+        pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(self));
+        pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(self));
+        pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(self));
+        pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(self));
+        pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(self));
+        pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(self));
     
-    self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
-    console.log("hard setted player position, dont forget");
-
-
-    //-----Adding the navigation states!!!-----\\
-    var navSM = this.extends.navigation;
-    navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
-    navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(self));
-    navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(self));
-    navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(self));
-    navSM.AddState(StatesEnum.slide, new PlayerStates.Slide(self));
-    navSM.AddState(StatesEnum.stun, new PlayerStates.Stagger(self));
-    navSM.AddState(StatesEnum.inAir, new PlayerStates.InAir(self));
-
-    //-----Adding the pickup states!!!-----\\
-    var pickupSM = this.extends.pickupStates;
-    pickupSM.AddState(StatesEnum.idle, new PickupStates.idle(self));
-    pickupSM.AddState(StatesEnum.invulnerabilityOnHold, new PickupStates.invulnerabilityOnHold(self));
-    pickupSM.AddState(StatesEnum.invulnerabilityActivated, new PickupStates.invulnerabilityActivated(self));
-    pickupSM.AddState(StatesEnum.mineOnHold, new PickupStates.mineOnHold(self));
-    pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(self));
-    pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(self));
+    }
+    
+    PlayerProperties.playerList[self.creatorID] = self;
     
     this.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
             pickupSM.ChangeState(Obj.pickupValue);
         }
     };
-        
+    
     this.DrawObject.currentAnimation = "run";
     
     this.anchored = false;
@@ -199,6 +204,5 @@ function Player(properties) {
         self.Health = 0;
         sendObject(self);
         self.destroy();
-        }
     }
 }
