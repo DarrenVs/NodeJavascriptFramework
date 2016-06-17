@@ -43,18 +43,7 @@ var events = events || {
     
     sendChunk: function(parameters) {
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
-    },
-    
-    updatePlayerList: function(parameters) {
-        
-        //console.log(Game[parameters.stageID].allChilds);
-        //console.log(parameters.playerID)
-        //PlayerProperties.playerList[parameters.playerID] = Game[parameters.stageID].allChilds[parameters.playerID];
-        //console.log(Game[parameters.stageID].allChilds[parameters.playerID]);
-        //console.log(PlayerProperties.playerList);
-    },
-    
-    
+    },  
 };
 
 
@@ -102,7 +91,7 @@ window.addEventListener("load", function () {
         
         console.log("resize");
         canvas.width = 600;
-        canvas.height = 955;
+        canvas.height = 935;
     })();
     
     
@@ -158,8 +147,8 @@ window.addEventListener("load", function () {
 
             //Draw Objects on canvas
             for (var ObjIndex in Game[stageIndex].DrawLoop) {
-
-                Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
+                if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
+                    Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
             }
         }
         

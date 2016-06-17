@@ -7,7 +7,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     stage.addChild(new Enum.ClassName[Enum.ClassType.Background]);
     
-    stage.gravity = Vector2.new(0, 22);
+    stage.gravity = Vector2.new(0, 20);
     
     //spawn parallax
     stage.addChild(new Parallax());
@@ -39,7 +39,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             player = new Player({
                 position: new Vector2.new(canvas.width / 2, canvas.height / 1.3),
                 size: new Vector2.new(15, 30),
-                colour: "red",
             });
             
             stage.addChild( player );
@@ -56,4 +55,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             delete self.update["StartLobbyUpdate"];
         }
     }
+    
+    stage.addChild(new StartInstructions());
 }

@@ -5,8 +5,8 @@ var PickupProperties = {
     pickupChoices: {
         1: StatesEnum.invulnerabilityOnHold,
         2: StatesEnum.mineOnHold,
-        //3: StatesEnum.ballOnHold,
-        //4: sStatesEnum.throwAbleOnHold,
+        3: StatesEnum.ballOnHold,
+        4: StatesEnum.throwAbleOnHold,
     },
     
     choosePickupKey: function(pickupID) {
@@ -47,6 +47,8 @@ function Pickup(properties) {
     self.collisionActive = false;
     self.canCollide = false;
     self.ClassType = Enum.ClassType.Pickup;
+    
+    self.size = new Vector2.new(60, 60);
     
     for(var index in PickupProperties.currentPickups) {
         pickupIndex++;

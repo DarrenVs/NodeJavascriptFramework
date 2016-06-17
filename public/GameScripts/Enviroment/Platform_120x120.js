@@ -38,6 +38,4 @@ function Platform_120x120(properties) {
             },
         }
     );
-    
-
 }
