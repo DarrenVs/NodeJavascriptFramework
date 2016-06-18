@@ -42,7 +42,7 @@ var events = events || {
     },
     
     sendChunk: function(parameters) {
-        console.log("sendchunk mian");
+        ChunkProperties.spawnChunk(ChunkProperties.chunkLibary["intermediateChunk"], parameters.stageID);
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },  
 };

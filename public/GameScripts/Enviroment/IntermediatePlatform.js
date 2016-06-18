@@ -14,6 +14,8 @@ function IntermediatePlatform(properties) {
     
     self.anchored = true;
     
+    self.size = new Vector2.new(canvas.width, 10),
+    
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
     for(var i in PlayerProperties.playerList) {
