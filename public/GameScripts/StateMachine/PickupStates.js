@@ -77,7 +77,7 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        console.log("mine");
+        //console.log("mine");
         
         this.Reason = function () { 
 
@@ -103,7 +103,7 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        console.log("ball");
+        //console.log("ball");
         
         this.Reason = function () { 
             
@@ -131,7 +131,7 @@ var PickupStates = {
         
         var ammo = 6;
         
-        console.log("throw");
+        //console.log("throw");
         
         this.Reason = function () {
             
