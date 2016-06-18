@@ -169,6 +169,8 @@ function Player(properties) {
     this.hitbox = Vector2.new(self.size.x * 0.5, self.size.y + 5);
     this.DrawObject.spriteSize =  self.size;
     
+    self.DrawObject.spriteOffset = Vector2.new(0, 3);
+
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
     
