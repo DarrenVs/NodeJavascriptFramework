@@ -7,7 +7,9 @@ var PlayerProperties = {
         for (var index in connectionList) {
             return index == clientID;
         }
-    },   
+    },
+    
+    
 };
 
 Enum.ClassName[Enum.ClassType.Player] = Player;
@@ -197,9 +199,12 @@ function Player(properties) {
     }
     
     this.die = function() {
-        console.log("player dies");
-        
         delete PlayerProperties.playerList[self.creatorID];
+        
+        console.log("died");
+        
+        sendEvent("playerDied", {});
+        
         self.Health = 0;
         sendObject(self);
         self.destroy();

@@ -46,7 +46,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 
         stage.position.y = cameraController.cameraPosition();
         
-        if(Object.keys(PlayerProperties.playerList).length > 1 || INPUT_CLICK["82"]) {
+        if(Object.keys(PlayerProperties.playerList).length > 3 || PlayerProperties.checkHosts() && INPUT_CLICK["82"]) {
             for(i = 0; i < barrier.length; i++) {
                 barrier[i].destroy();
             }

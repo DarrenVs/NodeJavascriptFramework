@@ -45,6 +45,14 @@ var events = events || {
         ChunkProperties.spawnChunk(ChunkProperties.chunkLibary["intermediateChunk"], parameters.stageID);
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },  
+    
+    playerDied: function(parameters) {
+        console.log("player died event");
+        if(Object.keys(PlayerProperties.playerList).length <= 1) {
+            LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
+            cameraController.resetCamera();
+        }
+    }, 
 };
 
 
