@@ -23,7 +23,12 @@ function Boundary(properties) {
     
     this.collisionStay["outOfBounds"] = function(Obj) {
         if(Obj.manualDestroy != undefined) {
+            
             Obj.manualDestroy();
+            
+            if(PlayerProperties.checkGameOver)
+                self.destroy();
+            
         } else {
             Obj.destroy();
         }

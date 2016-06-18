@@ -17,13 +17,10 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         //////////////////////////
         
         if(-stage.position.y <= ChunkProperties.totalLevelHeight) {
-            if(PlayerProperties.checkHosts()) {
-                
-                sendEvent("sendChunk", {
-                    chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
-                    stageID: stage.stageID,
-                });
-            }
+            sendEvent("sendChunk", {
+                chunkID: Math.floor(Math.random()*Enum.SpawnAbleChunks.length),
+                stageID: stage.stageID,
+            });
         }
     }
     
@@ -31,7 +28,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---ADD CHUNKS TO SPAWNABLE---///
     /////////////////////////////////
     
-    //ChunkProperties.chunkLibary = {};
+    //reset the spawnable chunks
+    Enum.SpawnAbleChunks = [];
     
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
     

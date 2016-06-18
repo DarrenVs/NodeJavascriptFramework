@@ -41,14 +41,12 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 size: new Vector2.new(15, 30),
             });
             
-            PlayerProperties.playerList[player.creatorID] = player;
-            
             stage.addChild( player );
         }
                 
         stage.position.y = cameraController.cameraPosition();
         
-        if(PlayerProperties.checkHosts() && INPUT_CLICK["82"]) {
+        if(PlayerProperties.checkHost() && INPUT_CLICK["82"]) {
             sendEvent("manualStartGame", {});
         }
         

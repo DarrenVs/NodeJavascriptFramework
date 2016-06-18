@@ -47,8 +47,9 @@ var events = events || {
     },  
     
     playerDied: function(parameters) {
-        if(Object.keys(PlayerProperties.playerList).length <= 1) {
+        if(PlayerProperties.checkGameOver()) {
             PlayerProperties.playerList = {};
+            
             LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
             cameraController.resetCamera();
         }
