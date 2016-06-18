@@ -41,12 +41,18 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 size: new Vector2.new(15, 30),
             });
             
+            PlayerProperties.playerList[player.creatorID] = player;
+            
             stage.addChild( player );
         }
                 
         stage.position.y = cameraController.cameraPosition();
         
-        if(Object.keys(PlayerProperties.playerList).length > 1 || INPUT_CLICK["82"]) {
+        if(PlayerProperties.checkHosts() && INPUT_CLICK["82"]) {
+            sendEvent("manualStartGame", {});
+        }
+        
+        if(Object.keys(PlayerProperties.playerList).length > 3 || PlayerProperties.manualStarted) {
             for(i = 0; i < barrier.length; i++) {
                 barrier[i].destroy();
             }

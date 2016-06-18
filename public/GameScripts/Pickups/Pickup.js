@@ -10,12 +10,7 @@ var PickupProperties = {
     },
     
     choosePickupKey: function(pickupID) {
-        var pickupChoicesIndex = 0;
-        for(var pc in this.pickupChoices) {
-            pickupChoicesIndex++;
-        }
-        
-        var pickupKey = Math.floor(Math.random() * pickupChoicesIndex);
+        var pickupKey = Math.floor(Math.random() * Object.keys(this.pickupChoices).length);
         
         sendEvent("sendPickup", {
             pickupKey: pickupKey,
@@ -52,9 +47,7 @@ function Pickup(properties) {
     
     self.size = new Vector2.new(60, 60);
     
-    for(var index in PickupProperties.currentPickups) {
-        pickupIndex++;
-    }
+    pickupIndex = Object.keys(PickupProperties.currentPickups).length;
     
     PickupProperties.currentPickups[pickupIndex] = self;
     

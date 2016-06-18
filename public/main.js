@@ -42,8 +42,21 @@ var events = events || {
     },
     
     sendChunk: function(parameters) {
+        ChunkProperties.spawnChunk(ChunkProperties.chunkLibary["intermediateChunk"], parameters.stageID);
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },  
+    
+    playerDied: function(parameters) {
+        if(Object.keys(PlayerProperties.playerList).length <= 1) {
+            PlayerProperties.playerList = {};
+            LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
+            cameraController.resetCamera();
+        }
+    }, 
+    
+    manualStartGame: function(parameters) {
+        PlayerProperties.manualStarted = true;
+    }, 
 };
 
 
@@ -570,10 +583,10 @@ var replicateProperties = {
 function PackageObject( Obj ) {
     
     var returnPackage = {
-        parentID: Obj.Parent != undefined && Obj.Parent != Obj.stage ? Obj.Parent.ID : false,
         parentID: Obj.Parent != undefined ? Obj.Parent.ID : false,
         parentIDc: Obj.Parent != undefined ? Obj.Parent.IDc : false,
         replicatedStageID: Obj.stageID,
+        replicatedID: Obj.ID,
     };
         
     returnPackage.constructorName = Obj.ClassType;

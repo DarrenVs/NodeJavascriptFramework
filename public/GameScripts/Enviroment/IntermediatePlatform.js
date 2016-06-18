@@ -14,6 +14,8 @@ function IntermediatePlatform(properties) {
     
     self.anchored = true;
     
+    self.size = new Vector2.new(canvas.width, 10),
+    
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
     for(var i in PlayerProperties.playerList) {
@@ -44,13 +46,11 @@ function IntermediatePlatform(properties) {
     
     this.collisionExit["IntermediatePlatformExit"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
        
-        console.log("Exiting player", self.ID);
         if(self.ignoreObjectIDs[Obj.ID] != undefined){
            
             if (Obj.position.y < self.position.y && !CheckCollision(Obj, self, RENDERSETTINGS.deltaTime)) {
                
                 delete self.ignoreObjectIDs[Obj.ID];
-                console.log("Accepted player");
             }
         }
     }

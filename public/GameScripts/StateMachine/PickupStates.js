@@ -1,6 +1,6 @@
 var PickupStates = {
     
-    pickupActivateInput: "18",
+    pickupActivateInput: "82",
     
     defaultState: function() {
         CreateState(this);
@@ -23,7 +23,7 @@ var PickupStates = {
         
         this.Reason = function () { 
             
-            if(!INPUT_CLICK["18"]) {
+            if(!INPUT_CLICK[this.pickupActivateInput]) {
                 return true;
             }
             
@@ -77,11 +77,13 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
+        console.log("mine");
+        
         this.Reason = function () { 
-            console.log("mine");
-            if(!INPUT_CLICK["18"]) {
+
+            if(!INPUT_CLICK[this.pickupActivateInput]) 
                 return true;
-            }
+            
             console.log("activated mine");
             var mine = new Enum.ClassName[Enum.ClassType.Mine]({
                 size: new Vector2.new(40, 40),
@@ -101,11 +103,14 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
+        console.log("ball");
+        
         this.Reason = function () { 
-            console.log("ball");
-            if(!INPUT_CLICK["18"]) {
+            
+            if(!INPUT_CLICK[this.pickupActivateInput])
                 return true;
-            }
+            
+            console.log("activated ball");
             
             var ball = new Enum.ClassName[Enum.ClassType.Ball]({
                 size: new Vector2.new(40, 40),
@@ -126,11 +131,14 @@ var PickupStates = {
         
         var ammo = 6;
         
-        this.Reason = function () { 
-            console.log("throw");
-            if(!INPUT_CLICK["18"]) {
+        console.log("throw");
+        
+        this.Reason = function () {
+            
+            if(!INPUT_CLICK[this.pickupActivateInput])
                 return true;
-            }
+            
+            console.log("throw activated");
             
             ammo--;
 
@@ -142,9 +150,10 @@ var PickupStates = {
             parent.ignoreObjectType[throwAble.ClassType] = true;  
             parent.stage.addChild( throwAble );
             
-            if(ammo > 0) {
+            if(ammo > 0)
                 return true;
-            }
+            
+            
             self.returnState = undefined;            
             return false;
         }

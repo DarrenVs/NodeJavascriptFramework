@@ -12,4 +12,8 @@ var cameraController = {
 
         return -this.highestPlayerPos + canvas.height / 3.5;
     },
+    
+    resetCamera: function() {
+        this.highestPlayerPos = 270;
+    },
 }

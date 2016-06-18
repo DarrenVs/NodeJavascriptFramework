@@ -7,7 +7,9 @@ var PlayerProperties = {
         for (var index in connectionList) {
             return index == clientID;
         }
-    },   
+    },
+    
+    manualStarted: false,
 };
 
 Enum.ClassName[Enum.ClassType.Player] = Player;
@@ -114,17 +116,16 @@ function Player(properties) {
         physics:Physics(this),
         collision:Collision(this),
         tank:Tank(this),
-       
     };
     
     if (clientID == self.creatorID) {
 
-        self.extends.navigation =  new StateMachine(self, StatesEnum.inAir, 
+        self.extends.navigation = new StateMachine(self, StatesEnum.inAir, 
             PlayerStates.Setup(self), 
             new PlayerStates.AnyState(self), 
-            false)
-        self.extends.pickupStates =  new StateMachine(self, StatesEnum.idle, null, null, false);
-
+            false);
+        self.extends.pickupStates = new StateMachine(self, StatesEnum.idle, null, null, false);
+        
         //-----Adding the navigation states!!!-----\\
         var navSM = this.extends.navigation;
         navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
@@ -148,10 +149,9 @@ function Player(properties) {
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
     
-    PlayerProperties.playerList[self.creatorID] = self;
-    
     self.collisionEnter["pickupCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Pickup) {
+            console.log("PICKED UP: " + Obj.pickupValue);
             pickupSM.ChangeState(Obj.pickupValue);
         }
     };
@@ -198,9 +198,10 @@ function Player(properties) {
     }
     
     this.die = function() {
-        console.log("player dies");
-        
         delete PlayerProperties.playerList[self.creatorID];
+        
+        sendEvent("playerDied", {});
+        
         self.Health = 0;
         sendObject(self);
         self.destroy();
