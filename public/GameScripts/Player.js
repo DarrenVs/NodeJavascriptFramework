@@ -114,14 +114,16 @@ function Player(properties) {
         physics:Physics(this),
         collision:Collision(this),
         tank:Tank(this),
-        navigation: new StateMachine(self, StatesEnum.inAir, 
-            PlayerStates.Setup(self), 
-            new PlayerStates.AnyState(self), 
-            false),
-        pickupStates: new StateMachine(self, StatesEnum.idle, null, null, false),
+       
     };
     
     if (clientID == self.creatorID) {
+
+        self.extends.navigation =  new StateMachine(self, StatesEnum.inAir, 
+            PlayerStates.Setup(self), 
+            new PlayerStates.AnyState(self), 
+            false)
+        self.extends.pickupStates =  new StateMachine(self, StatesEnum.idle, null, null, false);
 
         //-----Adding the navigation states!!!-----\\
         var navSM = this.extends.navigation;
