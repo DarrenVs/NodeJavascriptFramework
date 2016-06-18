@@ -132,7 +132,17 @@ setInterval(function(){
 		for (var socketID in rooms[i].Players) {
 			rooms[i].Players[socketID] -= serverRepsonseTime;
 			
-			if (rooms[i].Players[socketID] <= 0) {
+			if (connectedSockets[socketID] == undefined) {
+				console.log(socketID + "was undefined, Removing '" + socketID + "' from server");
+				
+				delete connectedSockets[socketID];
+				if (rooms[i].Players[socketID] != undefined)
+					delete rooms[currentRoom].Players[socketID];
+				
+				io.sockets.in(i).emit("UpdatePlayerlist", rooms[i].Players);
+				
+			} else if (rooms[i].Players[socketID] <= 0) {
+				console.log("Socket: " + socketID + " died to no heartbeat in room: " + i);
 				connectedSockets[socketID].disconnect( true );
 			}
 		}
