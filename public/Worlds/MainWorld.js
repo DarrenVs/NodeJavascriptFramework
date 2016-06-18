@@ -33,7 +33,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
     
-    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["playerdieTestChunk"]);
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["chunkToBeTested"]);
     
     //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
     
