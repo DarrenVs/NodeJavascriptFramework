@@ -6,6 +6,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     stage.gravity = Vector2.new(0, 22);
     stage.airDenicty = 0;
     
+    PlayerProperties.manualStarted = false;
+    
     this.update["MainWorldUpdate"] = function() {
         
         stage.position.y = cameraController.cameraPosition();
@@ -29,9 +31,11 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     //---ADD CHUNKS TO SPAWNABLE---///
     /////////////////////////////////
     
-    ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["playerdieTestChunk"]);
+    //ChunkProperties.chunkLibary = {};
     
-    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
+    ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
+    
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["playerdieTestChunk"]);
     
     //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
     
