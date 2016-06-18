@@ -10,7 +10,14 @@ var PlayerProperties = {
     },
     
     checkGameOver: function() {
-        if(Object.keys(this.playerList).length <= 1)
+        var alivePlayers = 0;
+        
+        for(var player in this.playerList) {
+            if(player.health > 0)
+                alivePlayers++;
+        }
+        
+        if(alivePlayers < 2)
             return true;
         else 
             return false;
@@ -162,6 +169,8 @@ function Player(properties) {
     
     }
     
+    //console.log("player spawned and added to playerlist:");
+    //console.log(self.creatorID);
     PlayerProperties.playerList[self.creatorID] = self;
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
@@ -215,16 +224,13 @@ function Player(properties) {
     this.manualDestroy = function() {
         console.log("manual destroy, isHost = " + PlayerProperties.checkHost());
         
+        if(self.creatorID == clientID)
+            sendEvent("playerDied", {});
+        
         self.health = 0;
     }
     
     this.die = function() {  
-        
-        delete PlayerProperties.playerList[self.creatorID];
-        
-        if(PlayerProperties.checkHost())
-            sendEvent("playerDied", {});
-        
         self.Health = 0;
         sendObject(self);
         self.destroy();
