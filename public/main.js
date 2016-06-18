@@ -220,7 +220,7 @@ function Stage(properties) {
 
     self.DrawLoop = [];
 
-    self.gridSize = Vector2.new(601, 201);
+    self.gridSize = Vector2.new(40, 40);
     self.CollisionGrid = {
         grid:{
 

@@ -57,7 +57,10 @@ var Enum = {
         Sprites: {
             
             //player
-            PlayerAnimationSheet: newImage("Images/Player/player_blue_spritesheet.png"),
+            PlayerSpriteSheetBlue: newImage("Images/Player/player_blue_spritesheet.png"),
+            PlayerSpriteSheetBrown: newImage("Images/Player/BrownspritesheetPlayer.png"),
+            PlayerSpriteSheetRed: newImage("Images/Player/player_red_spritesheet.png"),
+            PlayerSpriteSheetPurple: newImage("Images/Player/PurpleSpritesheetPlayer.png"),
 
             EnemyAnimationsSheet: newImage("Images/Enemy/enemy_spritesheet.png"),
             

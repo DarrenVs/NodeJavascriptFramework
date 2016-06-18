@@ -48,7 +48,7 @@ var PlayerStates = {
         parent.groundColl = new EmptyObject ({
             size: Vector2.new(parent.size.x, 5),
             position: Vector2.new(0, parent.hitbox.y/1.5),
-            color: "rgba(112, 112, 112, 0.0)"
+            color: "rgba(112, 112, 112, 0.3)"
         });
 
         parent.groundColl.extends = {
@@ -62,7 +62,7 @@ var PlayerStates = {
         parent.wallHitCollRight = new EmptyObject({
             position: Vector2.new(parent.size.x, 0),
             size: Vector2.new(5, parent.size.y),
-            color: "rgba(225, 225, 166, 0.0)"
+            color: "rgba(225, 225, 166, 0.3)"
         });
 
         parent.slideColl = new EmptyObject({
@@ -81,13 +81,16 @@ var PlayerStates = {
 
         parent.wallHitCollRight.hitbox = parent.wallHitCollRight.size;
         parent.wallHitCollRight.collisionActive = false;
-        //parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.Player] = true;
         parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
 
         parent.slideColl.hitbox = parent.slideColl.size;
         parent.slideColl.collisionActive = false;
         parent.slideColl.ignoreObjectType[Enum.ClassType.Player] = true;
         parent.slideColl.ignoreObjectType[Enum.ClassType.IntermediatePlatform] = true;
+
+        delete parent.groundColl.DrawObject;
+        delete parent.wallHitCollRight.DrawObject;
+        delete parent.slideColl.DrawObject;
         //-----\\
 
         //-----\\

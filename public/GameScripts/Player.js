@@ -22,10 +22,18 @@ function Player(properties) {
     var self = this;
     self.ClassType = Enum.ClassType.Player;
     
+    var pCount = Object.keys(PlayerProperties.playerList).length;
+    var sprites = Enum.Images.Sprites;
+    console.log(pCount);
+
     this.DrawObject = new Sprite(
         this,   //Parent
-        Enum.Images.Sprites.PlayerAnimationSheet,   //Image
-        
+
+        pCount == 0 ? sprites.PlayerSpriteSheetBlue : 
+        pCount == 1 ? sprites.PlayerSpriteSheetRed : 
+        pCount == 2 ? sprites.PlayerSpriteSheetPurple : 
+        sprites.PlayerSpriteSheetBrown,
+
         {   //Sprites
             
             walk: {
