@@ -142,7 +142,7 @@ setInterval(function(){
 				io.sockets.in(i).emit("UpdatePlayerlist", rooms[i].Players);
 				
 			} else if (rooms[i].Players[socketID] <= 0) {
-				console.log("Socket: " + socketID + " died to no heartbeat in room: " + i);
+				console.log("Socket: " + socketID + " died to no heartbeat in room: " + i + ". Disconnecing client..");
 				connectedSockets[socketID].disconnect( true );
 			}
 		}
