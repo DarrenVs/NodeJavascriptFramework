@@ -164,8 +164,6 @@ window.addEventListener("load", function () {
 
             //Draw Objects on canvas
             for (var ObjIndex in Game[stageIndex].DrawLoop) {
-                if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
-                    Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
                 
                 if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]] != undefined
                 &&  Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)

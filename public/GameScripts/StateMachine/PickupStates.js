@@ -87,9 +87,6 @@ var PickupStates = {
             if(!INPUT_CLICK[PickupStates.pickupInput]) 
                 return true;
             
-            console.log("activated mine");
-            console.log(parent.scale.x + PickupStates.pickupSpawnOffset);
-            
             var mine = new Enum.ClassName[Enum.ClassType.Mine]({
                 size: new Vector2.new(40, 40),
                 position: new Vector2.new(parent.position.x + -parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
