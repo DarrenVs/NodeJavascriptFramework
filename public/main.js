@@ -140,10 +140,11 @@ window.addEventListener("load", function () {
             //Draw Objects on canvas
             for (var ObjIndex in Game[stageIndex].DrawLoop) {
                 
-                if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
+                if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]] != undefined
+                &&  Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
                     Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
-                //else
-                    //Game[stageIndex].DrawLoop.splice(ObjIndex, 1);
+                else
+                    Game[stageIndex].DrawLoop.splice(ObjIndex, 1);
             }
         }
         
@@ -554,8 +555,8 @@ var replicateProperties = {
 function PackageObject( Obj ) {
     
     var returnPackage = {
-        parentID: Obj.Parent != undefined ? Obj.Parent.ID : false,
-        parentIDc: Obj.Parent != undefined ? Obj.Parent.IDc : false,
+        parentID: Obj.Parent != undefined && Obj.Parent != Obj.stage ? Obj.Parent.ID : false,
+        parentIDc: Obj.Parent != undefined && Obj.Parent != Obj.stage ? Obj.Parent.IDc : false,
         replicatedStageID: Obj.stageID,
         replicatedID: Obj.ID,
     };
@@ -648,7 +649,7 @@ socketio.on("object_from_broadcaster", function (data) {
                         stage.allChilds[ReplicatedObject.replicatedID][i] = ReplicatedObject[i];
                     }
 
-                } else if (stage.IDc == ReplicatedObject.parentIDc) { // [1]<Otherwise, create the object
+                } else if (ReplicatedObject.parentID == false || stage.allChilds[ReplicatedObject.parentID] != undefined) { // [1]<Otherwise, create the object
 
                     /* Check if the object's constructor fits the client's classes,                              *
                      * otherwise create an empty object with the properties                                      *
