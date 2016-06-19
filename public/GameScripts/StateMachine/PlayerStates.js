@@ -153,6 +153,11 @@ var PlayerStates = {
             }
         }
 
+        parent.groundColl.ignoreObjectType[Enum.ClassType.Pickup] = true; 
+        parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.Pickup] = true; 
+        parent.slideColl.ignoreObjectType[Enum.ClassType.Pickup] = true;
+        
+        
         parent.addChild(parent.groundColl);
         parent.addChild(parent.wallHitCollRight);
         parent.addChild(parent.slideColl);
