@@ -137,7 +137,7 @@ setInterval(function(){
 				
 				delete connectedSockets[socketID];
 				if (rooms[i].Players[socketID] != undefined)
-					delete rooms[currentRoom].Players[socketID];
+					delete rooms[i].Players[socketID];
 				
 				io.sockets.in(i).emit("UpdatePlayerlist", rooms[i].Players);
 				
