@@ -164,17 +164,14 @@ window.addEventListener("load", function () {
 
             //Draw Objects on canvas
             for (var ObjIndex in Game[stageIndex].DrawLoop) {
-<<<<<<< HEAD
                 if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
                     Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
-=======
                 
                 if (Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]] != undefined
                 &&  Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject != undefined)
                     Game[stageIndex].allChilds[Game[stageIndex].DrawLoop[ObjIndex]].DrawObject.update();
                 else
                     Game[stageIndex].DrawLoop.splice(ObjIndex, 1);
->>>>>>> refs/remotes/origin/master
             }
         }
         
