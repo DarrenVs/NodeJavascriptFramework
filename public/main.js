@@ -47,8 +47,6 @@ var events = events || {
     },  
     
     restartGame: function(parameters) {
-        console.log("restart game");
-        
         PlayerProperties.playerList = {};
             
         Game["MainStage"].destroy()

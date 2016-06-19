@@ -13,11 +13,12 @@ var PlayerProperties = {
         var alivePlayers = 0;
         
         for(var player in this.playerList) {
-            if(player.health > 0)
+            if(this.playerList[player].health > 0)
                 alivePlayers++;
         }
         
-        if(alivePlayers < 2)
+        
+        if(alivePlayers <= 1)
             return true;
         else 
             return false;
