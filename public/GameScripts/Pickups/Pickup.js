@@ -19,10 +19,8 @@ var PickupProperties = {
     },
     
     assignPickup: function(pickupKey, pickupID) {
-        if(this.currentPickups[pickupID] != undefined) {
-            this.currentPickups[pickupID].pickupValue = this.pickupChoices[pickupKey];
-            this.currentPickups[pickupID].startAnimation(pickupKey); 
-        }
+        this.currentPickups[pickupID].pickupValue = this.pickupChoices[pickupKey];
+        this.currentPickups[pickupID].startAnimation(pickupKey); 
     },
 }
 
@@ -51,7 +49,7 @@ function Pickup(properties) {
     
     PickupProperties.currentPickups[pickupIndex] = self;
     
-    if(PlayerProperties.checkHosts()) {
+    if(PlayerProperties.checkHost()) {
         PickupProperties.choosePickupKey(pickupIndex);
     }
     

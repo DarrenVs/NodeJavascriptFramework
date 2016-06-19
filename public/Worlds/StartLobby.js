@@ -46,7 +46,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 
         stage.position.y = cameraController.cameraPosition();
         
-        if(PlayerProperties.checkHost() && INPUT_CLICK["82"]) {
+        if(INPUT_CLICK["82"]) {
             sendEvent("manualStartGame", {});
         }
         

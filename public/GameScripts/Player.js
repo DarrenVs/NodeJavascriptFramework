@@ -38,7 +38,6 @@ function Player(properties) {
     
     var pCount = Object.keys(PlayerProperties.playerList).length;
     var sprites = Enum.Images.Sprites;
-    console.log(pCount);
 
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -167,20 +166,19 @@ function Player(properties) {
         pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(self));
         pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(self));
     
+        
+        self.collisionEnter["pickupCollision"] = function(Obj) {
+            if(Obj.ClassType == Enum.ClassType.Pickup) {
+                pickupSM.ChangeState(Obj.pickupValue);
+            }
+        };
     }
     
-    //console.log("player spawned and added to playerlist:");
-    //console.log(self.creatorID);
+    console.log("player spawned and added to playerlist:");
+    console.log(self.creatorID);
     PlayerProperties.playerList[self.creatorID] = self;
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
-    
-    self.collisionEnter["pickupCollision"] = function(Obj) {
-        if(Obj.ClassType == Enum.ClassType.Pickup) {
-            console.log("PICKED UP: " + Obj.pickupValue);
-            pickupSM.ChangeState(Obj.pickupValue);
-        }
-    };
     
     this.DrawObject.currentAnimation = "run";
     
@@ -222,10 +220,8 @@ function Player(properties) {
     }
     
     this.manualDestroy = function() {
-        console.log("manual destroy, isHost = " + PlayerProperties.checkHost());
-        
-        if(self.creatorID == clientID)
-            sendEvent("playerDied", {});
+        if(self.creatorID == clientID && PlayerProperties.checkGameOver())
+            sendEvent("restartGame", {});
         
         self.health = 0;
     }

@@ -1,6 +1,8 @@
 var PickupStates = {
     
-    pickupActivateInput: "82",
+    pickupInput: "82",
+    
+    pickupSpawnOffset: 60,
     
     defaultState: function() {
         CreateState(this);
@@ -21,9 +23,11 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
+        
+        
         this.Reason = function () { 
             
-            if(!INPUT_CLICK[this.pickupActivateInput]) {
+            if(!INPUT_CLICK[PickupStates.pickupInput]) {
                 return true;
             }
             
@@ -38,21 +42,22 @@ var PickupStates = {
         var self = this;
         
         var invulnerabilityAmin;
-        var maxInvulnerabilityTime = 100;
+        var maxInvulnerabilityTime = 300;
         var invulnerabilityCounter = 0;
-          
+        var walkSpeedMultiplier = 1.3;
+        
         this.Enter =  function() {
             
             invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Invulnerability]({
                 size: new Vector2.new( 120,  200),
-                position: new Vector2.new(parent.position.x, parent.position.y- 50),
+                position: new Vector2.new(parent.position.x, parent.position.y),
             })
             
             invulnerabilityAmin.playerToFollow = parent;
             invulnerabilityCounter = 0;
             console.log("start invul");
             
-            parent.walkSpeed *= 1.2;
+            parent.walkSpeed *= walkSpeedMultiplier;
         }
         
         this.Reason = function () { 
@@ -66,8 +71,8 @@ var PickupStates = {
         this.Leave =  function() {
             invulnerabilityAmin.destroy();
             
-            parent.walkSpeed /= 1.2;
-            //console.log(self.parent.walkSpeed);
+            parent.walkSpeed = 200;
+            console.log(parent.walkSpeed);
             return self.returnState;
         }
     },
@@ -77,19 +82,19 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        //console.log("mine");
-        
         this.Reason = function () { 
-
-            if(!INPUT_CLICK[this.pickupActivateInput]) 
+            
+            if(!INPUT_CLICK[PickupStates.pickupInput]) 
                 return true;
             
             console.log("activated mine");
+            console.log(parent.scale.x + PickupStates.pickupSpawnOffset);
+            
             var mine = new Enum.ClassName[Enum.ClassType.Mine]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(parent.position.x , parent.position.y - 80),
+                position: new Vector2.new(parent.position.x + -parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
             })
-            console.log(mine.ClassType);
+            mine.velocity.x = -parent.scale.x * 40;
             parent.ignoreObjectType[mine.ClassType] = true;  
             parent.stage.addChild( mine );
             
@@ -103,19 +108,17 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        //console.log("ball");
-        
         this.Reason = function () { 
             
-            if(!INPUT_CLICK[this.pickupActivateInput])
+            if(!INPUT_CLICK["82"])
                 return true;
-            
-            console.log("activated ball");
             
             var ball = new Enum.ClassName[Enum.ClassType.Ball]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(parent.position.x, parent.position.y- 50),
+                position: new Vector2.new(parent.position.x + parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
             })
+            ball.velocity.x = parent.scale.x * 350;
+            
             parent.ignoreObjectType[ball.ClassType] = true;  
             parent.stage.addChild( ball );
             
@@ -131,21 +134,19 @@ var PickupStates = {
         
         var ammo = 6;
         
-        //console.log("throw");
-        
         this.Reason = function () {
             
-            if(!INPUT_CLICK[this.pickupActivateInput])
+            if(!INPUT_CLICK[PickupStates.pickupInput])
                 return true;
-            
-            console.log("throw activated");
             
             ammo--;
 
             var throwAble = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
                 size: new Vector2.new(40, 40),
-                position: new Vector2.new(parent.position.x, parent.position.y- 50),
-            })
+                position: new Vector2.new(parent.position.x + parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
+            }, 
+                parent.scale.x                                                                 
+            )
             
             parent.ignoreObjectType[throwAble.ClassType] = true;  
             parent.stage.addChild( throwAble );

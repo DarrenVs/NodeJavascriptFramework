@@ -1,15 +1,17 @@
 Enum.ClassName[Enum.ClassType.ThrowAbleObject] = ThrowAbleObject;
 
 // BaseClass
-function ThrowAbleObject(properties) {
+function ThrowAbleObject(properties, moveDirection) {
     var self = this;
     GameObject(this, properties);
     
     this.extends = {
         collision:Collision(this),
-        physics:Physics(this),
     };
     
+    var moveSpeed = 50;
+    
+    self.scale.x = moveDirection;
     self.size = new Vector2.new(20,9);
     self.ClassType = Enum.ClassType.ThrowAbleObject;
     
@@ -35,11 +37,11 @@ function ThrowAbleObject(properties) {
         }
     );
     
-    self.mass = .1;
     self.hitbox = Vector2.new(self.size.x, self.size.y);
-    self.mass = 100;
     
-    self.velocity = Vector2.multiply(Vector2.fromAngle(self.rotation), -1000);
+    this.update["throwAbleMoveForward"] = function() {
+        self.position.x += moveSpeed * moveDirection;
+    }
     
     this.collisionEnter["throwAbleObjectCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Player)

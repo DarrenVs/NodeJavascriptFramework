@@ -46,13 +46,15 @@ var events = events || {
         ChunkProperties.spawnChunk(Enum.SpawnAbleChunks[parameters.chunkID], parameters.stageID);
     },  
     
-    playerDied: function(parameters) {
-        if(PlayerProperties.checkGameOver()) {
-            PlayerProperties.playerList = {};
+    restartGame: function(parameters) {
+        console.log("restart game");
+        
+        PlayerProperties.playerList = {};
             
-            LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
-            cameraController.resetCamera();
-        }
+        Game["MainStage"].destroy()
+        
+        LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
+        cameraController.resetCamera();
     }, 
     
     manualStartGame: function(parameters) {
