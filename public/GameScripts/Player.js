@@ -174,8 +174,6 @@ function Player(properties) {
         };
     }
     
-    console.log("player spawned and added to playerlist:");
-    console.log(self.creatorID);
     PlayerProperties.playerList[self.creatorID] = self;
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);

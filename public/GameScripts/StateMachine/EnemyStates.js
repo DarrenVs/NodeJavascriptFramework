@@ -21,8 +21,7 @@ var EnemyStates = {
         this.Act = function () {
             if (parent.oldWallHitDir != parent.wallHitDir) {
                 parent.oldWallHitDir = parent.wallHitDir;
-                //console.log("changing direction in " + parent.ClassType);
-
+                
                 parent.walkSpeed = parent.wallHitDir * Math.abs(parent.walkSpeed);
             }
 
