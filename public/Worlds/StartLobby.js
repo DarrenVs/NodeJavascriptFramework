@@ -30,6 +30,8 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
         stage.addChild( newObject );
     }
     
+    stage.addChild(new StartInstructions());
+    
     var player;
     
     this.update["StartLobbyUpdate"] = function() {
@@ -50,7 +52,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             sendEvent("manualStartGame", {});
         }
         
-        if(Object.keys(PlayerProperties.playerList).length > 3 || PlayerProperties.manualStarted) {
+        if(PlayerProperties.manualStarted) {
             for(i = 0; i < barrier.length; i++) {
                 barrier[i].destroy();
             }
@@ -59,6 +61,4 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             delete self.update["StartLobbyUpdate"];
         }
     }
-    
-    stage.addChild(new StartInstructions());
 }
