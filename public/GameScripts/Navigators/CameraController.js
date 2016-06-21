@@ -6,9 +6,9 @@ var cameraController = {
     
     cameraPosition: function() {
         //keep the camera at the position of the highest player
-        for (var index in PlayerProperties.playerList) {
-            if(PlayerProperties.playerList[index].position.y < this.highestPlayerPos) {
-                this.highestPlayerPos =  PlayerProperties.playerList[index].position.y;
+        for (var index in PlayerProperties.activePlayers) {
+            if(PlayerProperties.activePlayers[index].position.y < this.highestPlayerPos) {
+                this.highestPlayerPos =  PlayerProperties.activePlayers[index].position.y;
             } 
         }
         

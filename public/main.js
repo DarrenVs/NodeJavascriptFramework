@@ -31,7 +31,6 @@ var Game = {
 
 var events = events || {
     
-    
     test: function(arguments) {
         
         console.log(arguments);
@@ -47,17 +46,35 @@ var events = events || {
     },  
     
     restartGame: function(parameters) {
-        PlayerProperties.playerList = {};
+        console.log("restart Game");
+        
+        PlayerProperties.existingPlayers = {};
+        
+        PlayerProperties.activePlayers = {};
             
+        PlayerProperties.readyPlayersAmount = 0;
+        
+        PlayerProperties.gameStarted = false;
+        
         Game["MainStage"].destroy()
         
         LoadWorld( Game.addChild( "MainStage", new Stage() ), Enum.Worlds.StartLobby );
         cameraController.resetCamera();
     }, 
     
-    manualStartGame: function(parameters) {
-        PlayerProperties.manualStarted = true;
+    startGame: function(parameters) {
+        PlayerProperties.gameStarted = true;
+    },
+    
+    playerReady: function(parameters) {
+        console.log("ready players: ");
+        console.log(PlayerProperties.readyPlayersAmount);
+        PlayerProperties.readyPlayersAmount++;
     }, 
+    
+    playerJoined: function(parameters) {
+        PlayerProperties.readyPlayersAmount = 0;
+    }
 };
 
 

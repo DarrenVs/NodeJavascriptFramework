@@ -3,7 +3,13 @@ Enum.Worlds.StartLobby = Worlds.length;
 Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     GameObject( this );
     
+    console.log("spawn lobby");
+    
     var self = this;
+    
+    var player;
+    
+    var ready = false;
     
     stage.addChild(new Enum.ClassName[Enum.ClassType.Background]);
     
@@ -32,7 +38,29 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     stage.addChild(new StartInstructions());
     
-    var player;
+    //reset the spawnable chunks
+    Enum.SpawnAbleChunks = [];
+    
+    ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
+    
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["chunkToBeTested"]);
+    
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
+    
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["enemyChunks"]);
+    
+    var playerHolder = new EmptyObject({
+        position: new Vector2.new(-200, 0),
+        size: new Vector2.new(0,0),
+    });
+    
+    playerHolder.ID = 9090;
+    
+    delete playerHolder.DrawObject;
+    
+    stage.addChild( playerHolder );
+    
+    sendEvent("playerJoined", {});
     
     this.update["StartLobbyUpdate"] = function() {
         
@@ -43,22 +71,38 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 size: new Vector2.new(15, 30),
             });
             
-            stage.addChild( player );
+            playerHolder.addChild( player );
         }
                 
         stage.position.y = cameraController.cameraPosition();
         
-        if(INPUT_CLICK["82"]) {
-            sendEvent("manualStartGame", {});
+        if(!ready && INPUT_CLICK["82"]) {
+            ready = true;
+            sendEvent("playerReady", {
+                playerID: player.creatorID,
+            });
         }
         
-        if(PlayerProperties.manualStarted) {
+        if(PlayerProperties.readyPlayersAmount >= Object.keys(PlayerProperties.existingPlayers).length) {
+                        console.log("start game");
+            
             for(i = 0; i < barrier.length; i++) {
                 barrier[i].destroy();
             }
-
+            
+            //add all existing players to the active player list, so we know which players started this match
+            for(playerID in PlayerProperties.existingPlayers) {
+                PlayerProperties.activePlayers[playerID] = PlayerProperties.existingPlayers[playerID];
+            }
+            
+            PlayerProperties.readyPlayersAmount = 0;
+            
             LoadWorld(stage, Enum.Worlds.MainWorld);
             delete self.update["StartLobbyUpdate"];
+        }
+                
+        if(PlayerProperties.gameStarted) {
+
         }
     }
 }

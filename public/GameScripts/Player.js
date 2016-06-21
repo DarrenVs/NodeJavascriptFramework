@@ -1,7 +1,16 @@
 "use strict";
 
 var PlayerProperties = {
-    playerList: {},
+    
+    readyPlayersAmount: 0,
+    
+    //the players that are ready and playing the game
+    activePlayers: {},
+    
+    //all the players that currently exist in the lobby
+    existingPlayers: {},
+    
+    gameStarted: false,
     
     checkHost: function() {
         for (var index in connectionList) {
@@ -12,19 +21,16 @@ var PlayerProperties = {
     checkGameOver: function() {
         var alivePlayers = 0;
         
-        for(var player in this.playerList) {
-            if(this.playerList[player].health > 0)
+        for(var player in this.readyPlayers) {
+            if(this.readyPlayers[player].health > 0)
                 alivePlayers++;
         }
-        
         
         if(alivePlayers <= 1)
             return true;
         else 
             return false;
     },
-    
-    manualStarted: false,
 };
 
 Enum.ClassName[Enum.ClassType.Player] = Player;
@@ -37,9 +43,9 @@ function Player(properties) {
     var self = this;
     self.ClassType = Enum.ClassType.Player;
     
-    var pCount = Object.keys(PlayerProperties.playerList).length;
+    var pCount = Object.keys(PlayerProperties.activePlayers).length;
     var sprites = Enum.Images.Sprites;
-
+    
     this.DrawObject = new Sprite(
         this,   //Parent
 
@@ -174,8 +180,12 @@ function Player(properties) {
             }
         };
     }
+    console.log(connectionList);
+    console.log(self.creatorID);
     
-    PlayerProperties.playerList[self.creatorID] = self;
+    PlayerProperties.existingPlayers[self.creatorID] = self;
+    console.log("added myself to existing players");
+    console.log(PlayerProperties.existingPlayers);
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
     
@@ -219,6 +229,8 @@ function Player(properties) {
     }
     
     this.manualDestroy = function() {
+        console.log(self.creatorID == clientID && PlayerProperties.checkGameOver());
+        
         if(self.creatorID == clientID && PlayerProperties.checkGameOver())
             sendEvent("restartGame", {});
         
@@ -226,6 +238,11 @@ function Player(properties) {
     }
     
     this.die = function() {  
+        console.log("die");
+        
+        delete PlayerProperties.activePlayers[self.creatorID];
+        delete PlayerProperties.existingPlayers[self.creatorID];
+        
         self.Health = 0;
         sendObject(self);
         self.destroy();

@@ -24,21 +24,6 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         }
     }
     
-    /////////////////////////////////
-    //---ADD CHUNKS TO SPAWNABLE---///
-    /////////////////////////////////
-    
-    //reset the spawnable chunks
-    Enum.SpawnAbleChunks = [];
-    
-    ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
-    
-    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["chunkToBeTested"]);
-    
-    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
-    
-    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["enemyChunks"]);
-    
     //Level Boundary
     var boundary = new Enum.ClassName[Enum.ClassType.Boundary]({
         size: new Vector2.new(canvas.width, 10),
@@ -65,7 +50,7 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
         size: new Vector2.new(40, 40),
         position: new Vector2.new(200, canvas.height /2)
     })
-    invulnerability.playerToFollow = PlayerProperties.playerList[]
+    invulnerability.playerToFollow = PlayerProperties.activePlayers[]
     stage.addChild( invulnerability );
 
 

@@ -18,8 +18,8 @@ function IntermediatePlatform(properties) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    for(var i in PlayerProperties.playerList) {
-        self.ignoreObjectIDs[PlayerProperties.playerList[i].ID] = true;
+    for(var i in PlayerProperties.activePlayers) {
+        self.ignoreObjectIDs[PlayerProperties.activePlayers[i].ID] = true;
     }
     
     this.DrawObject = new Sprite(
