@@ -3,8 +3,6 @@ Enum.Worlds.StartLobby = Worlds.length;
 Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     GameObject( this );
     
-    console.log("spawn lobby");
-    
     var self = this;
     
     var player;
@@ -49,14 +47,8 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["enemyChunks"]);
     
-    var playerHolder = new EmptyObject({
-        position: new Vector2.new(-200, 0),
-        size: new Vector2.new(0,0),
-    });
-    
-    playerHolder.ID = 9090;
-    
-    delete playerHolder.DrawObject;
+    var playerHolder = new EmptyObject({});
+    stage.addChild(playerHolder);
     
     stage.addChild( playerHolder );
     
@@ -84,7 +76,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
         }
         
         if(PlayerProperties.readyPlayersAmount >= Object.keys(PlayerProperties.existingPlayers).length) {
-                        console.log("start game");
             
             for(i = 0; i < barrier.length; i++) {
                 barrier[i].destroy();
@@ -101,8 +92,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             delete self.update["StartLobbyUpdate"];
         }
                 
-        if(PlayerProperties.gameStarted) {
-
-        }
+        sendObject( playerHolder );
     }
 }
