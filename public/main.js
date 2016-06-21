@@ -388,22 +388,22 @@ function GameObject(Parent, properties, inheritances) {
     
     var self = this
     
-    Parent.__defineGetter__('forward', function() {
+    Parent.__defineGetter__('forward', () => {
         return Vector2.fromAngle(getObjectRotation(Parent)+180);
     })
-    Parent.__defineGetter__('right', function() {
+    Parent.__defineGetter__('right', () => {
         return Vector2.fromAngle(getObjectRotation(Parent)+270);
     })
-    Parent.__defineGetter__('stage', function() {
+    Parent.__defineGetter__('stage', () => {
         return Game[Parent.stageID];
     })
     
     
-    Parent.__defineGetter__('ID', function() {
+    Parent.__defineGetter__('ID', () => {
         return Parent.creatorID + "x" + getFullName( Parent );
         //Parent.creatorID + "x" + (Parent.Parent != undefined ? Parent.Parent.IDc + ":" : "") + Parent.IDc//(Parent.Parent != undefined ? "x" + Parent.Parent.ID : "") + ":" + Parent.IDc;
     })
-    Parent.__defineSetter__('ID', function(val) {
+    Parent.__defineSetter__('ID', (val) => {
         
         if (Parent.Parent != undefined && Parent.Parent.childs[Parent.ID] != undefined)
             delete Parent.Parent.childs[Parent.ID];

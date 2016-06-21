@@ -26,10 +26,10 @@ function Physics(Parent) {
     Parent.Anchored = Parent.anchored || false;
 
     
-    Parent.__defineGetter__('anchored', function() {
+    Parent.__defineGetter__('anchored', () => {
         return Parent.Anchored
     });
-    Parent.__defineSetter__('anchored', function(val) {
+    Parent.__defineSetter__('anchored', (val) => {
         Parent.Anchored = val;
         
         if (val && Parent.stage && Parent.stage.PhysicsLoop[Parent.ID])
@@ -59,13 +59,13 @@ function Physics(Parent) {
             addToPhysicsLoop( Parent );
         }
     })
-    Parent.__defineGetter__('velocity', function() {
+    Parent.__defineGetter__('velocity', () => {
         return Parent.Velocity;
     })
     
     
     
-    Parent.Velocity.__defineSetter__('x', function(val) {
+    Parent.Velocity.__defineSetter__('x', (val) => {
         
         if (val != undefined && val != NaN) {
             Parent.Velocity.X = val;
@@ -73,13 +73,13 @@ function Physics(Parent) {
             addToPhysicsLoop( Parent );
         }
     })
-    Parent.Velocity.__defineGetter__('x', function() {
+    Parent.Velocity.__defineGetter__('x', () => {
         return Parent.Velocity.X;
     })
     
     
     
-    Parent.Velocity.__defineSetter__('y', function(val) {
+    Parent.Velocity.__defineSetter__('y', (val) => {
         
         if (val != undefined && val != NaN) {
             Parent.Velocity.Y = val;
@@ -87,7 +87,7 @@ function Physics(Parent) {
             addToPhysicsLoop( Parent );
         }
     })
-    Parent.Velocity.__defineGetter__('y', function() {
+    Parent.Velocity.__defineGetter__('y', () => {
         return Parent.Velocity.Y;
     })
     
