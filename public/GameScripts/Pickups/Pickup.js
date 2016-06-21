@@ -1,29 +1,3 @@
-var PickupProperties = {
-    
-    currentPickups: {},
-    
-    pickupChoices: {
-        0: StatesEnum.invulnerabilityOnHold,
-        1: StatesEnum.mineOnHold,
-        2: StatesEnum.ballOnHold,
-        3: StatesEnum.throwAbleOnHold,
-    },
-    
-    choosePickupKey: function(pickupID) {
-        var pickupKey = Math.floor(Math.random() * Object.keys(this.pickupChoices).length);
-        
-        sendEvent("sendPickup", {
-            pickupKey: pickupKey,
-            pickupID: pickupID,
-        });
-    },
-    
-    assignPickup: function(pickupKey, pickupID) {
-        this.currentPickups[pickupID].pickupValue = this.pickupChoices[pickupKey];
-        this.currentPickups[pickupID].startAnimation(pickupKey); 
-    },
-}
-
 Enum.ClassName[Enum.ClassType.Pickup] = Pickup;
 
 // BaseClass
@@ -35,9 +9,12 @@ function Pickup(properties) {
         collision:Collision(this),
     }
     
-    var pickupIndex = 0;
-    
-    var pickupValue;
+    self.pickupChoices = {
+        0: StatesEnum.invulnerabilityOnHold,
+        1: StatesEnum.mineOnHold,
+        2: StatesEnum.ballOnHold,
+        3: StatesEnum.throwAbleOnHold,
+    };
     
     self.collisionActive = false;
     self.canCollide = false;
@@ -45,42 +22,31 @@ function Pickup(properties) {
     
     self.size = new Vector2.new(60, 60);
     
-    pickupIndex = Object.keys(PickupProperties.currentPickups).length;
-    
-    PickupProperties.currentPickups[pickupIndex] = self;
-    
-    if(PlayerProperties.checkHost()) {
-        PickupProperties.choosePickupKey(pickupIndex);
-    }
-    
     this.collisionEnter["destroyPickupOnCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Player) {
-            delete PickupProperties.currentPickups[pickupIndex];
             self.destroy();
         }
     }
     
-    this.startAnimation = function(pickupKey) {
-        this.DrawObject = new Sprite(
-            this,   //Parent
-            Enum.Images.Sprites.Pickups[pickupKey].SpriteSheet,   //Image
-            {   //Sprites
-                pickupAnimation: {
-                    position: Vector2.new(0, 0),
-                    size: Enum.Images.Sprites.Pickups[pickupKey].Size,
-                    columns: Enum.Images.Sprites.Pickups[pickupKey].Columns,
-                    rows: Enum.Images.Sprites.Pickups[pickupKey].Rows,
-                },
+    this.DrawObject = new Sprite(
+        this,   //Parent
+        Enum.Images.Sprites.Pickup,   //Image
+        {   //Sprites
+            pickupAnimation: {
+                position: Vector2.new(0, 0),
+                size: Vector2.new(1465, 1833),
+                columns: 8,
+                rows: 8,
             },
-            {   //Animations
-                pickupAnimation: {
-                    sprite: "pickupAnimation",
-                    speed: .3, //Per frame
-                    keyFrames: Enum.Images.Sprites.Pickups[pickupKey].Keyframes, //AnimationFrame
-                    currentKeyFrame: 0, //Where to start
-                    loop: true, //Should it loop? (WIP!)
-                },
-            }
-        );
-    }
+        },
+        {   //Animations
+            pickupAnimation: {
+                sprite: "pickupAnimation",
+                speed: .3, //Per frame
+                keyFrames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,55,56,57], //AnimationFrame
+                currentKeyFrame: 0, //Where to start
+                loop: true, //Should it loop? (WIP!)
+            },
+        }
+    );
 }

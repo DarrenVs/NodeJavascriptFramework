@@ -12,6 +12,8 @@ function Mine(properties) {
 
     self.ClassType = Enum.ClassType.Mine;
     
+    self.size = new Vector2(20,20);
+    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.MineEffectSpriteSheet,   //Image

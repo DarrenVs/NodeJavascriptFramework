@@ -174,7 +174,8 @@ function Player(properties) {
         
         self.collisionEnter["pickupCollision"] = function(Obj) {
             if(Obj.ClassType == Enum.ClassType.Pickup) {
-                pickupSM.ChangeState(Obj.pickupValue);
+                console.log(Obj.pickupChoices);
+                pickupSM.ChangeState(Obj.pickupChoices[Math.floor(Math.random() * Object.keys(Obj.pickupChoices).length)]);
             }
         };
     }
