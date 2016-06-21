@@ -46,8 +46,6 @@ var events = events || {
     },  
     
     restartGame: function(parameters) {
-        console.log("restart Game");
-        
         PlayerProperties.existingPlayers = {};
         
         PlayerProperties.activePlayers = {};
@@ -67,8 +65,6 @@ var events = events || {
     },
     
     playerReady: function(parameters) {
-        console.log("ready players: ");
-        console.log(PlayerProperties.readyPlayersAmount);
         PlayerProperties.readyPlayersAmount++;
     }, 
     

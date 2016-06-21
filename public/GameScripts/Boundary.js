@@ -25,10 +25,11 @@ function Boundary(properties) {
         if(Obj.manualDestroy != undefined) {
             Obj.manualDestroy();
             
+            /*
             if(PlayerProperties.checkGameOver()) {
                 self.destroy();
                 console.log("boundary destroys self");
-            }
+            }*/
                 
         } else {
             Obj.destroy();

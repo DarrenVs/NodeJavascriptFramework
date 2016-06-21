@@ -10,8 +10,6 @@ var PlayerProperties = {
     //all the players that currently exist in the lobby
     existingPlayers: {},
     
-    gameStarted: false,
-    
     checkHost: function() {
         for (var index in connectionList) {
             return index == clientID;
@@ -180,12 +178,8 @@ function Player(properties) {
             }
         };
     }
-    console.log(connectionList);
-    console.log(self.creatorID);
     
     PlayerProperties.existingPlayers[self.creatorID] = self;
-    console.log("added myself to existing players");
-    console.log(PlayerProperties.existingPlayers);
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
     
@@ -238,8 +232,6 @@ function Player(properties) {
     }
     
     this.die = function() {  
-        console.log("die");
-        
         delete PlayerProperties.activePlayers[self.creatorID];
         delete PlayerProperties.existingPlayers[self.creatorID];
         
