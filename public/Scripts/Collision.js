@@ -57,13 +57,13 @@ function Collision(Parent) {
             updateObjectsGrid( Parent );
         }
     })
-    Parent.__defineGetter__('position', function() {
+    Parent.__defineGetter__('position', () => {
         return Parent.Position;
     })
     
     
     
-    Parent.Position.__defineSetter__('x', function(val) {
+    Parent.Position.__defineSetter__('x', (val) => {
         
         if (val != undefined && val != NaN) {
             Parent.Position.X = val;
@@ -71,13 +71,13 @@ function Collision(Parent) {
             updateObjectsGrid( Parent );
         }
     })
-    Parent.Position.__defineGetter__('x', function() {
+    Parent.Position.__defineGetter__('x', () => {
         return Parent.Position.X;
     })
     
     
     
-    Parent.Position.__defineSetter__('y', function(val) {
+    Parent.Position.__defineSetter__('y', (val) => {
         
         if (val != undefined && val != NaN) {
             Parent.Position.Y = val;
@@ -85,7 +85,7 @@ function Collision(Parent) {
             updateObjectsGrid( Parent );
         }
     })
-    Parent.Position.__defineGetter__('y', function() {
+    Parent.Position.__defineGetter__('y', () => {
         return Parent.Position.Y;
     })
     
@@ -96,16 +96,16 @@ function Collision(Parent) {
     
     
     
-    Parent.__defineGetter__('collisionDirection', function() {
+    Parent.__defineGetter__('collisionDirection', () => {
         return Vector2.unit(Vector2.divide(Parent.CollisionDirection, Parent.collisionCount));
     })
-    Parent.__defineSetter__('collisionDirection', function(val) {
+    Parent.__defineSetter__('collisionDirection', (val) => {
         Parent.CollisionDirection = val;
     })
-    Parent.__defineGetter__('collisionDepth', function() {
+    Parent.__defineGetter__('collisionDepth', () => {
         return Parent.CollisionDepth / Parent.collisionCount;
     })
-    Parent.__defineSetter__('collisionDepth', function(val) {
+    Parent.__defineSetter__('collisionDepth', (val) => {
         Parent.CollisionDepth = val;
     })
     
