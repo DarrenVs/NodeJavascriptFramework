@@ -69,6 +69,7 @@ var events = events || {
     }, 
     
     playerJoined: function(parameters) {
+        PlayerProperties.ready = false;
         PlayerProperties.readyPlayersAmount = 0;
     }
 };

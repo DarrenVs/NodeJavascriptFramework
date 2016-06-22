@@ -7,8 +7,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     var player;
     
-    var ready = false;
-    
     stage.addChild(new Enum.ClassName[Enum.ClassType.Background]);
     
     stage.gravity = Vector2.new(0, 20);
@@ -68,8 +66,8 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 
         stage.position.y = cameraController.cameraPosition();
         
-        if(!ready && INPUT_CLICK["82"]) {
-            ready = true;
+        if(!PlayerProperties.ready && INPUT_CLICK["82"]) {
+            PlayerProperties.ready = true;
             sendEvent("playerReady", {
                 playerID: player.creatorID,
             });

@@ -16,11 +16,13 @@ var PlayerProperties = {
         }
     },
     
+    ready: false,
+    
     checkGameOver: function() {
         var alivePlayers = 0;
         
-        for(var player in this.readyPlayers) {
-            if(this.readyPlayers[player].health > 0)
+        for(var player in PlayerProperties.activePlayers) {
+            if(PlayerProperties.activePlayers[player].health > 0)
                 alivePlayers++;
         }
         
@@ -224,8 +226,6 @@ function Player(properties) {
     }
     
     this.manualDestroy = function() {
-        console.log(self.creatorID == clientID && PlayerProperties.checkGameOver());
-        
         if(self.creatorID == clientID && PlayerProperties.checkGameOver())
             sendEvent("restartGame", {});
         
