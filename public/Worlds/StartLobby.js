@@ -37,11 +37,11 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     //reset the spawnable chunks
     Enum.SpawnAbleChunks = [];
     
-    ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
     
     //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["chunkToBeTested"]);
     
-    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
+    ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
     
     //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["enemyChunks"]);
     

@@ -47,6 +47,9 @@ function Ball(properties) {
     
     var bounceStrength = 250;
     
+    if(self.creatorID == clientID)
+        sendObject(self, false, true);
+    
     self.collisionStay["physics"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
        
         if(!self.anchored && canCollide && collisionFrames >= 5) {

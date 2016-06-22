@@ -9,7 +9,7 @@ function ThrowAbleObject(properties, moveDirection) {
         collision:Collision(this),
     };
     
-    var moveSpeed = 50;
+    var moveSpeed = 450;
     
     self.scale.x = moveDirection;
     self.size = new Vector2.new(20,9);
@@ -39,8 +39,11 @@ function ThrowAbleObject(properties, moveDirection) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    this.update["throwAbleMoveForward"] = function() {
-        self.position.x += moveSpeed * moveDirection;
+    if(self.creatorID == clientID)
+        sendObject(self, false, true);
+    
+    this.update["throwAbleMoveForward"] = function(self, deltaTime) {
+        self.position.x += moveSpeed * moveDirection * deltaTime;
     }
     
     this.collisionEnter["throwAbleObjectCollision"] = function(Obj) {

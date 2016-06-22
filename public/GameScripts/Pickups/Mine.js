@@ -12,8 +12,6 @@ function Mine(properties) {
 
     self.ClassType = Enum.ClassType.Mine;
     
-    self.size = new Vector2(20,20);
-    
     this.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.MineEffectSpriteSheet,   //Image
@@ -35,6 +33,11 @@ function Mine(properties) {
             },
         }
     );
+    
+    self.DrawObject.spriteOffset = new Vector2.new(0, 11);
+    
+    if(self.creatorID == clientID)
+        sendObject(self, false, true);
     
     this.collisionEnter["mineCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Player) {
