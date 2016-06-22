@@ -128,7 +128,7 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
     }
     
     //The core logic (should speak for itself)
-    parent.update["statemachine" + updateCounter++] = function () {
+    parent.update["statemachine" + updateCounter++] = function (undefined, deltaTime) {
         if (defaultKeyActive) {
 
             if (currentState.Reason()) {
