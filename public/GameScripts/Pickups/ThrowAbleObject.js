@@ -44,6 +44,11 @@ function ThrowAbleObject(properties, moveDirection) {
     
     this.update["throwAbleMoveForward"] = function(self, deltaTime) {
         self.position.x += moveSpeed * moveDirection * deltaTime;
+        
+        if(self.creatorID == clientID) {
+            console.log("client ID");
+           sendObject(self, false, true); 
+        }
     }
     
     this.collisionEnter["throwAbleObjectCollision"] = function(Obj) {

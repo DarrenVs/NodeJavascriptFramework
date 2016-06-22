@@ -47,8 +47,10 @@ function Ball(properties) {
     
     var bounceStrength = 250;
     
-    if(self.creatorID == clientID)
+    if(self.creatorID == clientID) {
+        console.log("client ID");
         sendObject(self, false, true);
+    }
     
     self.collisionStay["physics"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {
        
@@ -73,6 +75,7 @@ function Ball(properties) {
         }
         
         if(Obj.ClassType == Enum.ClassType.Player) {
+            console.log("doStagger");
             Obj.doStagger = true;
             self.destroy();
         }

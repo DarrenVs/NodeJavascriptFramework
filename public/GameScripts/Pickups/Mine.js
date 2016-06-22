@@ -41,6 +41,7 @@ function Mine(properties) {
     
     this.collisionEnter["mineCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Player) {
+            console.log("doStagger");
             Obj.doStagger = true;
             self.destroy();
         }

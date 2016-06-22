@@ -107,12 +107,12 @@ var ChunkProperties = {
                     var newObject = new Enum.ClassName[Enum.ClassType.Wall]({
                         size: new Vector2.new(this.tileSize, this.tileSize),
                         position: new Vector2.new(this.tileSize / 2, y * this.tileSize + this.totalLevelHeight),
-                    })
+                    });
                 else {
                     var newObject = new Enum.ClassName[Enum.ClassType.Wall]({
                         size: new Vector2.new(this.tileSize, this.tileSize),
                         position: new Vector2.new(canvas.width - this.tileSize / 2, y * this.tileSize + this.totalLevelHeight),
-                    })
+                    });
                 }
 
                 Game[stageID].addChild( newObject );
@@ -125,7 +125,8 @@ var ChunkProperties = {
     uncompressedChunkLibary: {
         
         startLobbyChunk:
-    "0000011100000000000100000000000010000001100001000011110000000001100000000000000000000000000000001110000000000000000001100000000011110000000001100000000000000000011100000000000100000000000010000001111111111111",
+    //"0000011100000000000100000000000010000001100001000011110000000001100000000000000000000000000000001110000000000000000001100000000011110000000001100000000000000000011100000000000100000000000010000001111111111111",
+        "0000000000000000000000000000000000000000000000000000020000000002000000000000000000007000000",
 
         intermediateChunk : "000000000000000000070000000000000000000",
 
@@ -168,7 +169,7 @@ var ChunkProperties = {
             ],
         
         pickupChunks : [
-            "00000000000000006000006000001110001110000060000060000000000000000",
+            "00000000000000000000006000001110001110000000000000000000000000000",
             
             /*
             "0000000000000000000110000000000000000000000000000100000100060010000011111111000000000000000",
@@ -183,7 +184,7 @@ var ChunkProperties = {
         ],
         
         chunkToBeTested: [
-            
+            "00000000000000001100011000020110001102000011000110000000000000000000000000000000100111001000010011100100000000000000000000000000000001100011000020110001102000011000110000000000000000",
             
         ]
         
