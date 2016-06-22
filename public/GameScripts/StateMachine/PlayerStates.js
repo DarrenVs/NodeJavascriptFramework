@@ -10,7 +10,6 @@ var PlayerStates = {
         parent.anyReturnState = undefined;
 
         self.Return = function () {
-
             if (parent.doStagger) {
                 parent.anyReturnState = StatesEnum.stun;
                 parent.doStagger = false;
@@ -396,25 +395,34 @@ var PlayerStates = {
         }
     },
 
-    Stagger: function (_parent,_staggerUp, _staggerSide) {
+    Stagger: function (_parent,_staggerUp, _staggerSide, _staggerTime) {
         CreateState(this);
         var self = this;
         var parent = _parent;
 
         var staggerUp = _staggerUp || 400;
         var staggerSide = _staggerSide || 205;
+        var staggerTime = _staggerTime|| 80;
+        
+        var timeLeft = staggerTime;
         
         self.Enter = function () {
-
             if(_parent.staggerAble) {
-                parent.velocity = Vector2.new(staggerSide, staggerUp);
+
                 self.returnState = StatesEnum.inAir;
                 parent.autoWalk = false;
-                parent.DrawObject.animation = "stagger";
             }
         }
 
+        self.Reason = function () {
+            if (timeLeft > 0) timeLeft--;
+            else return false;
+
+            return true;
+        }
+
         self.Leave = function () {
+            timeLeft = staggerTime;
             parent.autoWalk = true;
             return self.returnState;
         }

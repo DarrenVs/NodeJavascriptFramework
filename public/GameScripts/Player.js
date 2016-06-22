@@ -156,7 +156,7 @@ function Player(properties) {
         
         //-----Adding the navigation states!!!-----\\
         var navSM = this.extends.navigation;
-        navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(this));
+        navSM.AddState(StatesEnum.wander, new PlayerStates.Walk(self));
         navSM.AddState(StatesEnum.jump, new PlayerStates.Jump(self));
         navSM.AddState(StatesEnum.specialJump, new PlayerStates.WallJump(self));
         navSM.AddState(StatesEnum.extraJump, new PlayerStates.ExtraJump(self));
@@ -186,7 +186,7 @@ function Player(properties) {
     
     self.position = new Vector2.new(canvas.width / 2, canvas.height / 1.3);
     
-    this.DrawObject.currentAnimation = "run";
+    this.DrawObject.currentAnimation = "walk";
     
     this.anchored = false;
     
