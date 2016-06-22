@@ -415,17 +415,18 @@ var PlayerStates = {
         var timeLeft = staggerTime;
         
         self.Enter = function () {
-            if(_parent.staggerAble) {
-
+                console.log("stagger enter");
+            if(parent.staggerAble) {
                 self.returnState = StatesEnum.inAir;
                 parent.autoWalk = false;
             }
         }
 
         self.Reason = function () {
+                parent.DrawObject.currentAnimation = "jumpStart";
             if (timeLeft > 0) timeLeft--;
             else return false;
-
+            console.log("in stagger");
             return true;
         }
 

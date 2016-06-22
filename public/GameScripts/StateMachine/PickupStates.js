@@ -136,7 +136,7 @@ var PickupStates = {
         var ammo = 6;
         
         this.Enter =  function() {
-            ammo = 6
+            ammo = 6;
             console.log("reset ammo!");
         }
         

@@ -135,6 +135,7 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
                 currentState.Act();
             } else {
                 self.ChangeState(currentState.Leave());
+                //console.log(currentState);
                 currentState.Enter();
             }
         }
