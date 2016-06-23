@@ -1,6 +1,6 @@
 var cameraController = {
     
-    highestPlayerPos: 270,
+    highestPlayerPos: 249,
     
     cameraYOffset: 3.5,
     
@@ -16,6 +16,6 @@ var cameraController = {
     },
     
     resetCamera: function() {
-        this.highestPlayerPos = 270;
+        this.highestPlayerPos = 249;
     },
 }

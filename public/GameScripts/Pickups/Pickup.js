@@ -34,7 +34,7 @@ function Pickup(properties) {
         {   //Sprites
             pickupAnimation: {
                 position: Vector2.new(0, 0),
-                size: Vector2.new(1465, 1833),
+                size: Vector2.new(410, 513),
                 columns: 8,
                 rows: 8,
             },

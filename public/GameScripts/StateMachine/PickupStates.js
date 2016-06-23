@@ -2,7 +2,7 @@ var PickupStates = {
     
     pickupInput: "82",
     
-    pickupSpawnOffset: 60,
+    pickupSpawnOffset: 40,
     
     defaultState: function() {
         CreateState(this);
@@ -87,14 +87,14 @@ var PickupStates = {
             if(!INPUT_CLICK[PickupStates.pickupInput]) 
                 return true;
             
-            console.log("activated mine");
-            
             var mine = new Enum.ClassName[Enum.ClassType.Mine]({
                 size: new Vector2.new(40, 40),
                 position: new Vector2.new(parent.position.x + -parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
             })
             
-            parent.ignoreObjectType[mine.ClassType] = true;  
+            mine.ignoreObjectIDs[Enum.ClassType.Unknown] = true; 
+            parent.ignoreObjectIDs[mine.ID] = true;
+            
             parent.stage.addChild( mine );
             
             self.returnState = undefined;            
@@ -112,15 +112,15 @@ var PickupStates = {
             if(!INPUT_CLICK["82"])
                 return true;
             
-            console.log("activated ball");
-            
             var ball = new Enum.ClassName[Enum.ClassType.Ball]({
                 size: new Vector2.new(40, 40),
                 position: new Vector2.new(parent.position.x + parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
             })
             ball.velocity.x = parent.scale.x * 350;
             
-            parent.ignoreObjectType[ball.ClassType] = true;  
+            ball.ignoreObjectIDs[Enum.ClassType.Unknown] = true;
+            parent.ignoreObjectIDs[ball.ID] = true;
+            
             parent.stage.addChild( ball );
             
             self.returnState = undefined;            
@@ -156,8 +156,12 @@ var PickupStates = {
                 parent.scale.x                                                                 
             )
             
-            parent.ignoreObjectType[throwAble.ClassType] = true;  
+            throwAble.ignoreObjectIDs[Enum.ClassType.Unknown] = true;
+            parent.ignoreObjectIDs[throwAble.ID] = true;
+             
             parent.stage.addChild( throwAble );
+            
+            sendObject(throwAble, false, true);
             
             if(ammo > 0)
                 return true;

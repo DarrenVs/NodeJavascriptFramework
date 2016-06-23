@@ -151,19 +151,6 @@ var PlayerStates = {
                 parent.wallsHit --;
             }
         }
-
-        parent.groundColl.ignoreObjectType[Enum.ClassType.Mine] = true; 
-        parent.groundColl.ignoreObjectType[Enum.ClassType.Ball] = true; 
-        parent.groundColl.ignoreObjectType[Enum.ClassType.ThrowAbleObject] = true; 
-        
-        parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.Mine] = true;
-        parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.Ball] = true;
-        parent.wallHitCollRight.ignoreObjectType[Enum.ClassType.ThrowAbleObject] = true;
-        
-        parent.slideColl.ignoreObjectType[Enum.ClassType.Mine] = true;
-        parent.slideColl.ignoreObjectType[Enum.ClassType.Ball] = true;
-        parent.slideColl.ignoreObjectType[Enum.ClassType.ThrowAbleObject] = true;
-         
         
         parent.addChild(parent.groundColl);
         parent.addChild(parent.wallHitCollRight);

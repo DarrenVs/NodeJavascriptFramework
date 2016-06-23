@@ -45,11 +45,12 @@ function Ball(properties) {
     
     self.velocity = new Vector2.new(400 * direction, -600);
     
-    var bounceStrength = 250;
+    var bounceStrength = 130;
     
-    if(self.creatorID == clientID) {
-        console.log("client ID");
-        sendObject(self, false, true);
+    self.update["ballSendObject"] = function() {
+        if(self.creatorID == clientID) {
+            sendObject(self, false, true);
+        }
     }
     
     self.collisionStay["physics"] = function(Obj, direction, force, distance, canCollide, collisionFrames) {

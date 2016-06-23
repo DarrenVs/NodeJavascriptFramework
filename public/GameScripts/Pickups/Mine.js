@@ -36,8 +36,11 @@ function Mine(properties) {
     
     self.DrawObject.spriteOffset = new Vector2.new(0, 11);
     
-    if(self.creatorID == clientID)
-        sendObject(self, false, true);
+    self.update["mineSendObject"] = function() {
+        if(self.creatorID == clientID) {
+            sendObject(self, false, true);
+        }
+    }
     
     this.collisionEnter["mineCollision"] = function(Obj) {
         if(Obj.ClassType == Enum.ClassType.Player) {

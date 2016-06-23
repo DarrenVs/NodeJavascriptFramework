@@ -9,7 +9,7 @@ function ThrowAbleObject(properties, moveDirection) {
         collision:Collision(this),
     };
     
-    var moveSpeed = 450;
+    self.moveSpeed = 550;
     
     self.scale.x = moveDirection;
     self.size = new Vector2.new(20,9);
@@ -39,22 +39,25 @@ function ThrowAbleObject(properties, moveDirection) {
     
     self.hitbox = Vector2.new(self.size.x, self.size.y);
     
-    if(self.creatorID == clientID)
-        sendObject(self, false, true);
+    console.log("spawn bullet");
     
     this.update["throwAbleMoveForward"] = function(self, deltaTime) {
-        self.position.x += moveSpeed * moveDirection * deltaTime;
+        self.position.x += self.moveSpeed * moveDirection * deltaTime;
+        
+        console.log(self.position);
         
         if(self.creatorID == clientID) {
-            console.log("client ID");
-           sendObject(self, false, true); 
+            sendObject(self, false, true);
         }
     }
     
     this.collisionEnter["throwAbleObjectCollision"] = function(Obj) {
-        if(Obj.ClassType == Enum.ClassType.Player)
+        if(Obj.ClassType == Enum.ClassType.Player) {
             Obj.doStagger = true;
+            console.log("hitplayer");
+        }
         
+        console.log("self destroy");
         self.destroy();
     };
 }

@@ -596,7 +596,8 @@ var replicateProperties = {
     zIndex: true,
     text: true,
     //mass: true,
-    pickupValue: true,
+    
+    moveSpeed: true,
 }
 
 function PackageObject( Obj ) {
