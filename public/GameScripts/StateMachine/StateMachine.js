@@ -135,8 +135,6 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
                 currentState.Act();
             } else {
                 self.ChangeState(currentState.Leave());
-                //console.log(currentState);
-                currentState.Enter();
             }
         }
 
@@ -158,6 +156,7 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
             if (debug) console.log(parentName + ":switching to defualt: " + defaultStateKey);
             currentState = states[defaultStateKey];
         }
+        currentState.Enter();
     }
 }
 //<<<<<<<<<<<<<>>>>>>>>>>>>>>>\\
