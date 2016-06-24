@@ -10,13 +10,13 @@ var PlayerProperties = {
     //all the players that currently exist in the lobby
     existingPlayers: {},
     
+    ready: false,
+    
     checkHost: function() {
         for (var index in connectionList) {
             return index == clientID;
         }
     },
-    
-    ready: false,
     
     checkGameOver: function() {
         var alivePlayers = 0;
@@ -232,12 +232,15 @@ function Player(properties) {
         self.health = 0;
     }
     
-    this.die = function() {  
+    this.die = function() { 
+        //remove myself from the player lists
         delete PlayerProperties.activePlayers[self.creatorID];
         delete PlayerProperties.existingPlayers[self.creatorID];
         
+        //set health on zero and send to other players, so my player on other clients get destroyed too
         self.Health = 0;
         sendObject(self);
+        
         self.destroy();
     }
 }

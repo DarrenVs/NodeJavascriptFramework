@@ -41,38 +41,46 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        var invulnerabilityAmin;
+        var standardWalkSpeed = parent.walkSpeed;
         var maxInvulnerabilityTime = 300;
         var invulnerabilityCounter = 0;
         var walkSpeedMultiplier = 1.3;
         
+        parent.invulnerabilityAmin = new Invulnerability({
+            position: Vector2.new(0, 0),
+            size: Vector2.new(parent.size.x, parent.size.y),
+        })
+        
         this.Enter =  function() {
-            console.log("activated invulnerability");
-            invulnerabilityAmin = new Enum.ClassName[Enum.ClassType.Invulnerability]({
-                size: new Vector2.new( 120,  200),
-                position: new Vector2.new(parent.position.x, parent.position.y),
-            })
             
-            invulnerabilityAmin.playerToFollow = parent;
-            invulnerabilityCounter = 0;
             console.log("start invul");
             
+            invulnerabilityCounter = 0;
             parent.walkSpeed *= walkSpeedMultiplier;
+            
+            parent.invulnerabilityAmin = new Invulnerability({
+                position: Vector2.new(0, 0),
+                size: Vector2.new(parent.size.x, parent.size.y),
+            })
+            
+            parent.addChild(parent.invulnerabilityAmin);
         }
         
         this.Reason = function () { 
             invulnerabilityCounter++;
-            if(maxInvulnerabilityTime < invulnerabilityCounter)
+            //leave the state if our timer is over
+            if(invulnerabilityCounter > maxInvulnerabilityTime) {
+                self.returnState = undefined
                 return false;
-            else 
+            } else 
                 return true;
         }
         
         this.Leave =  function() {
-            invulnerabilityAmin.destroy();
+            parent.invulnerabilityAmin.destroy();
             
-            parent.walkSpeed = 200;
-            console.log(parent.walkSpeed);
+            parent.walkSpeed = standardWalkSpeed * parent.scale.x;
+            console.log("invul over");
             return self.returnState;
         }
     },
@@ -93,7 +101,7 @@ var PickupStates = {
             })
             
             mine.ignoreObjectIDs[Enum.ClassType.Unknown] = true; 
-            parent.ignoreObjectIDs[mine.ID] = true;
+            mine.ignoreObjectIDs[parent.ID] = true;
             
             parent.stage.addChild( mine );
             
@@ -116,10 +124,10 @@ var PickupStates = {
                 size: new Vector2.new(40, 40),
                 position: new Vector2.new(parent.position.x + parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
             })
-            ball.velocity.x = parent.scale.x * 350;
+            ball.velocity.x = -parent.scale.x * 350;
             
             ball.ignoreObjectIDs[Enum.ClassType.Unknown] = true;
-            parent.ignoreObjectIDs[ball.ID] = true;
+            ball.ignoreObjectIDs[parent.ID] = true;
             
             parent.stage.addChild( ball );
             
@@ -137,15 +145,12 @@ var PickupStates = {
         
         this.Enter =  function() {
             ammo = 6;
-            console.log("reset ammo!");
         }
         
         this.Reason = function () {
             
             if(!INPUT_CLICK[PickupStates.pickupInput])
                 return true;
-            
-            console.log("activated bullet");
             
             ammo--;
             
@@ -156,7 +161,7 @@ var PickupStates = {
             })
             
             throwAble.ignoreObjectIDs[Enum.ClassType.Unknown] = true;
-            parent.ignoreObjectIDs[throwAble.ID] = true;
+            throwAble.ignoreObjectIDs[parent.ID] = true;
              
             parent.stage.addChild( throwAble );
             
