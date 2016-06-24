@@ -598,6 +598,7 @@ var replicateProperties = {
     //mass: true,
     
     moveSpeed: true,
+    moveDirection: true,
 }
 
 function PackageObject( Obj ) {

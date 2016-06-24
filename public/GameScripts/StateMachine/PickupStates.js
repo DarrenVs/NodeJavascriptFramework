@@ -152,9 +152,8 @@ var PickupStates = {
             var throwAble = new Enum.ClassName[Enum.ClassType.ThrowAbleObject]({
                 size: new Vector2.new(40, 40),
                 position: new Vector2.new(parent.position.x + parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
-            }, 
-                parent.scale.x                                                                 
-            )
+                moveDirection: parent.scale.x 
+            })
             
             throwAble.ignoreObjectIDs[Enum.ClassType.Unknown] = true;
             parent.ignoreObjectIDs[throwAble.ID] = true;
