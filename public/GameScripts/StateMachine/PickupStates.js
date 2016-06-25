@@ -42,7 +42,7 @@ var PickupStates = {
         var self = this;
         
         var standardWalkSpeed = parent.walkSpeed;
-        var maxInvulnerabilityTime = 300;
+        var maxInvulnerabilityTime = 250;
         var invulnerabilityCounter = 0;
         var walkSpeedMultiplier = 1.3;
         
@@ -57,6 +57,12 @@ var PickupStates = {
             
             invulnerabilityCounter = 0;
             parent.walkSpeed *= walkSpeedMultiplier;
+            
+            parent.collisionEnter["staggerPlayerOnColl"] = function (Obj, dir, force, distance, canCollide) {
+                if (Obj.ClassType == Enum.ClassType.Player) {
+                    Obj.doStagger = true;
+                }
+            }
             
             parent.invulnerabilityAmin = new Invulnerability({
                 position: Vector2.new(0, 0),
@@ -79,6 +85,8 @@ var PickupStates = {
         this.Leave =  function() {
             parent.invulnerabilityAmin.destroy();
             
+            delete parent.collisionEnter["staggerPlayerOnColl"];
+            
             parent.walkSpeed = standardWalkSpeed * parent.scale.x;
             console.log("invul over");
             return self.returnState;
@@ -100,7 +108,7 @@ var PickupStates = {
                 position: new Vector2.new(parent.position.x + -parent.scale.x * PickupStates.pickupSpawnOffset, parent.position.y),
             })
             
-            mine.ignoreObjectIDs[Enum.ClassType.Unknown] = true; 
+            mine.ignoreObjectType[Enum.ClassType.Unknown] = true; 
             mine.ignoreObjectIDs[parent.ID] = true;
             
             parent.stage.addChild( mine );
@@ -126,7 +134,7 @@ var PickupStates = {
             })
             ball.velocity.x = -parent.scale.x * 350;
             
-            ball.ignoreObjectIDs[Enum.ClassType.Unknown] = true;
+            ball.ignoreObjectType[Enum.ClassType.Unknown] = true;
             ball.ignoreObjectIDs[parent.ID] = true;
             
             parent.stage.addChild( ball );
@@ -160,9 +168,9 @@ var PickupStates = {
                 moveDirection: parent.scale.x 
             })
             
-            throwAble.ignoreObjectIDs[Enum.ClassType.Unknown] = true;
+            throwAble.ignoreObjectType[Enum.ClassType.Unknown] = true;
             throwAble.ignoreObjectIDs[parent.ID] = true;
-             
+            
             parent.stage.addChild( throwAble );
             
             sendObject(throwAble, false, true);

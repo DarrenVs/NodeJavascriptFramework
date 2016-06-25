@@ -47,8 +47,8 @@ function ThrowAbleObject(properties) {
         }
     }
     
-    this.collisionEnter["throwAbleObjectCollision"] = function(Obj) {
-        if(Obj.ClassType == Enum.ClassType.Player) {
+    this.collisionEnter["throwAbleObjectCollision"] = function(Obj, direction, force, distance, canCollide ) {
+        if(canCollide && Obj.ClassType == Enum.ClassType.Player) {
             Obj.doStagger = true;
         }
         
