@@ -13,7 +13,7 @@ function Pickup(properties) {
         0: StatesEnum.mineOnHold,
         1: StatesEnum.ballOnHold,
         2: StatesEnum.throwAbleOnHold,
-        //3: StatesEnum.invulnerabilityOnHold,
+        3: StatesEnum.invulnerabilityOnHold,
     };
     
     self.collisionActive = false;
