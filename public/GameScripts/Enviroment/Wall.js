@@ -9,6 +9,8 @@ function Wall(properties) {
         collision:Collision(this),
     };
     
+    self.ClassType = Enum.ClassType.Wall;
+    
     self.size = Vector2.new(40, 40);
     
     self.colliderType = Enum.colliderType.box;
