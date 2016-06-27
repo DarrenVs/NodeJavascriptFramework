@@ -134,22 +134,21 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
             if (currentState.Reason()) {
                 currentState.Act();
             } else {
-                self.ChangeState(currentState.Leave());
+                self.ChangeState(currentState.Leave(), true);
             }
         }
 
         if (anyState) {
             anyState.Act();
             if (anyState.Return()) {
-                self.ChangeState(anyState.Leave());
+                self.ChangeState(anyState.Leave(), true);
             }
         }
     }
 
     //!!!ONly use if really necessary!!!\\
-    this.ChangeState = function (_newStateKey) {
-        try {self.currentState.Leave();}
-        catch (err) { }
+    this.ChangeState = function (_newStateKey, fromState) {
+        if (!fromState && typeof self.currentState != 'undefined') self.currentState.Leave(); 
 
         self.newStateKey = _newStateKey;
         if (typeof(states[self.newStateKey]) != 'undefined') {
