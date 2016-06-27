@@ -9,6 +9,8 @@ function Platform_120x200(properties) {
         collision:Collision(this),
     };
     
+    self.ClassType = Enum.ClassType.Platform_120x200;
+    
     self.size = Vector2.new(120, 200);
     
     self.colliderType = Enum.colliderType.box;

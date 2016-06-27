@@ -75,7 +75,7 @@ function Ball(properties) {
             )
         }
         
-        if(Obj.ClassType == Enum.ClassType.Player) {
+        if(canCollide && Obj.ClassType == Enum.ClassType.Player) {
             console.log("doStagger");
             Obj.doStagger = true;
             self.destroy();

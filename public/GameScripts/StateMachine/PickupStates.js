@@ -2,7 +2,7 @@ var PickupStates = {
     
     pickupInput: "82",
     
-    pickupSpawnOffset: 40,
+    pickupSpawnOffset: 50,
     
     defaultState: function() {
         CreateState(this);
