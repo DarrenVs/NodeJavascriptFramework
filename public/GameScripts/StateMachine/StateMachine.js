@@ -148,6 +148,9 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
 
     //!!!ONly use if really necessary!!!\\
     this.ChangeState = function (_newStateKey) {
+        try {self.currentState.Leave();}
+        catch (err) { }
+
         self.newStateKey = _newStateKey;
         if (typeof(states[self.newStateKey]) != 'undefined') {
             if (debug) console.log(parentName + ":changing to state: " + self.newStateKey);
