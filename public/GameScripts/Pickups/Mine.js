@@ -43,7 +43,7 @@ function Mine(properties) {
     }
     
     this.collisionEnter["mineCollision"] = function(Obj, direction, force, distance, canCollide) {
-        if(canCollide && Obj.ClassType == Enum.ClassType.Player) {
+        if(canCollide && self.creatorID != clientID && Obj.ClassType == Enum.ClassType.Player) {
             console.log("doStagger");
             Obj.doStagger = true;
             self.destroy();
