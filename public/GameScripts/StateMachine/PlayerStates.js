@@ -390,20 +390,42 @@ var PlayerStates = {
         }
     },
 
-    Stagger: function (_parent,_staggerUp, _staggerSide, _staggerTime) {
+    Stagger: function (_parent, _bounceStrength, _staggerTime) {
         CreateState(this);
         var self = this;
         var parent = _parent;
 
-        var staggerUp = _staggerUp || 400;
-        var staggerSide = _staggerSide || 205;
         var staggerTime = _staggerTime|| 80;
+        var bounceStrength = _bounceStrength || 130;
         
         var timeLeft = staggerTime;
         
         self.Enter = function () {
                 parent.autoWalk = false;
                 parent.DrawObject.currentAnimation = "jumpStart";
+
+                parent.velocity.y -= 500;
+                
+                parent.collisionStay["physics"] = function (Obj, direction, force, distance, canCollide, colliionFrames) {
+                      if (!parent.anchored && canCollide && colliionFrames >= 5) {
+                            parent.velocity = Vector2.subtract(
+                               parent.velocity,
+
+                              Vector2.add(
+                                   Vector2.multiply (
+                                      direction,
+                                   Vector2.new(-Math.abs(parent.velocity.x), -Math.abs(parent.velocity.x) )
+                                    ),
+
+                                  Vector2.multiply (
+                                      direction,
+
+                                     -bounceStrength
+                                 )
+                             )
+                         )
+                     }
+                 }
 
                 self.returnState = StatesEnum.inAir;
         }
@@ -422,6 +444,8 @@ var PlayerStates = {
 
         self.Leave = function () {
             timeLeft = staggerTime;
+
+            parent.collisionStay["physics"] = function () {};
             parent.autoWalk = true;
             return self.returnState;
         }
