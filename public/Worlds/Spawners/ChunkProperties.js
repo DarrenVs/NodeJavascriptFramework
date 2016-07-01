@@ -1,17 +1,13 @@
 var ChunkProperties = {
     
     Tiles: {
-        0:false, //Air
-        
+        0: false, //Air
         1: Enum.ClassType.Platform_40x40,
         2: Enum.ClassType.Platform_120x120,
         3: Enum.ClassType.Platform_120x200,
-
         4: Enum.ClassType.EnemyWalk,
         5: Enum.ClassType.EnemyShoot,
-        
         6: Enum.ClassType.Pickup,
-        
         7: Enum.ClassType.IntermediatePlatform,
     },
     

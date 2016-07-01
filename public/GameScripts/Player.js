@@ -176,7 +176,7 @@ function Player(properties) {
         
         self.collisionEnter["pickupCollision"] = function(Obj) {
             if(Obj.ClassType == Enum.ClassType.Pickup) {
-                var number = Math.floor(Math.random() * Object.keys(Obj.pickupChoices).length);
+                var number = Math.floor(Math.random() * Obj.pickupChoices.length);
                 pickupSM.ChangeState(Obj.pickupChoices[number]);
             }
         };
@@ -203,7 +203,6 @@ function Player(properties) {
 
     self.ClassType = Enum.ClassType.Player;
     self.mass = 10;
-    
     
     var Health = self.health;
     this.__defineGetter__('health', function() {

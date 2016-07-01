@@ -9,12 +9,12 @@ function Pickup(properties) {
         collision:Collision(this),
     }
     
-    self.pickupChoices = {
-        0: StatesEnum.mineOnHold,
-        1: StatesEnum.ballOnHold,
-        2: StatesEnum.throwAbleOnHold,
-        3: StatesEnum.invulnerabilityOnHold,
-    };
+    self.pickupChoices = [
+        StatesEnum.invulnerabilityOnHold,
+        //StatesEnum.mineOnHold,
+        //StatesEnum.ballOnHold,
+        //StatesEnum.throwAbleOnHold,
+    ];
     
     self.collisionActive = false;
     self.canCollide = false;

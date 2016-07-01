@@ -39,11 +39,11 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
     
-    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["chunkToBeTested"]);
-    
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
     
     //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["enemyChunks"]);
+    
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["chunkToBeTested"]);
     
     var playerHolder = new EmptyObject({});
     stage.addChild(playerHolder);

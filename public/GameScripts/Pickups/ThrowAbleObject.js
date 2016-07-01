@@ -50,8 +50,9 @@ function ThrowAbleObject(properties) {
     this.collisionEnter["throwAbleObjectCollision"] = function(Obj, direction, force, distance, canCollide) {
         if(canCollide && self.creatorID != clientID && Obj.ClassType == Enum.ClassType.Player) {
             Obj.doStagger = true;
+            self.destroy();
+        } else if(Obj.ClassType != Enum.ClassType.Player) {
+            self.destroy();
         }
-        
-        self.destroy();
     };
 }

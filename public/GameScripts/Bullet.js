@@ -66,7 +66,6 @@ function ExplosionObject(properties) {
         }
     }
     this.update["explosion"] = function() {
-        
         if (self.alive--<=0)
             self.destroy();
     }
