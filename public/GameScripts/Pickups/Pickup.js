@@ -11,9 +11,9 @@ function Pickup(properties) {
     
     self.pickupChoices = [
         StatesEnum.invulnerabilityOnHold,
-        //StatesEnum.mineOnHold,
-        //StatesEnum.ballOnHold,
-        //StatesEnum.throwAbleOnHold,
+        StatesEnum.mineOnHold,
+        StatesEnum.ballOnHold,
+        StatesEnum.throwAbleOnHold,
     ];
     
     self.collisionActive = false;
