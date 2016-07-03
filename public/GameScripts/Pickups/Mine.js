@@ -5,14 +5,14 @@ function Mine(properties) {
     var self = this;
     GameObject(this, properties);
     
-    this.extends = {
+    self.extends = {
         collision:Collision(this),
         physics:Physics(this),
     };
 
     self.ClassType = Enum.ClassType.Mine;
     
-    this.DrawObject = new Sprite(
+    self.DrawObject = new Sprite(
         this,   //Parent
         Enum.Images.Sprites.MineEffectSpriteSheet,   //Image
         {   //Sprites
@@ -42,7 +42,7 @@ function Mine(properties) {
         }
     }
     
-    this.collisionEnter["mineCollision"] = function(Obj, direction, force, distance, canCollide) {
+    self.collisionEnter["mineCollision"] = function(Obj, direction, force, distance, canCollide) {
         if(canCollide && self.creatorID != clientID && Obj.ClassType == Enum.ClassType.Player) {
             console.log("doStagger");
             Obj.doStagger = true;

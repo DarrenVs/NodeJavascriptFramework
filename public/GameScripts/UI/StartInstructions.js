@@ -2,8 +2,23 @@ var StartInstructions = function() {
     GameObject(this);
     var self = this;
     
-    self.size = new Vector2.new(1,1);
-    self.position = new Vector2.new(10000, 10000);
+    this.extends = {
+        collision:Collision(this),
+    };
+    
+    self.color = "red";
+    
+    ctx.font = "17pt Arial";
+    
+    ctx.textAlign = "center";
+    
+    self.update["InstructionsUIUpdate"] = function() {
+        ctx.fillText("Press SPACE to jump", canvas.width/ 2, canvas.height / 8);
+        ctx.fillText("Press R to ready up and activating a pickup", canvas.width/ 2, canvas.height / 8 + 30);
+        ctx.fillText("The game will start when all players are ready!", canvas.width/ 2, canvas.height / 8 + 90);
+    }
 
-    self.text = "hello";
+    self.deactivate = function() {
+        delete self.update["InstructionsUIUpdate"];
+    }
 }

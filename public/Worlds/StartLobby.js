@@ -7,7 +7,9 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
     
     var player;
     
-    stage.addChild(new Enum.ClassName[Enum.ClassType.Background]);
+    var startInstructions = new StartInstructions();
+    
+    stage.addChild(startInstructions);
     
     stage.gravity = Vector2.new(0, 20);
     
@@ -32,12 +34,10 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
         stage.addChild( newObject );
     }
     
-    stage.addChild(new StartInstructions());
-    
     //reset the spawnable chunks
     Enum.SpawnAbleChunks = [];
     
-    ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
+    //ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["standardChunks"]);
     
     ChunkProperties.pushToSpawnAble(ChunkProperties.chunkLibary["pickupChunks"]);
     
@@ -73,6 +73,7 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             });
         }
         
+        //if all players are ready, start the game:
         if(PlayerProperties.readyPlayersAmount >= Object.keys(PlayerProperties.existingPlayers).length) {
             
             for(i = 0; i < barrier.length; i++) {
@@ -85,6 +86,9 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             }
             
             PlayerProperties.readyPlayersAmount = 0;
+            
+            startInstructions.deactivate();
+            startInstructions.destroy();
             
             LoadWorld(stage, Enum.Worlds.MainWorld);
             delete self.update["StartLobbyUpdate"];

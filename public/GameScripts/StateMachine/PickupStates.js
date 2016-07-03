@@ -85,6 +85,8 @@ var PickupStates = {
         this.Leave =  function() {
             parent.invulnerabilityAmin.destroy();
             
+            parent.clearPickupUI();
+            
             delete parent.collisionEnter["staggerPlayerOnColl"];
             
             parent.walkSpeed = standardWalkSpeed * parent.scale.x;
@@ -116,6 +118,11 @@ var PickupStates = {
             self.returnState = undefined;            
             return false;
         }
+        
+        this.Leave =  function() {
+            parent.clearPickupUI();
+            return self.returnState;
+        }
     },
         
     ballOnHold: function(_parent) {
@@ -141,6 +148,11 @@ var PickupStates = {
             
             self.returnState = undefined;            
             return false;
+        }
+        
+        this.Leave =  function() {
+            parent.clearPickupUI();
+            return self.returnState;
         }
     },
     
@@ -181,6 +193,11 @@ var PickupStates = {
             
             self.returnState = undefined;            
             return false;
+        }
+        
+        this.Leave =  function() {
+            parent.clearPickupUI();
+            return self.returnState;
         }
     },
 }

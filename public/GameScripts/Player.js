@@ -31,6 +31,13 @@ var PlayerProperties = {
         else 
             return false;
     },
+    
+    findClientPlayer: function() {
+        for(i in PlayerProperties.existingPlayers) {
+            if(PlayerProperties.existingPlayers[i].creatorID == clientID)
+                return PlayerProperties.existingPlayers[i];
+        }
+    }
 };
 
 Enum.ClassName[Enum.ClassType.Player] = Player;
@@ -45,6 +52,8 @@ function Player(properties) {
     
     var pCount = Object.keys(PlayerProperties.activePlayers).length;
     var sprites = Enum.Images.Sprites;
+    
+    
     
     this.DrawObject = new Sprite(
         this,   //Parent
@@ -173,13 +182,24 @@ function Player(properties) {
         pickupSM.AddState(StatesEnum.ballOnHold, new PickupStates.ballOnHold(self));
         pickupSM.AddState(StatesEnum.throwAbleOnHold, new PickupStates.throwAbleOnHold(self));
     
+        self.pickupDelegate = {};
         
         self.collisionEnter["pickupCollision"] = function(Obj) {
             if(Obj.ClassType == Enum.ClassType.Pickup) {
                 var number = Math.floor(Math.random() * Obj.pickupChoices.length);
-                pickupSM.ChangeState(Obj.pickupChoices[number]);
+                pickupSM.ChangeState(Obj.pickupChoices[number].state);
+                
+                for (i in self.pickupDelegate) {
+                    self.pickupDelegate[i](Obj.pickupChoices[number].name);
+                }
             }
         };
+        
+        self.clearPickupUI = function() {
+            for (i in self.pickupDelegate) {
+                self.pickupDelegate[i]("None");
+            }
+        }
     }
     
     PlayerProperties.existingPlayers[self.creatorID] = self;

@@ -8,6 +8,8 @@ Worlds[Enum.Worlds.MainWorld] = function( stage ) {
     
     PlayerProperties.manualStarted = false;
     
+    stage.addChild(new PickupUI());
+    
     this.update["MainWorldUpdate"] = function() {
         
         stage.position.y = cameraController.cameraPosition();
