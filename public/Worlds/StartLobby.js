@@ -91,6 +91,8 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
             startInstructions.destroy();
             
             LoadWorld(stage, Enum.Worlds.MainWorld);
+            
+            LoadWorld( Game.addChild( "UIStage", new Stage() ), Enum.Worlds.GameUIWorld );
             delete self.update["StartLobbyUpdate"];
         }
                 
