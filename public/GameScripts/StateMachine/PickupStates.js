@@ -23,8 +23,6 @@ var PickupStates = {
         var parent = _parent;
         var self = this;
         
-        
-        
         this.Reason = function () { 
             
             if(!INPUT_CLICK[PickupStates.pickupInput]) {
