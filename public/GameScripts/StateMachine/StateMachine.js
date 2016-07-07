@@ -113,7 +113,7 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
     if (setup) setup(parent);
     //Add the state if on a spot if it is extended from State (id is a StatesEnum state)
     this.AddState = function (id, state) {
-        if (typeof(states[id]) != 'undefined') {        
+        if (typeof(states[id]) != 'undefined') { 
             if (state.isState) {
                 if (id == defaultStateKey) {
                     currentState = state;
@@ -148,7 +148,10 @@ var StateMachine = function (_parent, _defaultStateKey, setup, anyState, debug) 
 
     //!!!ONly use if really necessary!!!\\
     this.ChangeState = function (_newStateKey, fromState) {
-        if (!fromState && typeof self.currentState != 'undefined') self.currentState.Leave(); 
+        if (!fromState && typeof currentState != 'undefined') {
+            if (debug) console.log("Statemachine: activating enter in ChangeState")
+            currentState.Leave(); 
+        } else if (debug && fromState) console.log("Not executing enter within ChangeState")
 
         self.newStateKey = _newStateKey;
         if (typeof(states[self.newStateKey]) != 'undefined') {

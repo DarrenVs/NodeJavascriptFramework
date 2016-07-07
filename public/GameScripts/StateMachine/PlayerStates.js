@@ -357,7 +357,9 @@ var PlayerStates = {
 
         self.Enter = function () {
             parent.autoWalk = false;
-            parent.extraJumpsLeft = parent.amoundOfExtraJumps;                  
+            parent.extraJumpsLeft = parent.amoundOfExtraJumps; 
+
+            parent.size.x /= 2;                 
 
             parent.DrawObject.currentAnimation = "slide";    
 
@@ -385,6 +387,7 @@ var PlayerStates = {
         }
 
         self.Leave = function () {
+            parent.size.x *= 2;
             parent.stopWalking = false;
             return self.returnState;
         }
