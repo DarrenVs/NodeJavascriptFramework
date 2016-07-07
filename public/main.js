@@ -69,13 +69,12 @@ var events = events || {
     }, 
     
     playerJoined: function(parameters) {
+        PlayerProperties.findClientPlayer().removeReadySign();
+        PlayerProperties.findClientPlayer().addClientSign();
         PlayerProperties.ready = false;
         PlayerProperties.readyPlayersAmount = 0;
     }
 };
-
-
-
 
 function updateObject(Obj) {
 

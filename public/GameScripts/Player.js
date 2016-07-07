@@ -234,6 +234,10 @@ function Player(properties) {
             self.die();
     })
     
+    var readySign = new ReadySign({
+        position: Vector2.new(0, -40),
+    });
+    
     var updateRate = 0;
     //The .update is a update that fires every frame, we use this for AI or playermovement
     this.update["playerUpdate"] = function() {
@@ -242,7 +246,42 @@ function Player(properties) {
         } else {
             self.health--;
         }
+        
+        if(!PlayerProperties.ready && INPUT_CLICK["82"]) {
+            PlayerProperties.ready = true;
+            sendEvent("playerReady", {
+                playerID: this.creatorID,
+            });
+            
+            if(Object.keys(connectionList).length != 1) 
+                self.addChild(readySign);
+        }
     }
+    
+    this.removeReadySign = function() {
+        readySign.destroy();
+    }
+    
+    var clientSign = new ClientSign({
+        position: Vector2.new(0, -60),
+    });
+    
+    this.addClientSign = function() {
+        if(Object.keys(connectionList).length != 1) {
+            var clientSignExists = false;
+            
+            for(var i in self.childs) {
+                if(self.childs[i] == clientSign)
+                    clientSignExists = true;
+            }
+            
+            if(!clientSignExists)
+                self.addChild(clientSign);
+        }
+    }
+    
+    if (clientID == self.creatorID && Object.keys(connectionList).length != 1)
+        this.addClientSign();    
     
     this.manualDestroy = function() {
         if(self.creatorID == clientID && PlayerProperties.checkGameOver())
@@ -250,6 +289,8 @@ function Player(properties) {
         
         self.health = 0;
     }
+    
+
     
     this.die = function() { 
         //remove myself from the player lists

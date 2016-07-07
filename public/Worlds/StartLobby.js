@@ -66,13 +66,6 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 
         stage.position.y = cameraController.cameraPosition();
         
-        if(!PlayerProperties.ready && INPUT_CLICK["82"]) {
-            PlayerProperties.ready = true;
-            sendEvent("playerReady", {
-                playerID: player.creatorID,
-            });
-        }
-        
         //if all players are ready, start the game:
         if(PlayerProperties.readyPlayersAmount >= Object.keys(PlayerProperties.existingPlayers).length) {
             
@@ -85,6 +78,9 @@ Worlds[Enum.Worlds.StartLobby] = function( stage ) {
                 PlayerProperties.activePlayers[playerID] = PlayerProperties.existingPlayers[playerID];
             }
             
+            PlayerProperties.findClientPlayer().removeReadySign();
+            PlayerProperties.ready = false;
+        
             PlayerProperties.readyPlayersAmount = 0;
             
             startInstructions.deactivate();

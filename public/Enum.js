@@ -42,6 +42,8 @@ var Enum = {
         ThrowAbleObject: 19,
         
         Background: 20,
+        
+        ReadySign: 21,
     },
     
     ClassName: {
@@ -61,6 +63,9 @@ var Enum = {
             PlayerSpriteSheetBrown: newImage("Images/Player/BrownspritesheetPlayer.png"),
             PlayerSpriteSheetRed: newImage("Images/Player/player_red_spritesheet.png"),
             PlayerSpriteSheetPurple: newImage("Images/Player/PurpleSpritesheetPlayer.png"),
+            
+            PlayerClientSprite: newImage("Images/Player/PlayerUI/client_arrow.png"),
+            PlayerReadySprite: newImage("Images/Player/PlayerUI/ready_checkmark.png"),
 
             EnemyAnimationsSheet: newImage("Images/Enemy/enemy_spritesheet.png"),
             
