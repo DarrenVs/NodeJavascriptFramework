@@ -14,7 +14,6 @@ function Pickup(properties) {
             state: StatesEnum.invulnerabilityOnHold,
             name: "Invulnerable"
         },
-        /*
         {
             state: StatesEnum.mineOnHold,
             name: "Mine"
@@ -26,7 +25,7 @@ function Pickup(properties) {
         {
             state: StatesEnum.throwAbleOnHold,
             name: "Darts"
-        }*/
+        }
     ];
     
     self.collisionActive = false;
