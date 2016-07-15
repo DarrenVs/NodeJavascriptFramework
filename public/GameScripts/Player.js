@@ -50,10 +50,8 @@ function Player(properties) {
     var self = this;
     self.ClassType = Enum.ClassType.Player;
     
-    var pCount = Object.keys(PlayerProperties.activePlayers).length;
+    var pCount = Object.keys(PlayerProperties.existingPlayers).length;
     var sprites = Enum.Images.Sprites;
-    
-    
     
     this.DrawObject = new Sprite(
         this,   //Parent
